@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 Hello World!
 Java programming is fun.
+=======
+Hello World!
+Java programming is fun.
+>>>>>>> 3d4ba7fc22302007d202b1e6a9ffa2ee5cb6aad5
