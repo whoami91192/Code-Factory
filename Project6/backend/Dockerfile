@@ -1,15 +1,25 @@
-FROM eclipse-temurin:17-jdk
-
+# Βήμα 1: Maven build stage
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Εγκατάσταση Maven
-RUN apt-get update && apt-get install -y maven
+# Αντιγραφή αρχείων POM και source code
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Αντιγραφή των αρχείων του backend στο container
-COPY . /app
+COPY src ./src
 
-# Build της Spring Boot εφαρμογής
-RUN mvn clean install -DskipTests
+# Χτίσιμο της εφαρμογής
+RUN mvn clean package -DskipTests
 
-# Εκκίνηση της εφαρμογής
-CMD ["java", "-jar", "target/coursemanager-0.0.1-SNAPSHOT.jar"]
+# Βήμα 2: Εκτέλεση με JDK runtime
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
+# Αντιγραφή του jar από το build stage
+COPY --from=build /app/target/coursemanager-0.0.1-SNAPSHOT.jar app.jar
+
+# Άνοιγμα θύρας
+EXPOSE 8080
+
+# Εκτέλεση της εφαρμογής
+ENTRYPOINT ["java", "-jar", "app.jar"]
