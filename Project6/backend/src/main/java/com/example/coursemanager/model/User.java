@@ -1,21 +1,15 @@
-
 package com.example.coursemanager.model;
 
 import jakarta.persistence.*;
-import java.util.*;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
-
     private String username;
     private String password;
-    private String role; // STUDENT or ADMIN
+    private String role;
 
-    @ManyToMany(mappedBy = "enrolledStudents")
-    private Set<Course> courses = new HashSet<>();
-
-    // Getters and setters
+    // getters and setters
 }

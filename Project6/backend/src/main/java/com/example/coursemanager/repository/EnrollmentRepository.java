@@ -1,4 +1,3 @@
-
 package com.example.coursemanager.repository;
 
 import com.example.coursemanager.model.Enrollment;
