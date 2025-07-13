@@ -49,6 +49,7 @@ const Navbar: React.FC = () => {
 
   const navigationItems = [
     { label: 'Products', path: '/products', show: true },
+    { label: 'Contact', path: '/contact', show: true },
     { label: 'Favorites', path: '/favorites', show: isAuthenticated },
     { label: 'Orders', path: '/orders', show: isAuthenticated },
     { label: 'Admin', path: '/admin', show: isAdmin },

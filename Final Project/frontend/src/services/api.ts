@@ -209,4 +209,46 @@ export const userService = {
   },
 };
 
+export const contactService = {
+  submit: async (contactData: any) => {
+    const response = await api.post('/contacts', contactData);
+    return response.data;
+  },
+
+  getAll: async () => {
+    const response = await api.get('/contacts');
+    return response.data;
+  },
+
+  getById: async (id: number) => {
+    const response = await api.get(`/contacts/${id}`);
+    return response.data;
+  },
+
+  updateStatus: async (id: number, status: string) => {
+    const response = await api.patch(`/contacts/${id}/status`, status);
+    return response.data;
+  },
+
+  getByStatus: async (status: string) => {
+    const response = await api.get(`/contacts/status/${status}`);
+    return response.data;
+  },
+
+  search: async (keyword: string) => {
+    const response = await api.get(`/contacts/search?keyword=${encodeURIComponent(keyword)}`);
+    return response.data;
+  },
+
+  getStatistics: async () => {
+    const response = await api.get('/contacts/statistics');
+    return response.data;
+  },
+
+  delete: async (id: number) => {
+    const response = await api.delete(`/contacts/${id}`);
+    return response.data;
+  },
+};
+
 export default api; 

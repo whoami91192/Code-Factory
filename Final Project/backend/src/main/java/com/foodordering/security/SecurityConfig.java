@@ -48,11 +48,13 @@ public class SecurityConfig {
                 // Public endpoints
                 .requestMatchers("/auth/signup", "/auth/login", "/auth/refresh", "/auth/admin/reset-password").permitAll()
                 .requestMatchers("/products/**").permitAll()
+                .requestMatchers("/contacts").permitAll() // Allow contact form submission
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                 .requestMatchers("/api/swagger-ui/**", "/api/v3/api-docs/**", "/api/api-docs/**", "/api/swagger-ui.html", "/api/swagger-resources/**", "/api/webjars/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 // Protected endpoints
+                .requestMatchers("/contacts/**").hasRole("ADMIN") // Admin only for contact management
                 .requestMatchers("/cart/**").hasRole("USER")
                 .requestMatchers("/orders/**").hasRole("USER")
                 .requestMatchers("/api/cart/**").hasRole("USER")

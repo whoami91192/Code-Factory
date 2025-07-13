@@ -96,4 +96,23 @@ export interface PaginatedResponse<T> {
   number: number;
   first: boolean;
   last: boolean;
+}
+
+export interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  phoneNumber?: string;
+  status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContactStatistics {
+  totalContacts: number;
+  pendingContacts: number;
+  resolvedContacts: number;
+  todayContacts: number;
 } 

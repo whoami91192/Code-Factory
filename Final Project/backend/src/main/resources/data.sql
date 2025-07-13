@@ -8,6 +8,7 @@ ALTER SEQUENCE IF EXISTS carts_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS cart_items_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS orders_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS order_items_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS contacts_id_seq RESTART WITH 1;
 
 -- Clear existing data (if any)
 DELETE FROM order_items;
@@ -16,6 +17,7 @@ DELETE FROM cart_items;
 DELETE FROM carts;
 DELETE FROM products;
 DELETE FROM users;
+DELETE FROM contacts;
 
 -- Insert sample users
 -- Όλοι οι κωδικοί: password123 (bcrypt)
@@ -47,10 +49,19 @@ INSERT INTO products (id, name, description, price, category, image_url, is_avai
 (19, 'Water', 'Fresh mineral water.', 1.50, 'BEVERAGE', 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (20, 'Beer', 'Cold draft beer.', 4.20, 'BEVERAGE', 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+-- Insert sample contacts
+INSERT INTO contacts (name, email, subject, message, phone_number, status, created_at, updated_at) VALUES
+('Γιώργος Παπαδόπουλος', 'giorgos@example.com', 'Ερώτηση για παραγγελία', 'Καλησπέρα! Θα ήθελα να ρωτήσω για την παραγγελία μου με αριθμό #12345. Πότε θα παραδοθεί;', '+30 6971234567', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Μαρία Κωνσταντίνου', 'maria@example.com', 'Πρόβλημα με την εφαρμογή', 'Δεν μπορώ να συνδεθώ στην εφαρμογή. Εμφανίζεται σφάλμα κάθε φορά που προσπαθώ να κάνω login.', '+30 6987654321', 'IN_PROGRESS', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Νίκος Αλεξίου', 'nikos@example.com', 'Παρατήρηση για το φαγητό', 'Το φαγητό ήταν εξαιρετικό! Θα ήθελα να σας ευχαριστήσω για την ποιότητα και την ταχύτητα της παράδοσης.', NULL, 'RESOLVED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Ελένη Δημητρίου', 'eleni@example.com', 'Αίτημα για συνεργασία', 'Εργάζομαι σε εταιρεία catering και θα ήθελα να συζητήσουμε για πιθανή συνεργασία.', '+30 6945678901', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Δημήτρης Παπαγεωργίου', 'dimitris@example.com', 'Ερώτηση για προσφορά', 'Θα ήθελα να μάθω αν προσφέρετε εκπτώσεις για μεγάλες παραγγελίες για εταιρικά events.', '+30 6934567890', 'CLOSED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 -- Update sequences to continue from the next available ID
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
 SELECT setval('products_id_seq', (SELECT MAX(id) FROM products));
 SELECT setval('carts_id_seq', (SELECT MAX(id) FROM carts));
 SELECT setval('cart_items_id_seq', (SELECT MAX(id) FROM cart_items));
 SELECT setval('orders_id_seq', (SELECT MAX(id) FROM orders));
-SELECT setval('order_items_id_seq', (SELECT MAX(id) FROM order_items)); 
+SELECT setval('order_items_id_seq', (SELECT MAX(id) FROM order_items));
+SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts)); 

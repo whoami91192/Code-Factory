@@ -43,10 +43,12 @@ import {
   People as PeopleIcon,
   BarChart as BarChartIcon,
   ListAlt as ListAltIcon,
-  VpnKey as VpnKeyIcon
+  VpnKey as VpnKeyIcon,
+  ContactSupport as ContactSupportIcon
 } from '@mui/icons-material';
 import api from '../services/api';
 import { useTheme } from '@mui/material/styles';
+import ContactManagement from './ContactManagement';
 
 interface Product {
   id: number;
@@ -389,6 +391,7 @@ const AdminDashboard: React.FC = () => {
           <Tab label="Orders" icon={<ListAltIcon />} iconPosition="start" />
           <Tab label="Products" icon={<RestaurantIcon />} iconPosition="start" />
           <Tab label="Users" icon={<PeopleIcon />} iconPosition="start" />
+          <Tab label="Contacts" icon={<ContactSupportIcon />} iconPosition="start" />
         </Tabs>
       </Box>
 
@@ -656,6 +659,10 @@ const AdminDashboard: React.FC = () => {
         </TableContainer>
       </TabPanel>
 
+      <TabPanel value={tabValue} index={4}>
+        <ContactManagement />
+      </TabPanel>
+
       {/* Product Dialog */}
       <Dialog open={productDialogOpen} onClose={() => setProductDialogOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>
@@ -760,6 +767,8 @@ const AdminDashboard: React.FC = () => {
                 label="Username"
                 value={userForm.username}
                 onChange={(e) => setUserForm({ ...userForm, username: e.target.value })}
+                required
+                InputLabelProps={{ required: false }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -769,6 +778,8 @@ const AdminDashboard: React.FC = () => {
                 type="email"
                 value={userForm.email}
                 onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
+                required
+                InputLabelProps={{ required: false }}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -817,6 +828,7 @@ const AdminDashboard: React.FC = () => {
             fullWidth
             margin="normal"
             required
+            InputLabelProps={{ required: false }}
           />
           <TextField
             label="Confirm New Password"
@@ -826,6 +838,7 @@ const AdminDashboard: React.FC = () => {
             fullWidth
             margin="normal"
             required
+            InputLabelProps={{ required: false }}
           />
           {passwordChangeError && <Alert severity="error" sx={{ mt: 2 }}>{passwordChangeError}</Alert>}
           {passwordChangeSuccess && <Alert severity="success" sx={{ mt: 2 }}>Password changed successfully!</Alert>}

@@ -27,6 +27,7 @@ import CookiesBanner from './components/CookiesBanner';
 import FloatingCartButton from './components/FloatingCartButton';
 import Terms from './pages/Terms';
 import ForgotPassword from './pages/ForgotPassword';
+import Contact from './pages/Contact';
 
 const App: React.FC = () => {
   const { getMaterialTheme } = useTheme();
@@ -57,6 +58,7 @@ const App: React.FC = () => {
                           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                           <Route path="/terms" element={<Terms />} />
                           <Route path="/forgot-password" element={<ForgotPassword />} />
+                          <Route path="/contact" element={<Contact />} />
                         </Routes>
                       </main>
                       <Footer />

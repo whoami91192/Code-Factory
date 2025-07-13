@@ -172,6 +172,9 @@ const Footer: React.FC = () => {
               <Link href="/orders" color="inherit" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
                 Orders
               </Link>
+              <Link href="/contact" color="inherit" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+                Contact Us
+              </Link>
             </Box>
           </Grid>
 
