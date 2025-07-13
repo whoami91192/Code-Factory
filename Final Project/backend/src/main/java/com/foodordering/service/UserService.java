@@ -1,9 +1,11 @@
 package com.foodordering.service;
 
 import com.foodordering.dto.AdminUserDto;
+import com.foodordering.dto.PasswordResetRequest;
 import com.foodordering.dto.UserDto;
 import com.foodordering.entity.User;
 import com.foodordering.entity.UserRole;
+import com.foodordering.exception.InvalidSecretKeyException;
 import com.foodordering.exception.ResourceNotFoundException;
 import com.foodordering.exception.UserAlreadyExistsException;
 import com.foodordering.repository.UserRepository;
@@ -228,6 +230,16 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Old password is incorrect");
         }
 
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    /**
+     * Change any user's password (admin only)
+     */
+    public void changeUserPasswordByAdmin(Long userId, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }

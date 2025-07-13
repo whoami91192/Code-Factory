@@ -42,7 +42,8 @@ import {
   Restaurant as RestaurantIcon,
   People as PeopleIcon,
   BarChart as BarChartIcon,
-  ListAlt as ListAltIcon
+  ListAlt as ListAltIcon,
+  VpnKey as VpnKeyIcon
 } from '@mui/icons-material';
 import api from '../services/api';
 import { useTheme } from '@mui/material/styles';
@@ -137,6 +138,62 @@ const AdminDashboard: React.FC = () => {
 
   // Sales and Orders
   const [orders, setOrders] = useState<Order[]>([]);
+
+  // State for password change dialog
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [passwordUser, setPasswordUser] = useState<User | null>(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordChangeLoading, setPasswordChangeLoading] = useState(false);
+  const [passwordChangeError, setPasswordChangeError] = useState<string | null>(null);
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
+
+  const handleOpenPasswordDialog = (user: User) => {
+    setPasswordUser(user);
+    setNewPassword('');
+    setConfirmNewPassword('');
+    setPasswordChangeError(null);
+    setPasswordChangeSuccess(false);
+    setPasswordDialogOpen(true);
+  };
+
+  const handleClosePasswordDialog = () => {
+    setPasswordDialogOpen(false);
+    setPasswordUser(null);
+    setNewPassword('');
+    setConfirmNewPassword('');
+    setPasswordChangeError(null);
+    setPasswordChangeSuccess(false);
+  };
+
+  const handleChangeUserPassword = async () => {
+    setPasswordChangeError(null);
+    setPasswordChangeSuccess(false);
+    if (!newPassword || !confirmNewPassword) {
+      setPasswordChangeError('Please fill in both password fields.');
+      return;
+    }
+    if (newPassword.length < 8) {
+      setPasswordChangeError('Password must be at least 8 characters.');
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setPasswordChangeError('Passwords do not match.');
+      return;
+    }
+    setPasswordChangeLoading(true);
+    try {
+      await api.patch(`/users/${passwordUser?.id}/change-password`, { newPassword });
+      setPasswordChangeSuccess(true);
+      setTimeout(() => {
+        handleClosePasswordDialog();
+      }, 1200);
+    } catch (err: any) {
+      setPasswordChangeError(err.response?.data?.message || 'Failed to change password.');
+    } finally {
+      setPasswordChangeLoading(false);
+    }
+  };
 
   const theme = useTheme();
 
@@ -586,6 +643,11 @@ const AdminDashboard: React.FC = () => {
                         {user.enabled ? <VisibilityOffIcon /> : <VisibilityIcon />}
                       </IconButton>
                     </Tooltip>
+                    <Tooltip title="Change Password">
+                      <IconButton onClick={() => handleOpenPasswordDialog(user)} color="info">
+                        <VpnKeyIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -739,6 +801,39 @@ const AdminDashboard: React.FC = () => {
           <Button onClick={() => setUserDialogOpen(false)}>Cancel</Button>
           <Button onClick={handleUserSubmit} variant="contained">
             {editingUser ? 'Update' : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Password Change Dialog */}
+      <Dialog open={passwordDialogOpen} onClose={handleClosePasswordDialog} maxWidth="xs" fullWidth>
+        <DialogTitle>Change Password for {passwordUser?.username}</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="New Password"
+            type="password"
+            value={newPassword}
+            onChange={e => setNewPassword(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Confirm New Password"
+            type="password"
+            value={confirmNewPassword}
+            onChange={e => setConfirmNewPassword(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          {passwordChangeError && <Alert severity="error" sx={{ mt: 2 }}>{passwordChangeError}</Alert>}
+          {passwordChangeSuccess && <Alert severity="success" sx={{ mt: 2 }}>Password changed successfully!</Alert>}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClosePasswordDialog} disabled={passwordChangeLoading}>Cancel</Button>
+          <Button onClick={handleChangeUserPassword} variant="contained" color="primary" disabled={passwordChangeLoading}>
+            {passwordChangeLoading ? <CircularProgress size={20} /> : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>

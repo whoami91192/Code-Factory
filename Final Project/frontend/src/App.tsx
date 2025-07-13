@@ -26,6 +26,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import CookiesBanner from './components/CookiesBanner';
 import FloatingCartButton from './components/FloatingCartButton';
 import Terms from './pages/Terms';
+import ForgotPassword from './pages/ForgotPassword';
 
 const App: React.FC = () => {
   const { getMaterialTheme } = useTheme();
@@ -55,6 +56,7 @@ const App: React.FC = () => {
                           <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
                           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                           <Route path="/terms" element={<Terms />} />
+                          <Route path="/forgot-password" element={<ForgotPassword />} />
                         </Routes>
                       </main>
                       <Footer />

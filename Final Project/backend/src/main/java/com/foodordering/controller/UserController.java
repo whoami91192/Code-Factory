@@ -2,6 +2,7 @@ package com.foodordering.controller;
 
 import com.foodordering.dto.UserDto;
 import com.foodordering.dto.AdminUserDto;
+import com.foodordering.dto.PasswordResetRequest;
 import com.foodordering.entity.UserRole;
 import com.foodordering.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,11 @@ public class UserController {
         } else {
             userService.deactivateUser(id);
         }
+    }
+
+    @PatchMapping("/{id}/change-password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void changeUserPasswordByAdmin(@PathVariable Long id, @RequestBody PasswordResetRequest request) {
+        userService.changeUserPasswordByAdmin(id, request.getNewPassword());
     }
 } 

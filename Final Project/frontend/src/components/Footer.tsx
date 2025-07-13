@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Typography, Link, IconButton, Grid } from '@mui/material';
+import { Box, Container, Typography, Link, Grid } from '@mui/material';
 import {
   Facebook as FacebookIcon,
   Twitter as TwitterIcon,
@@ -9,7 +9,7 @@ import {
   Phone as PhoneIcon,
   LocationOn as LocationIcon
 } from '@mui/icons-material';
-import Tooltip from '@mui/material/Tooltip';
+
 import { useTheme } from '@mui/material/styles';
 import {
   AppStoreBadge,
@@ -19,6 +19,7 @@ import {
   SkrillLogo,
   PayPalLogo
 } from './FooterIcons';
+
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -70,71 +71,41 @@ const Footer: React.FC = () => {
               The best online food ordering experience. 
               Fast delivery, fresh food and excellent service.
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-              <Tooltip title="Facebook">
-                <IconButton
-                  color="inherit"
-                  size="large"
-                  href="#"
-                  sx={{
-                    bgcolor: 'rgba(255,255,255,0.12)',
-                    borderRadius: '50%',
-                    transition: 'transform 0.2s, background 0.2s',
-                    '&:hover': {
-                      bgcolor: 'rgba(255,255,255,0.25)',
-                      transform: 'scale(1.12)'
-                    }
-                  }}
-                >
-                  <FacebookIcon fontSize="medium" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Twitter">
-                <IconButton color="inherit" size="large" href="#"
-                  sx={{
-                    bgcolor: 'rgba(255,255,255,0.12)',
-                    borderRadius: '50%',
-                    transition: 'transform 0.2s, background 0.2s',
-                    '&:hover': {
-                      bgcolor: 'rgba(255,255,255,0.25)',
-                      transform: 'scale(1.12)'
-                    }
-                  }}
-                >
-                  <TwitterIcon fontSize="medium" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Instagram">
-                <IconButton color="inherit" size="large" href="#"
-                  sx={{
-                    bgcolor: 'rgba(255,255,255,0.12)',
-                    borderRadius: '50%',
-                    transition: 'transform 0.2s, background 0.2s',
-                    '&:hover': {
-                      bgcolor: 'rgba(255,255,255,0.25)',
-                      transform: 'scale(1.12)'
-                    }
-                  }}
-                >
-                  <InstagramIcon fontSize="medium" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="LinkedIn">
-                <IconButton color="inherit" size="large" href="#"
-                  sx={{
-                    bgcolor: 'rgba(255,255,255,0.12)',
-                    borderRadius: '50%',
-                    transition: 'transform 0.2s, background 0.2s',
-                    '&:hover': {
-                      bgcolor: 'rgba(255,255,255,0.25)',
-                      transform: 'scale(1.12)'
-                    }
-                  }}
-                >
-                  <LinkedInIcon fontSize="medium" />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            {/* Social Media Icons */}
+            <div className="footer-social" style={{ display: 'flex', gap: 20, marginBottom: 16 }}>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{
+                background: '#fff', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', color: '#1877f3', transition: 'transform 0.2s, color 0.2s', fontSize: 24
+              }}
+                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.18)')}
+                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                <FacebookIcon sx={{ fontSize: 24 }} />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{
+                background: '#fff', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', color: '#1da1f2', transition: 'transform 0.2s, color 0.2s', fontSize: 24
+              }}
+                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.18)')}
+                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                <TwitterIcon sx={{ fontSize: 24 }} />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{
+                background: '#fff', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', color: '#e4405f', transition: 'transform 0.2s, color 0.2s', fontSize: 24
+              }}
+                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.18)')}
+                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                <InstagramIcon sx={{ fontSize: 24 }} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{
+                background: '#fff', borderRadius: '50%', width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', color: '#0077b5', transition: 'transform 0.2s, color 0.2s', fontSize: 24
+              }}
+                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.18)')}
+                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                <LinkedInIcon sx={{ fontSize: 24 }} />
+              </a>
+            </div>
             <Box sx={{ mt: 2 }}>
               <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
                 Download our app:

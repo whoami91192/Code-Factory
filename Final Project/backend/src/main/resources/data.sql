@@ -18,20 +18,13 @@ DELETE FROM products;
 DELETE FROM users;
 
 -- Insert sample users
--- Password for all users is 'password123' (BCrypt encoded)
+-- Όλοι οι κωδικοί: password123 (bcrypt)
 INSERT INTO users (id, username, email, password, role, is_active, created_at, updated_at) VALUES
-(1, 'admin', 'admin@foodordering.com', '$2b$12$bv0rnIffUfcjIg98kAX0Je7I3BiiVyl0biC7wLLq12uXpA.1EQ5IK', 'ADMIN', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'admin', 'admin@foodordering.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (2, 'user1', 'user1@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (3, 'user2', 'user2@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Διαγραφή όλων των παλιών προϊόντων και σχετικών δεδομένων
-DELETE FROM order_items;
-DELETE FROM orders;
-DELETE FROM cart_items;
-DELETE FROM carts;
-DELETE FROM products;
-
--- Εισαγωγή 9 νέων προϊόντων με σωστές κατηγορίες και εικόνες
+-- Εισαγωγή προϊόντων
 INSERT INTO products (id, name, description, price, category, image_url, is_available, created_at, updated_at) VALUES
 (1, 'Classic Burger', 'Juicy beef patty, tomato, lettuce, sauce and fresh bun.', 7.50, 'BURGER', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (2, 'Burger with Fries', 'Burger with fried potatoes and sauce.', 8.50, 'BURGER', 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

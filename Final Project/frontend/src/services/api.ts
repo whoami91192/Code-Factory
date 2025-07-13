@@ -58,7 +58,8 @@ api.interceptors.response.use(
           { password: refreshToken }
         );
 
-        const { token: newToken, refreshToken: newRefreshToken } = refreshResponse.data;
+        // Use correct property names from backend
+        const { accessToken: newToken, refreshToken: newRefreshToken } = refreshResponse.data;
         
         // Update tokens in localStorage
         localStorage.setItem('token', newToken);

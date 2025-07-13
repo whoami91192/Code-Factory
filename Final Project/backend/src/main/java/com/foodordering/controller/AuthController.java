@@ -2,8 +2,11 @@ package com.foodordering.controller;
 
 import com.foodordering.dto.AuthRequest;
 import com.foodordering.dto.AuthResponse;
+import com.foodordering.dto.PasswordResetRequest;
 import com.foodordering.dto.UserDto;
 import com.foodordering.entity.User;
+import com.foodordering.exception.InvalidSecretKeyException;
+import com.foodordering.exception.ResourceNotFoundException;
 import com.foodordering.security.JwtTokenProvider;
 import com.foodordering.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
