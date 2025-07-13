@@ -382,7 +382,15 @@ const ContactManagement: React.FC = () => {
                     <TableCell>
                       <Box display="flex" alignItems="center">
                         <SubjectIcon sx={{ mr: 1, color: 'text.secondary' }} />
-                        <Typography variant="body2" noWrap sx={{ maxWidth: 200 }}>
+                        <Typography
+                          variant="body2"
+                          noWrap
+                          sx={{ maxWidth: 200, cursor: 'pointer', textDecoration: 'underline', color: 'primary.main' }}
+                          onClick={() => {
+                            setSelectedContact(contact);
+                            setDialogOpen(true);
+                          }}
+                        >
                           {contact.subject}
                         </Typography>
                       </Box>
