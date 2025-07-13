@@ -79,6 +79,19 @@ const ProductCustomizer: React.FC<ProductCustomizerProps> = ({
     totalPrice: product?.price || 0
   });
 
+  // Reset customization state when product changes
+  useEffect(() => {
+    setCustomization({
+      basePrice: product?.price || 0,
+      size: 'medium',
+      crust: 'classic',
+      toppings: [],
+      extras: [],
+      specialInstructions: '',
+      totalPrice: product?.price || 0
+    });
+  }, [product]);
+
   // Mock customization options
   const sizeOptions = [
     { value: 'small', label: 'Small', price: 0 },

@@ -140,6 +140,15 @@ const Cart: React.FC = () => {
                 <TableCell>
                   <Box>
                     <Typography variant="subtitle1" fontWeight="bold">{item.name}</Typography>
+                    {/* Εμφάνιση customization αν υπάρχει */}
+                    {('customId' in item) && (
+                      <Typography variant="body2" color="primary.main">
+                        {(item as any).size && `Size: ${(item as any).size} `}
+                        {(item as any).crust && `| Crust: ${(item as any).crust} `}
+                        {(item as any).toppings && (item as any).toppings.length > 0 && `| Toppings: ${((item as any).toppings.map((t: any) => t.name)).join(', ')} `}
+                        {(item as any).extras && (item as any).extras.length > 0 && `| Extras: ${((item as any).extras.map((e: any) => e.name)).join(', ')}`}
+                      </Typography>
+                    )}
                     <Typography variant="body2" color="text.secondary">{item.description}</Typography>
                   </Box>
                 </TableCell>

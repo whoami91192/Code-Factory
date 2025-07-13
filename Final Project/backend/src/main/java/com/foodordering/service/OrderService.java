@@ -56,9 +56,13 @@ public class OrderService {
         // Calculate total amount from items
         BigDecimal totalAmount = orderDto.getItems().stream()
                 .map(itemDto -> {
-                    Product product = productRepository.findById(itemDto.getProductId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + itemDto.getProductId()));
-                    return product.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity()));
+                    if (itemDto.getPrice() != null) {
+                        return itemDto.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity()));
+                    } else {
+                        Product product = productRepository.findById(itemDto.getProductId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + itemDto.getProductId()));
+                        return product.getPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity()));
+                    }
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -83,7 +87,7 @@ public class OrderService {
                     orderItem.setOrder(savedOrder);
                     orderItem.setProduct(product);
                     orderItem.setQuantity(itemDto.getQuantity());
-                    orderItem.setPrice(product.getPrice()); // Use product price from database
+                    orderItem.setPrice(itemDto.getPrice() != null ? itemDto.getPrice() : product.getPrice());
                     return orderItem;
                 })
                 .collect(Collectors.toList());
