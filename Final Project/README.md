@@ -20,11 +20,11 @@
 Με Docker (Προτεινόμενο)
 
 Clone το repository
-git clone <repository-url>
-cd food-ordering-platform
+git clone https://github.com/whoami91192/Code-Factory.git
+cd "Code-Factory/Final Project/food-ordering-platform"
 
 Εκκίνηση με Docker Compose
-docker-compose up -d
+docker compose up -d
 
 Η εφαρμογή θα είναι διαθέσιμη στα:
 Frontend: http://localhost:3000
