@@ -76,7 +76,7 @@ interface Order {
   items: any[];
   totalAmount: number;
   status: string;
-  orderDate: string;
+  orderDate: string; // <-- αυτό το πεδίο έρχεται από το backend
   deliveryAddress: string;
   deliveryNotes: string;
   estimatedDeliveryTime: string;

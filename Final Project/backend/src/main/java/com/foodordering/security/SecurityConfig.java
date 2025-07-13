@@ -56,9 +56,14 @@ public class SecurityConfig {
                 // Protected endpoints
                 .requestMatchers("/contacts/**").hasRole("ADMIN") // Admin only for contact management
                 .requestMatchers("/cart/**").hasRole("USER")
-                .requestMatchers("/orders/**").hasRole("USER")
-                .requestMatchers("/api/cart/**").hasRole("USER")
-                .requestMatchers("/api/orders/**").hasRole("USER")
+                // Allow only ADMIN to GET all orders
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/orders").hasRole("ADMIN")
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/orders").hasRole("ADMIN")
+                // Allow USER to POST new order and GET their own orders
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/orders").hasRole("USER")
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/orders/user/**").hasRole("USER")
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/orders").hasRole("USER")
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/orders/user/**").hasRole("USER")
                 .requestMatchers("/api/user/**").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
