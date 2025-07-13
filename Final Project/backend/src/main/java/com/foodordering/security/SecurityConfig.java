@@ -46,7 +46,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/signup", "/auth/login", "/auth/refresh", "/auth/admin/reset-password").permitAll()
                 .requestMatchers("/products/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                 .requestMatchers("/api/swagger-ui/**", "/api/v3/api-docs/**", "/api/api-docs/**", "/api/swagger-ui.html", "/api/swagger-resources/**", "/api/webjars/**").permitAll()
@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/**").hasRole("USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/auth/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

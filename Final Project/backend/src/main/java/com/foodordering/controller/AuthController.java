@@ -5,6 +5,7 @@ import com.foodordering.dto.AuthResponse;
 import com.foodordering.dto.PasswordResetRequest;
 import com.foodordering.dto.UserDto;
 import com.foodordering.entity.User;
+import com.foodordering.entity.UserRole;
 import com.foodordering.exception.InvalidSecretKeyException;
 import com.foodordering.exception.ResourceNotFoundException;
 import com.foodordering.security.JwtTokenProvider;
@@ -268,6 +269,43 @@ public class AuthController {
             return ResponseEntity.ok("Password changed successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Admin reset password for admin users only.
+     */
+    @PostMapping("/admin/reset-password")
+    @Operation(summary = "Admin reset password", description = "Reset password for admin users only")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Password reset successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid input data"),
+        @ApiResponse(responseCode = "404", description = "User not found"),
+        @ApiResponse(responseCode = "403", description = "Only admin users can reset passwords")
+    })
+    public ResponseEntity<?> adminResetPassword(@RequestBody Map<String, String> payload) {
+        String username = payload.get("username");
+        String newPassword = payload.get("newPassword");
+        
+        if (username == null || newPassword == null) {
+            return ResponseEntity.badRequest().body("Both username and newPassword are required.");
+        }
+        
+        try {
+            UserDto user = userService.findByUsername(username);
+            
+            // Only allow resetting passwords for admin users
+            if (user.getRole() != UserRole.ADMIN) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Only admin users can reset passwords.");
+            }
+            
+            userService.changeUserPasswordByAdmin(user.getId(), newPassword);
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + username);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to reset password: " + e.getMessage());
         }
     }
 } 
