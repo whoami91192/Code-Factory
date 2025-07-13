@@ -21,15 +21,20 @@
 
 Clone το repository
 git clone https://github.com/whoami91192/Code-Factory.git
+
 cd "Code-Factory/Final Project/food-ordering-platform"
 
 Εκκίνηση με Docker Compose
 docker compose up -d
 
 Η εφαρμογή θα είναι διαθέσιμη στα:
+
 Frontend: http://localhost:3000
+
 Backend API: http://localhost:8080/api
+
 Swagger UI: http://localhost:8080/api/swagger-ui.html
+
 Database: localhost:5432
 
 Τοπική Εγκατάσταση
