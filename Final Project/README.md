@@ -198,7 +198,7 @@ Manual Deployment
 
 Συχνά Προβλήματα
 
-Backend δεν εκκινά:
+Backend δεν ξεκινά:
 - Έλεγχος αν PostgreSQL τρέχει
 - Έλεγχος database credentials
 - Έλεγχος port 8080 (αν είναι διαθέσιμος)
