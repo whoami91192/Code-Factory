@@ -36,19 +36,48 @@ Swagger UI: http://localhost:8080/api/swagger-ui.html
 
 Database: localhost:5432
 
-Τοπική Εγκατάσταση
+🛠 Οδηγός Εγκατάστασης για Windows
+Node.js
 
-Backend
+Άνοιξε νέο CMD:
 
-cd backend
+curl -o nodejs.msi https://nodejs.org/dist/v18.18.2/node-v18.18.2-x64.msi
+msiexec /i nodejs.msi /passive
+exit
 
-./mvnw spring-boot:run
+Άνοιξε νέο CMD:
 
-Frontend (σε νέο terminal)
+node -v
+npm -v
 
-cd frontend
+PostgreSQL
+
+
+Άνοιξε νέο CMD:
+
+curl -o postgresql.exe https://get.enterprisedb.com/postgresql/postgresql-17.5-3-windows-x64.exe
+start postgresql.exe
+
+
+Άνοιξε νέο CMD:
+
+cd "C:\Program Files\PostgreSQL\17\bin"
+
+psql -U postgres
+
+CREATE DATABASE food_ordering_db;
+
+\c food_ordering_db
+
+Frontend Setup
+
+
+Άνοιξε νέο CMD:
+cd "C:\yourpath\Final Project\frontend"
 
 npm install
+
+npm run build
 
 npm start
 
