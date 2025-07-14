@@ -330,6 +330,7 @@ UPDATE users SET is_active = true WHERE username = 'admin';
 8. Reset όλων των δεδομένων και επανεκκίνηση:
 
 Διαγραφή όλων των δεδομένων
+
 DELETE FROM order_items;
 DELETE FROM orders;
 DELETE FROM cart_items;
@@ -338,6 +339,7 @@ DELETE FROM products;
 DELETE FROM users;
 
 Επαναφορά sequences
+
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 ALTER SEQUENCE products_id_seq RESTART WITH 1;
 ALTER SEQUENCE carts_id_seq RESTART WITH 1;
