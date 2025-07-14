@@ -1,7 +1,8 @@
+-- ================================
 -- Sample data for Food Ordering Platform
--- This script inserts sample data for testing the application
+-- ================================
 
--- Reset sequences to start from 1
+-- Reset sequences
 ALTER SEQUENCE IF EXISTS users_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS products_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS carts_id_seq RESTART WITH 1;
@@ -10,7 +11,7 @@ ALTER SEQUENCE IF EXISTS orders_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS order_items_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS contacts_id_seq RESTART WITH 1;
 
--- Clear existing data (if any)
+-- Clear existing data
 DELETE FROM order_items;
 DELETE FROM orders;
 DELETE FROM cart_items;
@@ -19,14 +20,13 @@ DELETE FROM products;
 DELETE FROM users;
 DELETE FROM contacts;
 
--- Insert sample users
--- Όλοι οι κωδικοί: password123 (bcrypt)
+-- Insert users (κωδικός: password123 για όλους)
 INSERT INTO users (id, username, email, password, role, is_active, created_at, updated_at) VALUES
-(1, 'admin', 'admin@foodordering.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'ADMIN', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, 'user1', 'user1@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(3, 'user2', 'user2@example.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+(1, 'admin', 'admin@foodordering.com', '$2a$10$X6KMIGDJQuyfi8MsvkmXX./2X3a76ALOKbF5H42nyTslpTyqEytMi', 'ADMIN', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 'user1', 'user1@example.com', '$2a$10$X6KMIGDJQuyfi8MsvkmXX./2X3a76ALOKbF5H42nyTslpTyqEytMi', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 'user2', 'user2@example.com', '$2a$10$X6KMIGDJQuyfi8MsvkmXX./2X3a76ALOKbF5H42nyTslpTyqEytMi', 'USER', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Εισαγωγή προϊόντων
+-- Insert products
 INSERT INTO products (id, name, description, price, category, image_url, is_available, created_at, updated_at) VALUES
 (1, 'Classic Burger', 'Juicy beef patty, tomato, lettuce, sauce and fresh bun.', 7.50, 'BURGER', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (2, 'Burger with Fries', 'Burger with fried potatoes and sauce.', 8.50, 'BURGER', 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -49,7 +49,7 @@ INSERT INTO products (id, name, description, price, category, image_url, is_avai
 (19, 'Water', 'Fresh mineral water.', 1.50, 'BEVERAGE', 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (20, 'Beer', 'Cold draft beer.', 4.20, 'BEVERAGE', 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Insert sample contacts
+-- Insert contacts
 INSERT INTO contacts (name, email, subject, message, phone_number, status, created_at, updated_at) VALUES
 ('Γιώργος Παπαδόπουλος', 'giorgos@example.com', 'Ερώτηση για παραγγελία', 'Καλησπέρα! Θα ήθελα να ρωτήσω για την παραγγελία μου με αριθμό #12345. Πότε θα παραδοθεί;', '+30 6971234567', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Μαρία Κωνσταντίνου', 'maria@example.com', 'Πρόβλημα με την εφαρμογή', 'Δεν μπορώ να συνδεθώ στην εφαρμογή. Εμφανίζεται σφάλμα κάθε φορά που προσπαθώ να κάνω login.', '+30 6987654321', 'IN_PROGRESS', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -57,11 +57,11 @@ INSERT INTO contacts (name, email, subject, message, phone_number, status, creat
 ('Ελένη Δημητρίου', 'eleni@example.com', 'Αίτημα για συνεργασία', 'Εργάζομαι σε εταιρεία catering και θα ήθελα να συζητήσουμε για πιθανή συνεργασία.', '+30 6945678901', 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Δημήτρης Παπαγεωργίου', 'dimitris@example.com', 'Ερώτηση για προσφορά', 'Θα ήθελα να μάθω αν προσφέρετε εκπτώσεις για μεγάλες παραγγελίες για εταιρικά events.', '+30 6934567890', 'CLOSED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
--- Update sequences to continue from the next available ID
+-- Update sequences
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
 SELECT setval('products_id_seq', (SELECT MAX(id) FROM products));
 SELECT setval('carts_id_seq', (SELECT MAX(id) FROM carts));
 SELECT setval('cart_items_id_seq', (SELECT MAX(id) FROM cart_items));
 SELECT setval('orders_id_seq', (SELECT MAX(id) FROM orders));
 SELECT setval('order_items_id_seq', (SELECT MAX(id) FROM order_items));
-SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts)); 
+SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
