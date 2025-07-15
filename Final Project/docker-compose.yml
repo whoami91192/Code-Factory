@@ -3,12 +3,12 @@ version: '3.8'
 services:
   # PostgreSQL Database
   postgres:
-    image: postgres:14-alpine
+    image: postgres:17
     container_name: food_ordering_db
     environment:
       POSTGRES_DB: food_ordering_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: 12345
     ports:
       - "5432:5432"
     volumes:
@@ -31,7 +31,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/food_ordering_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_PASSWORD: 12345
       JWT_SECRET: your_jwt_secret_key_here_make_it_long_and_secure_for_production
       JWT_EXPIRATION: 900000
       JWT_REFRESH_EXPIRATION: 604800000
@@ -70,4 +70,4 @@ volumes:
 
 networks:
   food_ordering_network:
-    driver: bridge 
+    driver: bridge
