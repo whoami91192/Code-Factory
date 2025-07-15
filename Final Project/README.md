@@ -1,454 +1,318 @@
-# 🍔 Food Ordering Platform
+🍕 Πλατφόρμα Παραγγελιών Φαγητού - Full Stack Εφαρμογή
 
-Μια σύγχρονη πλατφόρμα παραγγελιών φαγητού με Spring Boot backend και React frontend.
+Μια σύγχρονη, full-stack πλατφόρμα παραγγελιών φαγητού κατασκευασμένη με Spring Boot backend και React frontend. Η εφαρμογή παρέχει μια πλήρη λύση για online παραγγελίες φαγητού με αυθεντικοποίηση χρηστών, διαχείριση προϊόντων, λειτουργικότητα καλαθιού, επεξεργασία παραγγελιών και admin dashboard.
 
-🚀 Περιγραφή
+🚀 Χαρακτηριστικά
 
-Η εφαρμογή επιτρέπει σε χρήστες να περιηγούνται σε προϊόντα, να προσθέτουν στο καλάθι, να κάνουν παραγγελίες, να αφήνουν κριτικές, να κερδίζουν πόντους loyalty και να διαχειρίζονται το προφίλ τους. Υπάρχει πλήρες σύστημα authentication/authorization (JWT), admin dashboard, responsive UI και υποστήριξη για deployment με Docker.
+Χαρακτηριστικά Χρηστών
+- Αυθεντικοποίηση & Εξουσιοδότηση Χρηστών - Ασφαλής σύνδεση/εγγραφή με JWT tokens
+- Κατάλογος Προϊόντων - Περιήγηση προϊόντων με κατηγορίες και λειτουργία αναζήτησης
+- Καλάθι Αγορών - Προσθήκη/αφαίρεση αντικειμένων με πραγματικές ενημερώσεις
+- Διαχείριση Παραγγελιών - Τοποθέτηση παραγγελιών και παρακολούθηση κατάστασης
+- Προφίλ Χρήστη - Διαχείριση προσωπικών πληροφοριών και διευθύνσεων
+- Κριτικές & Βαθμολογίες - Βαθμολόγηση και κριτική προϊόντων
+- Αγαπημένα - Αποθήκευση αγαπημένων προϊόντων για γρήγορη πρόσβαση
+- Σύστημα Πιστότητας - Κέρδος πόντων και ανταμοιβών
+- Υποστήριξη Επικοινωνίας - Υποβολή ερωτήσεων και λήψη υποστήριξης
+
+Χαρακτηριστικά Διαχειριστή
+- Admin Dashboard - Περιεκτική διεπαφή διαχείρισης
+- Διαχείριση Προϊόντων - Προσθήκη, επεξεργασία και διαχείριση προϊόντων
+- Διαχείριση Παραγγελιών - Επεξεργασία και παρακολούθηση όλων των παραγγελιών
+- Διαχείριση Χρηστών - Διαχείριση λογαριασμών χρηστών και ρόλων
+- Διαχείριση Επικοινωνίας - Χειρισμός ερωτήσεων πελατών
+- Αναλυτικά - Προβολή στατιστικών πωλήσεων και χρηστών
 
 🛠️ Τεχνολογίες
-- Backend: Java 17+, Spring Boot, Spring Security, JPA/Hibernate, PostgreSQL, Maven, Swagger
-- Frontend: React, TypeScript, Material UI, React Router, Context API, Axios
-- Database: PostgreSQL
-- Authentication: JWT (JSON Web Tokens)
-- Documentation: Swagger/OpenAPI
-- Testing: JUnit, Postman Collection
-- Deployment: Docker, Docker Compose
 
-⚡ Quick Start
+Backend (Spring Boot)
+- Framework: Spring Boot 3.2.0
+- Γλώσσα: Java 17
+- Βάση Δεδομένων: PostgreSQL 17
+- ORM: Spring Data JPA με Hibernate
+- Ασφάλεια: Spring Security με JWT αυθεντικοποίηση
+- Τεκμηρίωση API: OpenAPI 3 (Swagger)
+- Εργαλείο Build: Maven
+- Testing: JUnit 5, TestContainers, Spring Security Test
+- Πρόσθετες Βιβλιοθήκες:
+  - Jackson για επεξεργασία JSON
+  - Apache Commons Lang3
+  - Spring WebFlux για reactive programming
 
-Με Docker (Προτεινόμενο)
+Frontend (React)
+- Framework: React 18.2.0
+- Γλώσσα: TypeScript 4.9.5
+- UI Library: Material-UI (MUI) 5.14.20
+- Routing: React Router DOM 6.20.1
+- HTTP Client: Axios 1.10.0
+- Εικονίδια: React Icons 4.10.1
+- Styling: 
+  - Emotion (CSS-in-JS)
+  - Tailwind CSS 4.1.11
+- Virtual Scrolling: React Window 1.8.11
+- Εργαλείο Build: Create React App 5.0.1
 
-Clone το repository
-git clone <repository-url>
-cd food-ordering-platform
+Υποδομή
+- Containerization: Docker & Docker Compose
+- Web Server: Nginx (για production frontend)
+- Βάση Δεδομένων: PostgreSQL με health checks
+- Δικτύωση: Προσαρμοσμένο Docker network
 
-Εκκίνηση με Docker Compose
+📋 Προαπαιτούμενα
+
+Για Εγκατάσταση με Docker
+- Docker Desktop (Windows/Mac) ή Docker Engine (Linux)
+- Docker Compose (συνήθως περιλαμβάνεται με Docker Desktop)
+- Τουλάχιστον 4GB RAM διαθέσιμο για containers
+
+Για Τοπική Ανάπτυξη (Windows)
+- Java Development Kit (JDK) 17
+  - Κατεβάστε από [Oracle](https://www.oracle.com/java/technologies/downloads/#java17) ή [OpenJDK](https://adoptium.net/)
+  - Ορίστε την μεταβλητή περιβάλλοντος JAVA_HOME
+- Maven 3.9+
+  - Κατεβάστε από [Apache Maven](https://maven.apache.org/download.cgi)
+  - Προσθέστε στο PATH
+- Node.js 18+
+  - Κατεβάστε από [Node.js](https://nodejs.org/)
+  - Περιλαμβάνει npm package manager
+- PostgreSQL 17
+  - Κατεβάστε από [PostgreSQL](https://www.postgresql.org/download/windows/)
+  - Ή χρησιμοποιήστε [PostgreSQL Installer](https://www.postgresql.org/download/windows/)
+- Git
+  - Κατεβάστε από [Git for Windows](https://git-scm.com/download/win)
+
+🐳 Εγκατάσταση με Docker (Προτεινόμενο)
+
+Γρήγορη Εκκίνηση
+1. Κλωνοποιήστε το repository
+   git clone <repository-url>
+   cd "Final Project"
+
+2. Εκκινήστε όλες τις υπηρεσίες
+   docker-compose up -d
+
+3. Πρόσβαση στην εφαρμογή
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8080/api
+   - Τεκμηρίωση Swagger: http://localhost:8080/api/swagger-ui.html
+   - Βάση Δεδομένων: localhost:5432
+
+Εντολές Docker
+
+Εκκίνηση υπηρεσιών:
 docker-compose up -d
 
-Η εφαρμογή θα είναι διαθέσιμη στα:
+Προβολή logs:
+# Όλες οι υπηρεσίες
+docker-compose logs -f
 
-Frontend: http://localhost:3000
+# Συγκεκριμένη υπηρεσία
+docker-compose logs -f backend
+docker-compose logs -f frontend
+docker-compose logs -f postgres
 
-Backend API: http://localhost:8080/api
+Διακοπή υπηρεσιών:
+docker-compose down
 
-Swagger UI: http://localhost:8080/api/swagger-ui.html
+Διακοπή και αφαίρεση volumes (δεδομένα βάσης):
+docker-compose down -v
 
-Database: localhost:5432
+Επανεκκίνηση και rebuild:
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
 
-🛠 Οδηγός Εγκατάστασης για Windows
-Node.js
+💻 Τοπική Εγκατάσταση Ανάπτυξης (Windows)
 
-Άνοιξε νέο CMD:
+1. Ρύθμιση Βάσης Δεδομένων
 
-curl -o nodejs.msi https://nodejs.org/dist/v18.18.2/node-v18.18.2-x64.msi
-msiexec /i nodejs.msi /passive
-exit
+1. Εγκατάσταση PostgreSQL
+   - Κατεβάστε και εγκαταστήστε PostgreSQL 17
+   - Ορίστε κωδικό για τον χρήστη postgres (θυμηθείτε τον!)
+   - Προεπιλεγμένη θύρα: 5432
 
-Άνοιξε νέο CMD:
+2. Δημιουργία Βάσης Δεδομένων
+   CREATE DATABASE food_ordering_db;
+   CREATE USER postgres WITH PASSWORD '12345';
+   GRANT ALL PRIVILEGES ON DATABASE food_ordering_db TO postgres;
 
-node -v
-npm -v
+2. Ρύθμιση Backend
 
-PostgreSQL
+1. Μετάβαση στον φάκελο backend
+   cd backend
 
+2. Ενημέρωση ρυθμίσεων βάσης (αν χρειάζεται)
+   - Επεξεργαστείτε το src/main/resources/application.properties
+   - Ενημερώστε URL βάσης, όνομα χρήστη και κωδικό αν διαφέρουν
 
-Άνοιξε νέο CMD:
+3. Build και εκκίνηση
+   # Καθαρισμός και build
+   mvn clean install
 
-curl -o postgresql.exe https://get.enterprisedb.com/postgresql/postgresql-17.5-3-windows-x64.exe
-start postgresql.exe
+   # Εκκίνηση της εφαρμογής
+   mvn spring-boot:run
 
+4. Επιβεβαίωση ότι το backend τρέχει
+   - API: http://localhost:8080/api
+   - Swagger: http://localhost:8080/api/swagger-ui.html
 
-Άνοιξε νέο CMD:
+3. Ρύθμιση Frontend
 
-cd "C:\Program Files\PostgreSQL\17\bin"
+1. Μετάβαση στον φάκελο frontend
+   cd frontend
 
-psql -U postgres
+2. Εγκατάσταση dependencies
+   npm install
 
-CREATE DATABASE food_ordering_db;
+3. Εκκίνηση development server
+   npm start
 
-\c food_ordering_db
+4. Επιβεβαίωση ότι το frontend τρέχει
+   - Εφαρμογή: http://localhost:3000
 
-Frontend Setup
+🔧 Ρύθμιση
 
+Μεταβλητές Περιβάλλοντος
 
-Άνοιξε νέο CMD:
-cd "C:\yourpath\Final Project\frontend"
+Ρύθμιση Backend
+# Βάση Δεδομένων
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/food_ordering_db
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=12345
 
-npm install
+# JWT
+JWT_SECRET=your_jwt_secret_key_here_make_it_long_and_secure_for_production
+JWT_EXPIRATION=900000
+JWT_REFRESH_EXPIRATION=604800000
 
-npm run build
+# Server
+SERVER_PORT=8080
+SERVER_SERVLET_CONTEXT_PATH=/api
 
-npm start
-
-👥 Sample Users
-
-Μετά την εκκίνηση της εφαρμογής, μπορείτε να χρησιμοποιήσετε τους παρακάτω χρήστες:
-
-🔐 Admin User
-- Username: admin
-- Email: admin@foodordering.com
-- Password: password123
-- Role: ADMIN
-- Δυνατότητες: Πλήρης πρόσβαση σε admin dashboard, διαχείριση χρηστών, παραγγελιών, προϊόντων
-
-👤 Regular Users
-- Username: user1
-- Email: user1@example.com
-- Password: password123
-- Role: USER
-
-- Username: user2
-- Email: user2@example.com
-- Password: password123
-- Role: USER
-
-Δυνατότητες Regular Users: Προβολή προϊόντων, προσθήκη στο καλάθι, παραγγελίες, κριτικές, loyalty points
-
-🔧 Περιβάλλοντα
-
-Backend (.env ή application.properties)
-
-Database
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/food_ordering_db
-
-spring.datasource.username=postgres
-
-spring.datasource.password=password
-
-JWT
-
-jwt.secret=your-secret-key
-
-jwt.expiration=86400000
-
-Server
-
-server.port=8080
-
-server.servlet.context-path=/api
-
-Frontend (.env)
-
+Ρύθμιση Frontend
+// Αρχείο .env
 REACT_APP_API_URL=http://localhost:8080/api
 
-Δομή Φακέλων
+Ρύθμιση Βάσης Δεδομένων
 
-food-ordering-platform/
-├── backend/                 # Spring Boot Backend
-│   ├── src/main/java/
-│   │   ├── controller/      # REST Controllers
-│   │   ├── service/         # Business Logic
-│   │   ├── repository/      # Data Access
-│   │   ├── entity/          # JPA Entities
-│   │   ├── dto/             # Data Transfer Objects
-│   │   ├── security/        # JWT & Security
-│   │   └── config/          # Configuration
-│   ├── src/main/resources/
-│   │   ├── application.properties
-│   │   └── data.sql         # Sample Data
-│   └── pom.xml
-├── frontend/                # React Frontend
-│   ├── src/
-│   │   ├── components/      # React Components
-│   │   ├── pages/           # Page Components
-│   │   ├── context/         # React Context
-│   │   ├── services/        # API Services
-│   │   └── types/           # TypeScript Types
-│   ├── package.json
-│   └── tsconfig.json
-├── postman/                 # API Testing
-│   └── food-ordering-api.postman_collection.json
-├── docker-compose.yml
-└── README.md
+Η εφαρμογή χρησιμοποιεί PostgreSQL με τις ακόλουθες προεπιλεγμένες ρυθμίσεις:
+- Βάση Δεδομένων: food_ordering_db
+- Όνομα Χρήστη: postgres
+- Κωδικός: 12345
+- Θύρα: 5432
 
-📚 API Documentation
-
-Swagger UI
-Μετά την εκκίνηση του backend, η API documentation είναι διαθέσιμη στο:
-http://localhost:8080/api/swagger-ui.html
-
-Βασικά Endpoints
-
-Authentication:
-
-POST   /api/auth/signup     # Εγγραφή χρήστη
-
-POST   /api/auth/login      # Σύνδεση
-
-POST   /api/auth/refresh    # Refresh token
-
-GET    /api/auth/me         # Τρέχων χρήστης
-
-Products:
-
-GET    /api/products        # Λίστα προϊόντων
-
-GET    /api/products/{id}   # Προϊόν με ID
-
-POST   /api/products        # Δημιουργία (Admin)
-
-PUT    /api/products/{id}   # Ενημέρωση (Admin)
-
-Cart:
-
-GET    /api/cart            # Καλάθι χρήστη
-
-POST   /api/cart/items      # Προσθήκη στο καλάθι
-
-PUT    /api/cart/items/{id} # Ενημέρωση ποσότητας
-
-Orders:
-
-POST   /api/orders          # Δημιουργία παραγγελίας
-
-GET    /api/orders          # Παραγγελίες χρήστη
-
-GET    /api/orders/{id}     # Παραγγελία με ID
-
-Admin:
-
-GET    /api/users           # Όλοι χρήστες (Admin)
-
-GET    /api/orders          # Όλες παραγγελίες (Admin)
-
-PATCH  /api/orders/{id}/status # Ενημέρωση status (Admin)
+Σημαντικό: Αλλάξτε αυτές τις πληροφορίες για χρήση σε production!
 
 🧪 Testing
 
-Unit Tests
-
+Backend Tests
 cd backend
+mvn test
 
-./mvnw test
+Frontend Tests
+cd frontend
+npm test
 
-Integration Tests με Postman
+📁 Δομή Project
 
-1. Εισάγετε το collection: postman/food-ordering-api.postman_collection.json
+Final Project/
+├── backend/                 # Spring Boot εφαρμογή
+│   ├── src/main/java/
+│   │   └── com/foodordering/
+│   │       ├── config/      # Κλάσεις ρύθμισης
+│   │       ├── controller/  # REST controllers
+│   │       ├── dto/         # Data Transfer Objects
+│   │       ├── entity/      # JPA entities
+│   │       ├── repository/  # Data access layer
+│   │       ├── security/    # Ρύθμιση ασφαλείας
+│   │       └── service/     # Business logic
+│   ├── src/main/resources/
+│   │   ├── application.properties
+│   │   └── data.sql         # Αρχικά δεδομένα
+│   └── Dockerfile
+├── frontend/                # React εφαρμογή
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── context/         # React contexts
+│   │   ├── hooks/           # Custom hooks
+│   │   ├── pages/           # Page components
+│   │   ├── services/        # API services
+│   │   └── types/           # TypeScript types
+│   ├── nginx.conf           # Ρύθμιση nginx
+│   └── Dockerfile
+├── docker-compose.yml       # Docker orchestration
+└── README.md
 
-2. Εκκινήστε το backend
+🔐 Χαρακτηριστικά Ασφαλείας
 
-3. Εκτελέστε τα requests με τη σειρά
-
-Manual Testing
-
-1. Εκκινήστε την εφαρμογή
-
-2. Συνδεθείτε με έναν από τους sample users
-
-3. Δοκιμάστε όλες τις λειτουργίες (προϊόντα, καλάθι, παραγγελίες, κλπ.)
-
-🔒 Ασφάλεια
-
-- JWT Authentication: Όλα τα protected endpoints απαιτούν valid JWT token
-- Role-based Authorization: Διαχωρισμός USER/ADMIN permissions
-- Password Hashing: BCrypt για κωδικούς
-- CORS Configuration: Configured για frontend
-- Input Validation: @Valid annotations σε όλα τα DTOs
+- JWT Αυθεντικοποίηση - Ασφαλής αυθεντικοποίηση με tokens
+- Κρυπτογράφηση Κωδικών - BCrypt hashing για κωδικούς
+- Ρύθμιση CORS - Cross-origin resource sharing
+- Επικύρωση Εισόδου - Επικύρωση και καθαρισμός αιτημάτων
+- Έλεγχος Πρόσβασης με Βάση Ρόλους - Ρόλοι χρηστών και διαχειριστών
 
 🚀 Deployment
 
-Production με Docker
+Σκέψεις για Production
 
-Build και εκκίνηση
+1. Μεταβλητές Περιβάλλοντος
+   - Χρησιμοποιήστε ισχυρά JWT secrets
+   - Αλλάξτε προεπιλεγμένες πληροφορίες βάσης
+   - Ρυθμίστε σωστά CORS origins
 
-docker-compose -f docker-compose.yml up -d
+2. Βάση Δεδομένων
+   - Χρησιμοποιήστε production PostgreSQL instance
+   - Ρυθμίστε στρατηγικές backup
+   - Ρυθμίστε connection pooling
 
-Environment variables για production
+3. Ασφάλεια
+   - Ενεργοποιήστε HTTPS
+   - Ρυθμίστε σωστά firewall rules
+   - Χρησιμοποιήστε ρυθμίσεις για συγκεκριμένο περιβάλλον
 
-export SPRING_PROFILES_ACTIVE=prod
+4. Παρακολούθηση
+   - Ρυθμίστε παρακολούθηση εφαρμογής
+   - Ρυθμίστε logging
+   - Ρυθμίστε health checks
 
-export DATABASE_URL=your-production-db-url
-
-export JWT_SECRET=your-production-secret
-
-Manual Deployment
-
-1. Build backend: ./mvnw clean package
-
-2. Build frontend: npm run build
-
-3. Deploy JAR file και build folder
-
-4. Configure database και environment variables
-
-🐛 Troubleshooting
+🐛 Επίλυση Προβλημάτων
 
 Συχνά Προβλήματα
 
-Backend δεν ξεκινά:
-- Έλεγχος αν PostgreSQL τρέχει
-- Έλεγχος database credentials
-- Έλεγχος port 8080 (αν είναι διαθέσιμος)
+1. Η θύρα χρησιμοποιείται ήδη
+   # Έλεγχος τι χρησιμοποιεί τη θύρα
+   netstat -ano | findstr :8080
+   # Τερματισμός της διεργασίας
+   taskkill /PID <process_id> /F
 
-Frontend δεν συνδέεται:
-- Έλεγχος REACT_APP_API_URL στο .env
-- Έλεγχος αν backend τρέχει
-- Έλεγχος CORS configuration
+2. Αποτυχία σύνδεσης βάσης
+   - Επιβεβαιώστε ότι το PostgreSQL τρέχει
+   - Ελέγξτε τις πληροφορίες βάσης
+   - Βεβαιωθείτε ότι η βάση υπάρχει
 
-Database errors:
-- Εκκίνηση PostgreSQL service
-- Έλεγχος database schema
-- Reset με data.sql
+3. Τα Docker containers δεν εκκινούν
+   # Έλεγχος logs containers
+   docker-compose logs
+   
+   # Επανεκκίνηση containers
+   docker-compose down
+   docker-compose up -d
 
-🔧 Αν δεν λειτουργούν οι Sample Users
+4. Το frontend δεν συνδέεται με το backend
+   - Επιβεβαιώστε ότι το backend τρέχει στη θύρα 8080
+   - Ελέγξτε τη ρύθμιση CORS
+   - Επιβεβαιώστε το API URL στις ρυθμίσεις frontend
 
-Αν δεν μπορείτε να συνδεθείτε με τους δημιουργημένους χρήστες, ακολουθήστε τα παρακάτω βήματα:
+Τοποθεσία Logs
 
-1. Σύνδεση στη PostgreSQL βάση:
+- Docker logs: docker-compose logs -f
+- Backend logs: Console output ή Docker logs
+- Frontend logs: Browser developer tools
 
-Με Docker
+📞 Υποστήριξη
 
-docker exec -it food_ordering_db psql -U postgres -d food_ordering_db
-
-Τοπική εγκατάσταση
-
-psql -U postgres -d food_ordering_db
-
-2. Έλεγχος αν υπάρχουν οι χρήστες:
-
-SELECT id, username, email, role, is_active FROM users;
-
-3. Αν δεν υπάρχουν χρήστες, εκτελέστε το seed script:
-
-\i /path/to/backend/src/main/resources/data.sql
-
-4. Αν υπάρχουν αλλά δεν λειτουργούν, αλλάξτε κωδικό:
-
-Για admin user (κωδικός: password123)
-UPDATE users 
-SET password = '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa' 
-WHERE username = 'admin';
-
-Για regular users (κωδικός: password123)
-UPDATE users 
-SET password = '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa' 
-WHERE username IN ('user1', 'user2');
-
-5. Δημιουργία νέου admin user:
-
-INSERT INTO users (username, email, password, role, is_active, created_at, updated_at) 
-VALUES (
-    'newadmin', 
-    'newadmin@example.com', 
-    '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 
-    'ADMIN', 
-    true, 
-    CURRENT_TIMESTAMP, 
-    CURRENT_TIMESTAMP
-);
-
-6. Δημιουργία νέου regular user:
-
-INSERT INTO users (username, email, password, role, is_active, created_at, updated_at) 
-VALUES (
-    'newuser', 
-    'newuser@example.com', 
-    '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVEFDa', 
-    'USER', 
-    true, 
-    CURRENT_TIMESTAMP, 
-    CURRENT_TIMESTAMP
-);
-
-7. Έλεγχος αν ο χρήστης είναι ενεργός:
-
-UPDATE users SET is_active = true WHERE username = 'admin';
-
-8. Reset όλων των δεδομένων και επανεκκίνηση:
-
-Διαγραφή όλων των δεδομένων
-
-DELETE FROM order_items;
-DELETE FROM orders;
-DELETE FROM cart_items;
-DELETE FROM carts;
-DELETE FROM products;
-DELETE FROM users;
-
-Επαναφορά sequences
-
-ALTER SEQUENCE users_id_seq RESTART WITH 1;
-ALTER SEQUENCE products_id_seq RESTART WITH 1;
-ALTER SEQUENCE carts_id_seq RESTART WITH 1;
-ALTER SEQUENCE cart_items_id_seq RESTART WITH 1;
-ALTER SEQUENCE orders_id_seq RESTART WITH 1;
-ALTER SEQUENCE order_items_id_seq RESTART WITH 1;
-
-Εκτέλεση του seed script
-
-\i /path/to/backend/src/main/resources/data.sql
-
-Logs
-
-Backend logs
-
-docker-compose logs backend
-
-Frontend logs
-
-docker-compose logs frontend
-
-Database logs
-
-docker-compose logs postgres
-
-🗄️ Database Setup & Data Import
-
-Αν χρειάζεται να εισάγετε χειροκίνητα το data.sql αρχείο στη βάση:
-
-Με Docker
-
-Αντιγραφή του data.sql στο container
-
-docker cp backend/src/main/resources/data.sql food_ordering_db:/tmp/data.sql
-
-Σύνδεση στο container και εκτέλεση
-
-docker exec -it food_ordering_db psql -U postgres -d food_ordering_db -f /tmp/data.sql
-
-Εναλλακτικά, απευθείας εκτέλεση
-
-docker exec -i food_ordering_db psql -U postgres -d food_ordering_db < backend/src/main/resources/data.sql
-
-Τοπική PostgreSQL
-
-Σύνδεση στη βάση
-
-psql -U postgres -d food_ordering_db
-
-Εκτέλεση του SQL αρχείου
-
-\i backend/src/main/resources/data.sql
-
-Εναλλακτικά, από terminal
-
-psql -U postgres -d food_ordering_db -f backend/src/main/resources/data.sql
-
-pgAdmin (GUI)
-1. Ανοίξτε το pgAdmin
-2. Συνδεθείτε στη βάση food_ordering_db
-3. Ανοίξτε το Query Tool
-4. Ανοίξτε το αρχείο backend/src/main/resources/data.sql
-5. Εκτελέστε το script
-
-Τι περιέχει το data.sql:
-- 3 sample users (admin, user1, user2)
-- 20 sample products με εικόνες από Unsplash
-- Reset sequences για proper ID generation
-- Όλοι οι κωδικοί είναι: password123 (BCrypt encoded)
-
-👨‍💻 Credits
-
-Food Ordering Platform - Τελική Εργασία Coding Factory
-
-Features:
-- User Authentication & Authorization
-- Product Catalog & Search
-- Shopping Cart Management
-- Order Processing
-- Review System
-- Loyalty Points
-- Admin Dashboard
-- Responsive Design
+Για προβλήματα και ερωτήσεις:
+1. Ελέγξτε την ενότητα επίλυσης προβλημάτων
+2. Δείτε την τεκμηρίωση Swagger στο http://localhost:8080/api/swagger-ui.html
+3. Ελέγξτε τα logs της εφαρμογής
+4. Δημιουργήστε ένα issue στο repository
