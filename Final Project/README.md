@@ -86,7 +86,7 @@ Frontend (React)
 Γρήγορη Εκκίνηση
 1. Κλωνοποιήστε το repository
 
-   git clone <repository-url>
+   git clone https://github.com/whoami91192/Code-Factory.git
 
    cd "Final Project"
 
