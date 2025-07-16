@@ -85,10 +85,13 @@ Frontend (React)
 
 Γρήγορη Εκκίνηση
 1. Κλωνοποιήστε το repository
+
    git clone <repository-url>
+
    cd "Final Project"
 
 2. Εκκινήστε όλες τις υπηρεσίες
+
    docker-compose up -d
 
 3. Πρόσβαση στην εφαρμογή
@@ -136,7 +139,7 @@ docker-compose up -d
    CREATE DATABASE food_ordering_db;
 
    CREATE USER postgres WITH PASSWORD '12345';
-   
+
    GRANT ALL PRIVILEGES ON DATABASE food_ordering_db TO postgres;
 
 2. Ρύθμιση Backend
