@@ -110,8 +110,11 @@ docker-compose up -d
 docker-compose logs -f
 
 # Συγκεκριμένη υπηρεσία
+
 docker-compose logs -f backend
+
 docker-compose logs -f frontend
+
 docker-compose logs -f postgres
 
 Διακοπή υπηρεσιών:
