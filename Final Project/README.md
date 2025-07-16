@@ -199,7 +199,9 @@ SERVER_PORT=8080
 SERVER_SERVLET_CONTEXT_PATH=/api
 
 Ρύθμιση Frontend
+
 // Αρχείο .env
+
 REACT_APP_API_URL=http://localhost:8080/api
 
 Ρύθμιση Βάσης Δεδομένων
