@@ -132,8 +132,11 @@ docker-compose up -d
    - Προεπιλεγμένη θύρα: 5432
 
 2. Δημιουργία Βάσης Δεδομένων
+
    CREATE DATABASE food_ordering_db;
+
    CREATE USER postgres WITH PASSWORD '12345';
+   
    GRANT ALL PRIVILEGES ON DATABASE food_ordering_db TO postgres;
 
 2. Ρύθμιση Backend
