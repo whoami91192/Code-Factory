@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // Test 1: Check if nodemailer is available
     console.log('Nodemailer available:', !!nodemailer)
     console.log('Nodemailer type:', typeof nodemailer)
-    console.log('createTransporter available:', !!nodemailer.createTransporter)
+    console.log('createTransport available:', !!nodemailer.createTransport)
     
     // Test 2: Check environment variables
     const envVars = {
@@ -31,20 +31,20 @@ export default async function handler(req, res) {
     
     // Test 3: Try to create transporter
     let transporter = null
-    try {
-      transporter = nodemailer.createTransporter({
-        host: envVars.SMTP_HOST,
-        port: parseInt(envVars.SMTP_PORT),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS
-        }
-      })
-      console.log('Transporter created successfully')
-    } catch (transporterError) {
-      console.error('Transporter creation failed:', transporterError.message)
-    }
+         try {
+       transporter = nodemailer.createTransport({
+         host: envVars.SMTP_HOST,
+         port: parseInt(envVars.SMTP_PORT),
+         secure: false,
+         auth: {
+           user: process.env.SMTP_USER,
+           pass: process.env.SMTP_PASS
+         }
+       })
+       console.log('Transporter created successfully')
+     } catch (transporterError) {
+       console.error('Transporter creation failed:', transporterError.message)
+     }
     
     // Test 4: Try to verify connection
     let verifyResult = null
@@ -60,13 +60,13 @@ export default async function handler(req, res) {
     res.status(200).json({
       success: true,
       message: 'Nodemailer test completed',
-      tests: {
-        nodemailerAvailable: !!nodemailer,
-        createTransporterAvailable: !!nodemailer.createTransporter,
-        environmentVariables: envVars,
-        transporterCreated: !!transporter,
-        connectionVerified: verifyResult
-      },
+             tests: {
+         nodemailerAvailable: !!nodemailer,
+         createTransportAvailable: !!nodemailer.createTransport,
+         environmentVariables: envVars,
+         transporterCreated: !!transporter,
+         connectionVerified: verifyResult
+       },
       timestamp: new Date().toISOString()
     })
     

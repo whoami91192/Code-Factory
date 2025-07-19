@@ -2,7 +2,7 @@
 
 ## 🚨 Current Error:
 ```
-TypeError: _nodemailer.default.createTransporter is not a function
+TypeError: nodemailer.createTransporter is not a function
 ```
 
 ## ✅ Fixes Applied:
@@ -16,39 +16,53 @@ import nodemailer from 'nodemailer'
 const nodemailer = require('nodemailer')
 ```
 
-### **2. Added Detailed Logging:**
+### **2. Fixed Function Name:**
+```javascript
+// ❌ WRONG (typo)
+nodemailer.createTransporter()
+
+// ✅ CORRECT (proper function name)
+nodemailer.createTransport()
+```
+
+### **3. Added Detailed Logging:**
 - Console logs για debugging
 - Environment variable checks
 - Error handling improvements
 
-### **3. Created Test Endpoint:**
-- `/api/test-nodemailer` για testing
-- Comprehensive nodemailer checks
+### **4. Created Test Endpoints:**
+- `/api/test-nodemailer` για comprehensive testing
+- `/api/simple-test` για basic nodemailer check
 
 ## 🧪 Testing Steps:
 
 ### **Step 1: Test Nodemailer Installation**
 ```bash
+# Simple test
+curl https://code-factory-gamma.vercel.app/api/simple-test
+
+# Comprehensive test
 curl https://code-factory-gamma.vercel.app/api/test-nodemailer
 ```
 
-**Expected Response:**
+**Expected Response (Simple Test):**
 ```json
 {
   "success": true,
-  "message": "Nodemailer test completed",
-  "tests": {
-    "nodemailerAvailable": true,
-    "createTransporterAvailable": true,
+  "message": "Simple nodemailer test completed",
+  "results": {
+    "nodemailerRequired": true,
+    "requireError": null,
+    "createTransportExists": true,
     "environmentVariables": {
       "SMTP_HOST": "smtp.gmail.com",
       "SMTP_PORT": "587",
-      "SMTP_USER": false,
-      "SMTP_PASS": false,
-      "SMTP_FROM": false
+      "SMTP_USER": "not set",
+      "SMTP_PASS": "not set",
+      "SMTP_FROM": "not set"
     },
-    "transporterCreated": false,
-    "connectionVerified": null
+    "nodeVersion": "v18.x.x",
+    "timestamp": "2024-01-20T10:30:00.000Z"
   }
 }
 ```
@@ -91,7 +105,7 @@ curl https://code-factory-gamma.vercel.app/api/test-nodemailer
   "message": "Nodemailer test completed",
   "tests": {
     "nodemailerAvailable": true,
-    "createTransporterAvailable": true,
+    "createTransportAvailable": true,
     "environmentVariables": {
       "SMTP_HOST": "smtp.gmail.com",
       "SMTP_PORT": "587",
@@ -202,12 +216,21 @@ import nodemailer from 'nodemailer'
 const nodemailer = require('nodemailer')
 ```
 
-#### **3. Environment Variables Missing:**
+#### **3. Wrong Function Name:**
+```javascript
+// ❌ Don't use createTransporter (typo)
+nodemailer.createTransporter()
+
+// ✅ Use createTransport (correct)
+nodemailer.createTransport()
+```
+
+#### **4. Environment Variables Missing:**
 - Check Vercel Dashboard
 - Verify all 5 variables are set
 - Make sure they're enabled for Production
 
-#### **4. Gmail App Password Issues:**
+#### **5. Gmail App Password Issues:**
 - Enable 2-Step Verification
 - Generate app password for "Mail"
 - Use 16-character password
