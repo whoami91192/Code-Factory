@@ -1,43 +1,98 @@
 import nodemailer from 'nodemailer'
 
 export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', 'https://code-factory-651d.vercel.app')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  // Enable CORS for all origins in development
+  const allowedOrigins = [
+    'https://code-factory-651d.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:4173'
+  ]
+  
+  const origin = req.headers.origin
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS, GET')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Max-Age', '86400')
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
     return res.status(200).end()
   }
 
+  // Handle GET requests for testing
+  if (req.method === 'GET') {
+    return res.status(200).json({ 
+      success: true,
+      message: 'Contact API is working',
+      timestamp: new Date().toISOString()
+    })
+  }
+
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ 
       success: false,
-      message: 'Method not allowed' 
+      message: 'Method not allowed. Use POST for sending messages.' 
     })
   }
 
   try {
+    // Log the request for debugging
+    console.log('Contact API called:', {
+      method: req.method,
+      headers: req.headers,
+      body: req.body,
+      url: req.url
+    })
+
     const { name, email, subject, message } = req.body
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
+      console.log('Validation failed:', { name, email, subject, message })
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'All fields are required',
+        received: { name: !!name, email: !!email, subject: !!subject, message: !!message }
+      })
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email format'
+      })
+    }
+
+    // Check if environment variables are set
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.SMTP_FROM) {
+      console.error('Missing environment variables:', {
+        SMTP_USER: !!process.env.SMTP_USER,
+        SMTP_PASS: !!process.env.SMTP_PASS,
+        SMTP_FROM: !!process.env.SMTP_FROM
+      })
+      return res.status(500).json({
+        success: false,
+        message: 'Email configuration is missing. Please contact administrator.'
       })
     }
 
     // Create transporter
     const transporter = nodemailer.createTransporter({
-      host: 'smtp.gmail.com',
-      port: 587,
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT) || 587,
       secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     })
 
@@ -89,18 +144,34 @@ ${message}
     }
 
     // Send email
-    await transporter.sendMail(mailOptions)
+    console.log('Attempting to send email...')
+    const result = await transporter.sendMail(mailOptions)
+    console.log('Email sent successfully:', result.messageId)
 
     res.status(200).json({
       success: true,
-      message: 'Email sent successfully'
+      message: 'Email sent successfully',
+      messageId: result.messageId
     })
 
   } catch (error) {
     console.error('Email sending error:', error)
+    
+    // Provide more specific error messages
+    let errorMessage = 'Failed to send email. Please try again later.'
+    
+    if (error.code === 'EAUTH') {
+      errorMessage = 'Email authentication failed. Please check credentials.'
+    } else if (error.code === 'ECONNECTION') {
+      errorMessage = 'Email server connection failed. Please try again later.'
+    } else if (error.code === 'ETIMEDOUT') {
+      errorMessage = 'Email request timed out. Please try again later.'
+    }
+    
     res.status(500).json({
       success: false,
-      message: 'Failed to send email. Please try again later.'
+      message: errorMessage,
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     })
   }
 } 

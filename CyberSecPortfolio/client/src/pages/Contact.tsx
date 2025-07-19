@@ -16,6 +16,8 @@ const Contact = () => {
     setIsSubmitting(true)
     
     try {
+      console.log('Submitting form data:', formData)
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -24,7 +26,15 @@ const Contact = () => {
         body: JSON.stringify(formData)
       })
 
+      console.log('Response status:', response.status)
+      console.log('Response headers:', response.headers)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
       const result = await response.json()
+      console.log('Response result:', result)
 
       if (result.success) {
         setIsSubmitted(true)
@@ -36,7 +46,14 @@ const Contact = () => {
       }
     } catch (error) {
       console.error('Error sending message:', error)
-      alert('Failed to send message. Please try again later.')
+      
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        alert('Network error. Please check your connection and try again.')
+      } else if (error.message.includes('HTTP error')) {
+        alert('Server error. Please try again later.')
+      } else {
+        alert('Failed to send message. Please try again later.')
+      }
     } finally {
       setIsSubmitting(false)
     }
