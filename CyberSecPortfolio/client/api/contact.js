@@ -72,7 +72,7 @@ ${message}
           </div>
           
           <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
-            <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
+            <p style="margin: 5px 0;">🔐 This message was sent from John Katsimpris Cyber Security Portfolio</p>
             <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
               timeZone: 'Europe/Athens',
               year: 'numeric',
@@ -155,7 +155,7 @@ ${message}
 
             <p style="color: #555555; line-height: 1.6; margin-bottom: 20px; font-size: 16px;">
               Best regards,<br>
-              <strong>Giannis Katsibris</strong><br>
+              <strong>John Katsimpris</strong><br>
               <span style="color: #00ff41;">Cyber Security Engineer</span>
             </p>
           </div>
@@ -163,7 +163,7 @@ ${message}
           <!-- Footer -->
           <div style="background: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;">
             <p style="color: #888888; margin: 5px 0; font-size: 14px;">
-              🔐 This is an automated confirmation email from your Cyber Security Portfolio contact form.
+              🔐 This is an automated confirmation email from John Katsimpris Cyber Security Portfolio contact form.
             </p>
             <p style="color: #888888; margin: 5px 0; font-size: 12px;">
               Timestamp: ${new Date().toLocaleString('en-US', { 
