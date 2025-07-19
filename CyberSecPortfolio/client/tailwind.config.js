@@ -39,30 +39,60 @@ export default {
         '3xl': '1600px',
         '4xl': '1920px',
         
-        // Mobile devices - iPhone series
+        // Mobile devices - iPhone series (Portrait)
         'mobile-s': '320px',      // iPhone SE (1st gen), iPhone 5/5S/5C
         'mobile-m': '375px',      // iPhone 6/7/8, iPhone X/XS, iPhone 12/13/14 mini
         'mobile-l': '390px',      // iPhone 12/13/14, iPhone 15
         'mobile-xl': '414px',     // iPhone 6/7/8 Plus, iPhone XR, iPhone 11
         'mobile-2xl': '428px',    // iPhone 14 Plus, iPhone 15 Plus
         
-        // Mobile devices - Android series
+        // Mobile devices - iPhone series (Landscape)
+        'mobile-s-land': '568px', // iPhone SE (1st gen), iPhone 5/5S/5C landscape
+        'mobile-m-land': '667px', // iPhone 6/7/8 landscape
+        'mobile-l-land': '844px', // iPhone 12/13/14 landscape
+        'mobile-xl-land': '896px', // iPhone XR, iPhone 11 landscape
+        'mobile-2xl-land': '926px', // iPhone 14 Plus, iPhone 15 Plus landscape
+        
+        // Mobile devices - Android series (Portrait)
         'android-s': '360px',     // Samsung Galaxy S8, S9, S10e
         'android-m': '384px',     // Google Pixel 4, 5
         'android-s23': '393px',   // Samsung Galaxy S23
         'android-l': '412px',     // Samsung Galaxy S10, S20, S21
         'android-xl': '450px',    // Samsung Galaxy Note series
+        'android-2xl': '480px',   // Samsung Galaxy S22 Ultra, Note 20 Ultra
         
-        // Small tablets
+        // Mobile devices - Android series (Landscape)
+        'android-s-land': '640px', // Samsung Galaxy S8, S9, S10e landscape
+        'android-m-land': '720px', // Google Pixel 4, 5 landscape
+        'android-l-land': '800px', // Samsung Galaxy S10, S20, S21 landscape
+        'android-xl-land': '900px', // Samsung Galaxy Note series landscape
+        
+        // Small tablets (Portrait)
         'tablet-s': '600px',      // Samsung Galaxy Tab A, iPad mini (portrait)
         'tablet-m': '768px',      // iPad (portrait), iPad Air
         'tablet-l': '810px',      // iPad (landscape)
         'tablet-xl': '834px',     // iPad Pro 10.5", iPad Air (landscape)
         
-        // Large tablets
+        // Small tablets (Landscape)
+        'tablet-s-land': '800px', // Samsung Galaxy Tab A landscape
+        'tablet-m-land': '1024px', // iPad (landscape), iPad Air landscape
+        'tablet-l-land': '1080px', // iPad landscape
+        'tablet-xl-land': '1112px', // iPad Pro 10.5" landscape
+        
+        // Large tablets (Portrait)
         'tablet-2xl': '900px',    // Samsung Galaxy Tab S series
         'tablet-3xl': '1024px',   // iPad Pro 11", iPad Pro 12.9" (portrait)
         'tablet-4xl': '1080px',   // iPad Pro 12.9" (landscape)
+        
+        // Large tablets (Landscape)
+        'tablet-2xl-land': '1200px', // Samsung Galaxy Tab S series landscape
+        'tablet-3xl-land': '1366px', // iPad Pro 11" landscape
+        'tablet-4xl-land': '1440px', // iPad Pro 12.9" landscape
+        
+        // Foldable devices
+        'fold-s': '280px',        // Samsung Galaxy Z Flip (folded)
+        'fold-m': '717px',        // Samsung Galaxy Z Fold (folded)
+        'fold-l': '1768px',       // Samsung Galaxy Z Fold (unfolded)
         
         // Laptop and Desktop
         'laptop': '1024px',
@@ -72,6 +102,11 @@ export default {
         'desktop-l': '1920px',
         'desktop-xl': '2560px',   // 2K displays
         'desktop-2xl': '3840px',  // 4K displays
+        
+        // High DPI displays
+        'retina': '1920px',       // Retina displays
+        '4k': '3840px',           // 4K displays
+        '8k': '7680px',           // 8K displays (future-proofing)
       },
       colors: {
         border: "hsl(var(--border))",
@@ -188,6 +223,30 @@ export default {
       fontFamily: {
         mono: ["Fira Code", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
         cyber: ["Orbitron", "monospace"],
+      },
+      spacing: {
+        // Mobile-specific spacing
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
+        // Touch-friendly spacing
+        'touch': '44px', // Minimum touch target size
+        'touch-lg': '48px',
+        'touch-xl': '56px',
+      },
+      fontSize: {
+        // Mobile-optimized font sizes
+        'xs-mobile': ['0.75rem', { lineHeight: '1rem' }],
+        'sm-mobile': ['0.875rem', { lineHeight: '1.25rem' }],
+        'base-mobile': ['1rem', { lineHeight: '1.5rem' }],
+        'lg-mobile': ['1.125rem', { lineHeight: '1.75rem' }],
+        'xl-mobile': ['1.25rem', { lineHeight: '1.75rem' }],
+        '2xl-mobile': ['1.5rem', { lineHeight: '2rem' }],
+        '3xl-mobile': ['1.875rem', { lineHeight: '2.25rem' }],
+        '4xl-mobile': ['2.25rem', { lineHeight: '2.5rem' }],
+        '5xl-mobile': ['3rem', { lineHeight: '1' }],
+        '6xl-mobile': ['3.75rem', { lineHeight: '1' }],
       },
     },
   },

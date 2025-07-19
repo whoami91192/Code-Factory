@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import ScrollToTop from './ScrollToTop'
+import PageScrollToTop from './PageScrollToTop'
 import { Shield, Zap } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -66,6 +67,9 @@ const Layout = () => {
           <Navigation />
         </div>
       </header>
+
+      {/* Page Scroll to Top - Auto scroll on page change */}
+      <PageScrollToTop />
 
       {/* Main Content */}
       <main className="flex-1 relative z-10">

@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './mobile-optimizations.css';
 
 @layer base {
   :root {

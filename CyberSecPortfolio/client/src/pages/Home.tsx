@@ -1,15 +1,10 @@
 import { Link } from 'react-router-dom'
 import { Shield, Zap, Code, Target, ArrowRight, Users, Award } from 'lucide-react'
-import { useEffect } from 'react'
 import SecurityDashboard from '../components/SecurityDashboard'
 import InteractiveTerminal from '../components/InteractiveTerminal'
 import NewsTable from '../components/NewsTable'
 
 const Home = () => {
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const features = [
     {

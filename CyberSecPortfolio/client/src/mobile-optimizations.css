@@ -1,0 +1,511 @@
+/* Mobile Optimizations for CyberSec Portfolio */
+
+/* ===== SAFE AREA INSETS ===== */
+/* For devices with notches and home indicators */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ===== TOUCH TARGETS ===== */
+/* Ensure all interactive elements are touch-friendly */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+.touch-target-xl {
+  min-height: 56px;
+  min-width: 56px;
+}
+
+/* ===== MOBILE NAVIGATION ===== */
+/* Optimize mobile navigation */
+@media (max-width: 768px) {
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 20, 25, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 128, 255, 0.2);
+    padding: 0.5rem 1rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    z-index: 1000;
+  }
+  
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    min-height: 44px;
+    justify-content: center;
+  }
+}
+
+/* ===== FOLDABLE DEVICES ===== */
+/* Samsung Galaxy Z Fold/Flip support */
+@media (min-width: 280px) and (max-width: 717px) {
+  .foldable-optimized {
+    /* Folded state optimizations */
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 717px) and (max-width: 1768px) {
+  .foldable-optimized {
+    /* Unfolded state optimizations */
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .landscape-compact {
+    padding: 0.25rem;
+    margin: 0.25rem;
+  }
+  
+  .landscape-compact h1 {
+    font-size: 1.5rem;
+  }
+  
+  .landscape-compact h2 {
+    font-size: 1.25rem;
+  }
+  
+  .landscape-compact p {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .retina-optimized {
+    /* High DPI optimizations */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+/* Reduce animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-optimized * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== BATTERY OPTIMIZATIONS ===== */
+@media (prefers-reduced-motion: reduce) {
+  .battery-optimized {
+    /* Reduce visual effects for battery saving */
+    filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .mobile-accessible {
+    border: 2px solid currentColor;
+    background: black;
+    color: white;
+  }
+}
+
+/* ===== DARK MODE OPTIMIZATIONS ===== */
+@media (prefers-color-scheme: dark) {
+  .mobile-dark {
+    background: #0F1419;
+    color: #ffffff;
+  }
+}
+
+/* ===== SPECIFIC DEVICE OPTIMIZATIONS ===== */
+
+/* iPhone SE (1st gen) and small devices */
+@media (max-width: 375px) {
+  .small-device {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+  
+  .small-device h1 {
+    font-size: 1.5rem;
+  }
+  
+  .small-device h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* iPhone 12/13/14 Pro Max and large phones */
+@media (min-width: 428px) and (max-width: 926px) {
+  .large-phone {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  
+  .large-phone h1 {
+    font-size: 2.5rem;
+  }
+  
+  .large-phone h2 {
+    font-size: 2rem;
+  }
+}
+
+/* iPad and tablets */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-optimized {
+    font-size: 1.125rem;
+    padding: 1.5rem;
+  }
+  
+  .tablet-optimized h1 {
+    font-size: 3rem;
+  }
+  
+  .tablet-optimized h2 {
+    font-size: 2.5rem;
+  }
+}
+
+/* ===== GESTURE OPTIMIZATIONS ===== */
+/* Swipe gestures and touch interactions */
+.swipe-area {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.swipe-horizontal {
+  touch-action: pan-x;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.swipe-vertical {
+  touch-action: pan-y;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+/* ===== LOADING OPTIMIZATIONS ===== */
+/* Progressive loading for mobile */
+.mobile-lazy {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mobile-lazy.loaded {
+  opacity: 1;
+}
+
+/* ===== NETWORK OPTIMIZATIONS ===== */
+/* Slow network optimizations */
+@media (prefers-reduced-data: reduce) {
+  .data-optimized {
+    /* Reduce data usage */
+    background-image: none;
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== HOVER STATE OPTIMIZATIONS ===== */
+/* Disable hover effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .touch-device {
+    /* Remove hover effects on touch devices */
+  }
+  
+  .touch-device:hover {
+    /* Reset hover states */
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ===== SCROLL OPTIMIZATIONS ===== */
+/* Smooth scrolling for mobile */
+.mobile-smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* ===== FONT OPTIMIZATIONS ===== */
+/* Optimize font rendering for mobile */
+.mobile-font-optimized {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== LAYOUT OPTIMIZATIONS ===== */
+/* Mobile-first layout adjustments */
+@media (max-width: 768px) {
+  .mobile-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mobile-layout > * {
+    width: 100%;
+  }
+}
+
+/* ===== INTERACTION OPTIMIZATIONS ===== */
+/* Prevent zoom on input focus */
+.mobile-input {
+  font-size: 16px; /* Prevents zoom on iOS */
+  touch-action: manipulation;
+}
+
+/* ===== ANIMATION OPTIMIZATIONS ===== */
+/* Reduce animations for better performance */
+@media (max-width: 768px) {
+  .mobile-animation {
+    animation-duration: 0.2s;
+    transition-duration: 0.2s;
+  }
+}
+
+/* ===== SPACING OPTIMIZATIONS ===== */
+/* Mobile-specific spacing */
+@media (max-width: 768px) {
+  .mobile-spacing {
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .mobile-spacing-lg {
+    margin: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* ===== GRID OPTIMIZATIONS ===== */
+/* Mobile grid layouts */
+@media (max-width: 768px) {
+  .mobile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .mobile-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== FLEXBOX OPTIMIZATIONS ===== */
+/* Mobile flexbox layouts */
+@media (max-width: 768px) {
+  .mobile-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .mobile-flex-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* ===== TEXT OPTIMIZATIONS ===== */
+/* Mobile text sizing */
+@media (max-width: 768px) {
+  .mobile-text-xs { font-size: 0.75rem; }
+  .mobile-text-sm { font-size: 0.875rem; }
+  .mobile-text-base { font-size: 1rem; }
+  .mobile-text-lg { font-size: 1.125rem; }
+  .mobile-text-xl { font-size: 1.25rem; }
+  .mobile-text-2xl { font-size: 1.5rem; }
+  .mobile-text-3xl { font-size: 1.875rem; }
+  .mobile-text-4xl { font-size: 2.25rem; }
+}
+
+/* ===== BUTTON OPTIMIZATIONS ===== */
+/* Mobile button sizing */
+@media (max-width: 768px) {
+  .mobile-button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+  
+  .mobile-button-lg {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 1rem 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* ===== CARD OPTIMIZATIONS ===== */
+/* Mobile card layouts */
+@media (max-width: 768px) {
+  .mobile-card {
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  .mobile-card-lg {
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 0.75rem;
+  }
+}
+
+/* ===== MODAL OPTIMIZATIONS ===== */
+/* Mobile modal positioning */
+@media (max-width: 768px) {
+  .mobile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1rem;
+    padding-top: calc(1rem + env(safe-area-inset-top));
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ===== FORM OPTIMIZATIONS ===== */
+/* Mobile form elements */
+@media (max-width: 768px) {
+  .mobile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mobile-input {
+    font-size: 16px;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    min-height: 44px;
+  }
+  
+  .mobile-textarea {
+    font-size: 16px;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    min-height: 100px;
+  }
+}
+
+/* ===== NAVIGATION OPTIMIZATIONS ===== */
+/* Mobile navigation */
+@media (max-width: 768px) {
+  .mobile-nav-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 20, 25, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 128, 255, 0.2);
+    padding: 0.5rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    z-index: 1000;
+  }
+  
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== HERO SECTION OPTIMIZATIONS ===== */
+/* Mobile hero sections */
+@media (max-width: 768px) {
+  .mobile-hero {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  
+  .mobile-hero h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-hero p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ===== SECTION OPTIMIZATIONS ===== */
+/* Mobile section spacing */
+@media (max-width: 768px) {
+  .mobile-section {
+    padding: 2rem 1rem;
+  }
+  
+  .mobile-section-lg {
+    padding: 3rem 1rem;
+  }
+  
+  .mobile-section-xl {
+    padding: 4rem 1rem;
+  }
+}
+
+/* ===== CONTAINER OPTIMIZATIONS ===== */
+/* Mobile container sizing */
+@media (max-width: 768px) {
+  .mobile-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+  }
+  
+  .mobile-container-sm {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .mobile-container-lg {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+} 
