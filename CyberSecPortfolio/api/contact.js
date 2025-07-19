@@ -1,6 +1,11 @@
-import nodemailer from 'nodemailer'
+const nodemailer = require('nodemailer')
 
 export default async function handler(req, res) {
+  console.log('=== CONTACT API CALLED ===')
+  console.log('Method:', req.method)
+  console.log('Headers:', req.headers)
+  console.log('Body:', req.body)
+
   // Enable CORS for all origins
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
@@ -8,11 +13,13 @@ export default async function handler(req, res) {
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
+    console.log('Handling OPTIONS request')
     return res.status(200).end()
   }
 
   // Handle GET requests for testing
   if (req.method === 'GET') {
+    console.log('Handling GET request')
     return res.status(200).json({ 
       success: true,
       message: 'Contact API is working',
@@ -22,6 +29,7 @@ export default async function handler(req, res) {
 
   // Only allow POST requests
   if (req.method !== 'POST') {
+    console.log('Method not allowed:', req.method)
     return res.status(405).json({ 
       success: false,
       message: `Method ${req.method} not allowed. Use POST for sending messages.`
@@ -29,17 +37,27 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('Processing POST request...')
     const { name, email, subject, message } = req.body
+
+    console.log('Extracted data:', { name, email, subject, message })
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
+      console.log('Missing required fields')
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'All fields are required',
+        received: { name: !!name, email: !!email, subject: !!subject, message: !!message }
       })
     }
 
     // Check if environment variables are set
+    console.log('Checking environment variables...')
+    console.log('SMTP_USER exists:', !!process.env.SMTP_USER)
+    console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS)
+    console.log('SMTP_FROM exists:', !!process.env.SMTP_FROM)
+
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.SMTP_FROM) {
       console.error('Missing environment variables:', {
         SMTP_USER: !!process.env.SMTP_USER,
@@ -57,6 +75,8 @@ export default async function handler(req, res) {
       })
     }
 
+    console.log('Environment variables OK, creating transporter...')
+
     // Create transporter
     const transporter = nodemailer.createTransporter({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -70,6 +90,8 @@ export default async function handler(req, res) {
         rejectUnauthorized: false
       }
     })
+
+    console.log('Transporter created, setting up email...')
 
     // Email content with cyber security theme
     const mailOptions = {
@@ -118,8 +140,9 @@ ${message}
       `
     }
 
+    console.log('Email options set, attempting to send...')
+
     // Send email
-    console.log('Attempting to send email...')
     const result = await transporter.sendMail(mailOptions)
     console.log('Email sent successfully:', result.messageId)
 
@@ -131,7 +154,12 @@ ${message}
     })
 
   } catch (error) {
-    console.error('Email sending error:', error)
+    console.error('=== EMAIL SENDING ERROR ===')
+    console.error('Error type:', error.constructor.name)
+    console.error('Error message:', error.message)
+    console.error('Error code:', error.code)
+    console.error('Error stack:', error.stack)
+    console.error('Full error object:', error)
     
     // Provide more specific error messages
     let errorMessage = 'Failed to send email. Please try again later.'
@@ -142,12 +170,15 @@ ${message}
       errorMessage = 'Email server connection failed. Please try again later.'
     } else if (error.code === 'ETIMEDOUT') {
       errorMessage = 'Email request timed out. Please try again later.'
+    } else if (error.message.includes('nodemailer')) {
+      errorMessage = 'Email service configuration error.'
     }
     
     res.status(500).json({
       success: false,
       message: errorMessage,
       error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      errorCode: error.code,
       timestamp: new Date().toISOString()
     })
   }
