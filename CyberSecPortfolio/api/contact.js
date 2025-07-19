@@ -1,19 +1,9 @@
 import nodemailer from 'nodemailer'
 
 export default async function handler(req, res) {
-  // Enable CORS for all origins in development
-  const allowedOrigins = [
-    'https://code-factory-651d.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:4173'
-  ]
-  
-  const origin = req.headers.origin
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin)
-  }
-  
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS, GET')
+  // Enable CORS for all origins
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
   res.setHeader('Access-Control-Max-Age', '86400')
 
@@ -27,7 +17,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ 
       success: true,
       message: 'Contact API is working',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      method: req.method,
+      url: req.url
     })
   }
 
@@ -35,7 +27,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ 
       success: false,
-      message: 'Method not allowed. Use POST for sending messages.' 
+      message: `Method ${req.method} not allowed. Use POST for sending messages.`,
+      allowedMethods: ['GET', 'POST', 'OPTIONS']
     })
   }
 
@@ -43,9 +36,9 @@ export default async function handler(req, res) {
     // Log the request for debugging
     console.log('Contact API called:', {
       method: req.method,
+      url: req.url,
       headers: req.headers,
-      body: req.body,
-      url: req.url
+      body: req.body
     })
 
     const { name, email, subject, message } = req.body
@@ -78,7 +71,12 @@ export default async function handler(req, res) {
       })
       return res.status(500).json({
         success: false,
-        message: 'Email configuration is missing. Please contact administrator.'
+        message: 'Email configuration is missing. Please contact administrator.',
+        debug: {
+          SMTP_USER: !!process.env.SMTP_USER,
+          SMTP_PASS: !!process.env.SMTP_PASS,
+          SMTP_FROM: !!process.env.SMTP_FROM
+        }
       })
     }
 
@@ -151,7 +149,8 @@ ${message}
     res.status(200).json({
       success: true,
       message: 'Email sent successfully',
-      messageId: result.messageId
+      messageId: result.messageId,
+      timestamp: new Date().toISOString()
     })
 
   } catch (error) {
@@ -171,7 +170,8 @@ ${message}
     res.status(500).json({
       success: false,
       message: errorMessage,
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
     })
   }
 } 

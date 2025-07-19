@@ -1,17 +1,15 @@
 {
-  "name": "cyber-portfolio-api",
+  "name": "cybersec-portfolio-api",
   "version": "1.0.0",
-  "description": "API functions for Cyber Security Portfolio",
+  "description": "API endpoints for Cyber Security Portfolio",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "nodemailer": "^6.9.7"
   },
-  "keywords": [
-    "vercel",
-    "api",
-    "email",
-    "contact-form"
-  ],
-  "author": "Giannis Katsibris",
+  "keywords": ["api", "vercel", "serverless"],
+  "author": "Ioannis Katsimpris",
   "license": "MIT"
 } 
