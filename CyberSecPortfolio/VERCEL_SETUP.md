@@ -35,12 +35,18 @@ Environment: Production
 ### Step 2: Deploy the API Function
 
 1. **Push to GitHub**
-   - Commit and push the new `api/` folder to your repository
+   - Commit and push the new `api/` folder and `vercel.json` to your repository
    - Vercel will automatically detect and deploy the API function
 
-2. **Verify Deployment**
+2. **Force Redeploy**
+   - Go to your Vercel project → **Deployments** tab
+   - Click **"Redeploy"** on the latest deployment
+   - This ensures the API function is deployed
+
+3. **Verify Deployment**
    - Go to your Vercel project → **Functions** tab
    - You should see `api/contact.js` listed
+   - If not visible, wait a few minutes and refresh
 
 ### Step 3: Test the Contact Form
 
