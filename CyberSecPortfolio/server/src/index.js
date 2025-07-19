@@ -6,6 +6,7 @@ import compression from 'compression'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
+import nodemailer from 'nodemailer'
 
 // Load environment variables
 dotenv.config()
@@ -49,7 +50,7 @@ app.use('/api/', limiter)
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || ['http://localhost:5173', 'http://localhost:3000', 'https://your-vercel-domain.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -76,6 +77,17 @@ app.get('/health', (req, res) => {
   })
 })
 
+// Email configuration
+const transporter = nodemailer.createTransporter({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: process.env.SMTP_PORT || 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+})
+
 // Basic API routes
 app.get('/api/test', (req, res) => {
   res.json({ 
@@ -83,6 +95,63 @@ app.get('/api/test', (req, res) => {
     version: '1.0.0',
     features: ['Security Dashboard', 'Interactive Tools', 'Admin Panel']
   })
+})
+
+// Contact form email endpoint
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body
+
+    // Validate required fields
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'All fields are required'
+      })
+    }
+
+    // Email content
+    const mailOptions = {
+      from: process.env.SMTP_FROM || process.env.SMTP_USER,
+      to: 'gianniskatsibris@gmail.com',
+      subject: `Portfolio Contact: ${subject}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #00ff41; border-bottom: 2px solid #00ff41; padding-bottom: 10px;">
+            New Contact Form Submission
+          </h2>
+          <div style="background: #1a1a1a; color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Message:</strong></p>
+            <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; margin-top: 10px;">
+              ${message.replace(/\n/g, '<br>')}
+            </div>
+          </div>
+          <div style="text-align: center; color: #888; font-size: 12px;">
+            <p>This message was sent from your Cyber Security Portfolio contact form.</p>
+            <p>Timestamp: ${new Date().toLocaleString()}</p>
+          </div>
+        </div>
+      `
+    }
+
+    // Send email
+    await transporter.sendMail(mailOptions)
+
+    res.status(200).json({
+      success: true,
+      message: 'Email sent successfully'
+    })
+
+  } catch (error) {
+    console.error('Email sending error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send email. Please try again later.'
+    })
+  }
 })
 
 // WebSocket connection

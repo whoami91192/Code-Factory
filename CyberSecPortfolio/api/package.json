@@ -1,0 +1,17 @@
+{
+  "name": "cyber-portfolio-api",
+  "version": "1.0.0",
+  "description": "API functions for Cyber Security Portfolio",
+  "main": "index.js",
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  },
+  "keywords": [
+    "vercel",
+    "api",
+    "email",
+    "contact-form"
+  ],
+  "author": "Giannis Katsibris",
+  "license": "MIT"
+} 

@@ -15,15 +15,31 @@ const Contact = () => {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormData({ name: '', email: '', subject: '', message: '' })
-    
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setIsSubmitted(true)
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        // Reset success message after 5 seconds
+        setTimeout(() => setIsSubmitted(false), 5000)
+      } else {
+        alert('Failed to send message: ' + result.message)
+      }
+    } catch (error) {
+      console.error('Error sending message:', error)
+      alert('Failed to send message. Please try again later.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
