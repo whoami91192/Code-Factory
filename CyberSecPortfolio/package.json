@@ -1,0 +1,34 @@
+{
+  "name": "cyber-security-portfolio",
+  "version": "1.0.0",
+  "description": "Modern Cyber Security Engineer Portfolio with Interactive Tools",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "cybersecurity",
+    "portfolio",
+    "react",
+    "nodejs",
+    "postgresql",
+    "security-tools"
+  ],
+  "author": "Cyber Security Engineer",
+  "license": "MIT"
+} 
