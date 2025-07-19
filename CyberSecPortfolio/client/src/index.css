@@ -102,6 +102,17 @@
   * {
     @apply border-border;
   }
+  
+  /* Force dark mode always */
+  html {
+    color-scheme: dark;
+  }
+  
+  html, body {
+    background-color: hsl(220 25% 8%) !important;
+    color: hsl(200 100% 90%) !important;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
