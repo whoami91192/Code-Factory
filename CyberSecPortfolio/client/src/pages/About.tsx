@@ -245,7 +245,8 @@ const About = () => {
             <span className="text-cyber-secondary">PROFESSIONAL TIMELINE</span>
           </h2>
           
-          <div className="relative timeline-container">
+          {/* Desktop Timeline */}
+          <div className="hidden md:block relative timeline-container">
             {/* Timeline Line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-cyber-primary via-cyber-secondary to-cyber-accent h-full glow-text timeline-line"></div>
             
@@ -397,6 +398,124 @@ const About = () => {
                     <p className="text-sm text-white/90 mb-1 drop-shadow">University of East London</p>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Timeline */}
+          <div className="md:hidden space-y-6 mobile-timeline">
+            {/* 2013 - Full Stack Developer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-danger rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-danger">Full Stack Developer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">02/2013 - 01/2021</p>
+              <p className="text-xs text-cyber-danger font-mono mb-3">8 Years of Development Experience</p>
+              <div className="border-t border-cyber-primary/20 pt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">Programming Languages</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">University of Kent</p>
+                <p className="text-xs text-cyber-secondary font-mono">PHP, C++, HTML, CSS, JavaScript</p>
+              </div>
+            </div>
+
+            {/* 2019-2020 - Web Development */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-warning rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-warning">E-learning Certification: Web Development</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">National And Kapodistrian University of Athens</p>
+            </div>
+
+            {/* 2021 - Software Engineer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-accent rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-accent">Software Engineer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">01/2021 - 07/2021</p>
+              <p className="text-xs text-cyber-accent font-mono">Python Backend Development</p>
+            </div>
+
+            {/* 2021-2023 - Cyber Security Engineer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-warning rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-warning">Cyber Security Engineer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">07/2021 - 01/2023</p>
+              <p className="text-xs text-cyber-warning font-mono mb-3">Vulnerability Assessment & Security Architecture</p>
+              <div className="border-t border-cyber-primary/20 pt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">Acronis Certified Engineer</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Acronis</p>
+              </div>
+            </div>
+
+            {/* 2022-2023 - Early Certifications */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-secondary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-secondary">Microsoft 365 Certified: Fundamentals</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">Microsoft</p>
+              <div className="border-t border-cyber-primary/20 pt-3 mt-3">
+                <h4 className="text-sm font-bold text-cyber-primary mb-1">Cisco Certifications</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Python Essentials, JavaScript Essentials, Cyber Threat Management</p>
+              </div>
+            </div>
+
+            {/* 2023 - Senior Cyber Security Engineer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-primary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-primary">Senior Cyber Security Engineer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">01/2023 - 05/2024</p>
+              <p className="text-xs text-cyber-primary font-mono mb-3">SIEM Integration & Security Standards</p>
+              <div className="border-t border-cyber-primary/20 pt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">EC-Council Certifications</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Ethical Hacking Essentials (EHE), Digital Forensics Essentials (DFE)</p>
+              </div>
+            </div>
+
+            {/* 2024 - Current Certifications & Senior Systems Engineer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-secondary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-secondary">Senior Systems and Cloud Engineer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - Current</p>
+              <p className="text-xs text-cyber-secondary font-mono mb-3">Azure/AWS Infrastructure & AI Workloads</p>
+              <div className="border-t border-cyber-primary/20 pt-3">
+                <h4 className="text-sm font-bold text-cyber-primary mb-1">Microsoft Azure Certifications</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Administrator, Security Engineer, Cybersecurity Architect Expert</p>
+              </div>
+            </div>
+
+            {/* 2024-2025 - Advanced Certifications */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-accent rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-accent">MITRE Certifications</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">ATT&CK Security Stack Mappings: Azure, Foundations of AI Security</p>
+              <div className="border-t border-cyber-primary/20 pt-3 mt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">Safetica NXT Certification</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Safetica</p>
+              </div>
+            </div>
+
+            {/* 2024-2025 - Current Education */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-primary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-primary">Coding Factory</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">University of Economics and Business - Athens</p>
+              <div className="border-t border-cyber-primary/20 pt-3 mt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">BSc (Hons) Cyber Security and Networks</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">University of East London</p>
               </div>
             </div>
           </div>
