@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     // Create transporter
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
@@ -98,9 +98,15 @@ ${message}
 
   } catch (error) {
     console.error('Email sending error:', error)
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    })
     res.status(500).json({
       success: false,
-      message: 'Failed to send email. Please try again later.'
+      message: `Failed to send email: ${error.message}`,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     })
   }
 } 
