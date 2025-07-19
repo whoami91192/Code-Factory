@@ -137,10 +137,15 @@ const Contact = () => {
             {isSubmitted ? (
               <div className="cyber-card text-center py-12">
                 <CheckCircle className="h-16 w-16 mx-auto mb-4 text-cyber-green glow-text" />
-                <h3 className="text-xl font-bold mb-2">Message Sent!</h3>
-                <p className="text-white/90 drop-shadow">
+                <h3 className="text-xl font-bold mb-2">Message Sent Successfully!</h3>
+                <p className="text-white/90 drop-shadow mb-4">
                   Thank you for your message. I'll get back to you within 24 hours.
                 </p>
+                <div className="bg-cyber-green/10 border border-cyber-green/30 rounded-lg p-4 mt-4">
+                  <p className="text-cyber-green text-sm">
+                    📧 A confirmation email has been sent to your inbox with details of your message.
+                  </p>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="cyber-card space-y-6">
