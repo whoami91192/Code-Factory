@@ -19,4 +19,19 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+        },
+      },
+    },
+  },
+  preview: {
+    port: 3000,
+    host: true,
+  },
 }) 
