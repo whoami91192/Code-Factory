@@ -29,7 +29,7 @@ const About = () => {
     <div className="min-h-screen bg-background liquid-metal-glow">
       <div className="container">
         {/* Hero Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 about-hero">
           <h1 className="text-4xl lg:text-6xl font-cyber font-bold mb-6">
             JOHN <span className="text-cyber-secondary">KATSIMPRIS</span>
           </h1>
@@ -42,7 +42,7 @@ const About = () => {
             security solutions. Committed to safeguarding critical digital assets while architecting scalable, 
             secure cloud ecosystems for mission-critical enterprise operations.
           </p>
-          <div className="flex justify-center items-center space-x-6 mt-6 text-sm text-muted-foreground">
+          <div className="flex justify-center items-center space-x-6 mt-6 text-sm text-muted-foreground about-contact-info">
             <span>📍 Athens, Attica 15773</span>
             <span>📞 +30 6970657830</span>
             <span>✉️ gianniskatsibris@gmail.com</span>
@@ -148,12 +148,12 @@ const About = () => {
               {skills.map((skill, index) => (
                 <div key={skill.name} className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-white drop-shadow text-sm">{skill.name}</span>
-                    <span className="text-sm text-cyber-primary font-mono font-bold">{skill.level}%</span>
+                    <span className="font-medium text-white drop-shadow text-sm skill-bar-text">{skill.name}</span>
+                    <span className="text-sm text-cyber-primary font-mono font-bold skill-bar-text">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-3 border border-cyber-primary">
+                  <div className="w-full bg-gray-800 rounded-full h-3 border border-cyber-primary skill-bar">
                     <div 
-                      className={`h-3 rounded-full ${skill.color} transition-all duration-1000 ease-out shadow-lg`}
+                      className={`h-3 rounded-full ${skill.color} transition-all duration-1000 ease-out shadow-lg skill-bar`}
                       style={{ 
                         width: `${skill.level}%`,
                         animationDelay: `${index * 200}ms`,
@@ -168,7 +168,7 @@ const About = () => {
             {/* Technologies */}
             <div className="cyber-card-magnetic target-lock">
               <h3 className="text-lg font-bold mb-4 text-cyber-secondary">Technologies & Tools</h3>
-              <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="grid grid-cols-2 gap-2 text-sm tech-grid">
                 <div>
                   <h4 className="font-bold text-cyber-primary mb-2">Cloud & Infrastructure</h4>
                   <p className="text-white/90 drop-shadow">Azure, AWS, Docker, Kubernetes, Linux (Ubuntu, RHEL, CentOS)</p>
@@ -196,23 +196,23 @@ const About = () => {
             <span className="text-cyber-secondary">EDUCATION</span>
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="cyber-card-magnetic text-center target-lock">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 education-grid">
+            <div className="cyber-card-magnetic text-center target-lock education-card">
               <Award className="h-12 w-12 mx-auto mb-4 text-cyber-secondary glow-text" />
               <h3 className="text-lg font-bold mb-2 text-white drop-shadow">BSc (Hons) Cyber Security and Networks</h3>
               <p className="text-sm text-white/90 mb-1 drop-shadow">University of East London</p>
             </div>
-            <div className="cyber-card-magnetic text-center target-lock">
+            <div className="cyber-card-magnetic text-center target-lock education-card">
               <Award className="h-12 w-12 mx-auto mb-4 text-cyber-primary glow-text" />
               <h3 className="text-lg font-bold mb-2 text-white drop-shadow">Coding Factory</h3>
               <p className="text-sm text-white/90 mb-1 drop-shadow">University of Economics and Business - Athens</p>
             </div>
-            <div className="cyber-card-magnetic text-center target-lock">
+            <div className="cyber-card-magnetic text-center target-lock education-card">
               <Award className="h-12 w-12 mx-auto mb-4 text-cyber-warning glow-text" />
               <h3 className="text-lg font-bold mb-2 text-white drop-shadow">E-learning Certification: Web Development</h3>
               <p className="text-sm text-white/90 mb-1 drop-shadow">National And Kapodistrian University of Athens</p>
             </div>
-            <div className="cyber-card-magnetic text-center target-lock">
+            <div className="cyber-card-magnetic text-center target-lock education-card">
               <Award className="h-12 w-12 mx-auto mb-4 text-cyber-accent glow-text" />
               <h3 className="text-lg font-bold mb-2 text-white drop-shadow">Programming Languages</h3>
               <p className="text-sm text-white/90 mb-1 drop-shadow">University of Kent</p>
@@ -227,9 +227,9 @@ const About = () => {
             <span className="text-cyber-secondary">CERTIFICATIONS</span>
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 certifications-grid">
             {certifications.map((cert) => (
-              <div key={cert.name} className="cyber-card-magnetic text-center target-lock">
+              <div key={cert.name} className="cyber-card-magnetic text-center target-lock certification-card">
                 <Award className="h-12 w-12 mx-auto mb-4 text-cyber-secondary glow-text" />
                 <h3 className="text-lg font-bold mb-2 text-white drop-shadow">{cert.name}</h3>
                 <p className="text-sm text-white/90 mb-1 drop-shadow">{cert.issuer}</p>
@@ -245,23 +245,23 @@ const About = () => {
             <span className="text-cyber-secondary">PROFESSIONAL TIMELINE</span>
           </h2>
           
-          <div className="relative">
+          <div className="relative timeline-container">
             {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-cyber-primary via-cyber-secondary to-cyber-accent h-full glow-text"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-cyber-primary via-cyber-secondary to-cyber-accent h-full glow-text timeline-line"></div>
             
             <div className="space-y-12">
               {/* 2013 - Full Stack Developer */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-danger rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-danger rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-danger mb-2">Full Stack Developer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">02/2013 - 01/2021</p>
                     <p className="text-xs text-cyber-danger font-mono">8 Years of Development Experience</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Programming Languages</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">University of Kent</p>
                     <p className="text-xs text-cyber-secondary font-mono">PHP, C++, HTML, CSS, JavaScript</p>
@@ -270,42 +270,42 @@ const About = () => {
               </div>
 
               {/* 2019-2020 - Web Development */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-warning rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-warning rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-warning mb-2">E-learning Certification: Web Development</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">National And Kapodistrian University of Athens</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8"></div>
+                <div className="w-5/12 pl-8 timeline-right"></div>
               </div>
 
               {/* 2021 - Software Engineer */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-accent rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-accent rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-accent mb-2">Software Engineer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">01/2021 - 07/2021</p>
                     <p className="text-xs text-cyber-accent font-mono">Python Backend Development</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8"></div>
+                <div className="w-5/12 pl-8 timeline-right"></div>
               </div>
 
               {/* 2021-2023 - Cyber Security Engineer */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-warning rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-warning rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-warning mb-2">Cyber Security Engineer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">07/2021 - 01/2023</p>
                     <p className="text-xs text-cyber-warning font-mono">Vulnerability Assessment & Security Architecture</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Acronis Certified Engineer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Acronis</p>
                   </div>
@@ -313,16 +313,16 @@ const About = () => {
               </div>
 
               {/* 2022-2023 - Early Certifications */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-secondary rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-secondary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Microsoft 365 Certified: Fundamentals</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Microsoft</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-primary mb-2">Cisco Certifications</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Python Essentials, JavaScript Essentials, Cyber Threat Management</p>
                   </div>
@@ -330,17 +330,17 @@ const About = () => {
               </div>
 
               {/* 2023 - Senior Cyber Security Engineer */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-primary rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-primary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-primary mb-2">Senior Cyber Security Engineer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">01/2023 - 05/2024</p>
                     <p className="text-xs text-cyber-primary font-mono">SIEM Integration & Security Standards</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">EC-Council Certifications</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Ethical Hacking Essentials (EHE), Digital Forensics Essentials (DFE)</p>
                   </div>
@@ -348,17 +348,17 @@ const About = () => {
               </div>
 
               {/* 2024 - Current Certifications & Senior Systems Engineer */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-secondary rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-secondary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Senior Systems and Cloud Engineer</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - Current</p>
                     <p className="text-xs text-cyber-secondary font-mono">Azure/AWS Infrastructure & AI Workloads</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-primary mb-2">Microsoft Azure Certifications</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Administrator, Security Engineer, Cybersecurity Architect Expert</p>
                   </div>
@@ -366,16 +366,16 @@ const About = () => {
               </div>
 
               {/* 2024-2025 - Advanced Certifications */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-accent rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-accent rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-accent mb-2">MITRE Certifications</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">ATT&CK Security Stack Mappings: Azure, Foundations of AI Security</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Safetica NXT Certification</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">Safetica</p>
                   </div>
@@ -383,16 +383,16 @@ const About = () => {
               </div>
 
               {/* 2024-2025 - Current Education */}
-              <div className="relative flex items-center">
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-primary rounded-full border-4 border-background shadow-lg glow-text"></div>
-                <div className="w-5/12 pr-8 text-right">
-                  <div className="cyber-card-magnetic target-lock">
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-primary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-primary mb-2">Coding Factory</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">University of Economics and Business - Athens</p>
                   </div>
                 </div>
-                <div className="w-5/12 pl-8">
-                  <div className="cyber-card-magnetic target-lock">
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">BSc (Hons) Cyber Security and Networks</h3>
                     <p className="text-sm text-white/90 mb-1 drop-shadow">University of East London</p>
                   </div>
@@ -403,7 +403,7 @@ const About = () => {
         </div>
 
         {/* Mission Statement */}
-        <div className="cyber-card-magnetic text-center target-lock">
+        <div className="cyber-card-magnetic text-center target-lock mission-statement">
           <Zap className="h-16 w-16 mx-auto mb-6 text-cyber-secondary glow-text" />
           <h2 className="text-2xl font-cyber font-bold mb-4">
             Mission <span className="text-cyber-secondary">Statement</span>

@@ -857,11 +857,273 @@
   }
 }
 
+/* Samsung Galaxy S23 - 393px */
+@media (min-width: 385px) and (max-width: 393px) {
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  
+  h1 {
+    font-size: 1.875rem !important;
+    line-height: 2.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  
+  h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .cyber-button {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Better spacing for S23 */
+  .space-y-6 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 2rem !important;
+  }
+  
+  /* Form improvements for S23 */
+  .cyber-input, .cyber-textarea {
+    padding: 0.875rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Card improvements for S23 */
+  .cyber-card {
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* About page improvements for S23 */
+  .about-hero h1 {
+    font-size: 2.25rem !important;
+    line-height: 2.75rem !important;
+  }
+  
+  .about-hero p {
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .about-contact-info {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .about-contact-info span {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Contact page improvements for S23 */
+  .contact-hero h1 {
+    font-size: 2.25rem !important;
+    line-height: 2.75rem !important;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.9rem !important;
+    padding: 0.875rem !important;
+  }
+  
+  .contact-form label {
+    font-size: 0.85rem !important;
+  }
+  
+  /* Grid improvements for S23 */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .lg\\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Skill bars improvements for S23 */
+  .skill-bar {
+    height: 0.75rem !important;
+  }
+  
+  .skill-bar-text {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Technology grid improvements for S23 */
+  .tech-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  .tech-grid h4 {
+    font-size: 0.9rem !important;
+  }
+  
+  .tech-grid p {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Timeline improvements for S23 */
+  .timeline-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .timeline-line {
+    left: 1rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-item {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .timeline-node {
+    left: 1rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-left,
+  .timeline-right {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  
+  .timeline-card {
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .timeline-card h3 {
+    font-size: 1rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .timeline-card p {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Education and Certifications grid improvements for S23 */
+  .education-grid,
+  .certifications-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  .education-card,
+  .certification-card {
+    padding: 1.25rem !important;
+  }
+  
+  .education-card h3,
+  .certification-card h3 {
+    font-size: 1rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .education-card p,
+  .certification-card p {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Mission statement improvements for S23 */
+  .mission-statement {
+    padding: 1.5rem !important;
+  }
+  
+  .mission-statement h2 {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+  
+  .mission-statement p {
+    font-size: 0.9rem !important;
+    line-height: 1.5rem !important;
+  }
+}
+
 /* Samsung Galaxy S10, S20, S21 - 412px */
-@media (min-width: 385px) and (max-width: 412px) {
+@media (min-width: 394px) and (max-width: 412px) {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+  
+  /* Timeline improvements for S10/S20/S21 */
+  .timeline-container {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  .timeline-line {
+    left: 1.5rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-item {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+  
+  .timeline-node {
+    left: 1.5rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-left,
+  .timeline-right {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  
+  .timeline-card {
+    padding: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .timeline-card h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .timeline-card p {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Education and Certifications grid improvements */
+  .education-grid,
+  .certifications-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  
+  .education-card,
+  .certification-card {
+    padding: 1.5rem !important;
+  }
+  
+  .education-card h3,
+  .certification-card h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .education-card p,
+  .certification-card p {
+    font-size: 0.875rem !important;
   }
 }
 
@@ -894,6 +1156,71 @@
     padding: 0.8rem 1.6rem !important;
     font-size: 0.95rem !important;
   }
+  
+  /* Timeline improvements for small tablets */
+  .timeline-container {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+  
+  .timeline-line {
+    left: 2rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-item {
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+  
+  .timeline-node {
+    left: 2rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-left,
+  .timeline-right {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  
+  .timeline-card {
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .timeline-card h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .timeline-card p {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Education and Certifications grid improvements */
+  .education-grid,
+  .certifications-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  .education-card,
+  .certification-card {
+    padding: 1.75rem !important;
+  }
+  
+  .education-card h3,
+  .certification-card h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+  
+  .education-card p,
+  .certification-card p {
+    font-size: 0.9rem !important;
+  }
 }
 
 /* iPad (portrait), iPad Air - 768px */
@@ -916,6 +1243,71 @@
   .cyber-button {
     padding: 0.9rem 1.8rem !important;
     font-size: 1rem !important;
+  }
+  
+  /* Timeline improvements for iPad portrait */
+  .timeline-container {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+  }
+  
+  .timeline-line {
+    left: 2.5rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-item {
+    flex-direction: column !important;
+    gap: 2.5rem !important;
+  }
+  
+  .timeline-node {
+    left: 2.5rem !important;
+    transform: none !important;
+  }
+  
+  .timeline-left,
+  .timeline-right {
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  
+  .timeline-card {
+    padding: 1.75rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+  
+  .timeline-card h3 {
+    font-size: 1.375rem !important;
+    line-height: 1.875rem !important;
+  }
+  
+  .timeline-card p {
+    font-size: 0.95rem !important;
+  }
+  
+  /* Education and Certifications grid improvements */
+  .education-grid,
+  .certifications-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.75rem !important;
+  }
+  
+  .education-card,
+  .certification-card {
+    padding: 2rem !important;
+  }
+  
+  .education-card h3,
+  .certification-card h3 {
+    font-size: 1.375rem !important;
+    line-height: 1.875rem !important;
+  }
+  
+  .education-card p,
+  .certification-card p {
+    font-size: 0.95rem !important;
   }
 }
 

@@ -49,6 +49,7 @@ export default {
         // Mobile devices - Android series
         'android-s': '360px',     // Samsung Galaxy S8, S9, S10e
         'android-m': '384px',     // Google Pixel 4, 5
+        'android-s23': '393px',   // Samsung Galaxy S23
         'android-l': '412px',     // Samsung Galaxy S10, S20, S21
         'android-xl': '450px',    // Samsung Galaxy Note series
         

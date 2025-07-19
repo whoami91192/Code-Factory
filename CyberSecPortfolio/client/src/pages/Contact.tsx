@@ -68,7 +68,7 @@ const Contact = () => {
     <div className="min-h-screen bg-background liquid-metal-glow">
       <div className="container">
         {/* Hero Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 contact-hero">
           <h1 className="text-4xl lg:text-6xl font-cyber font-bold mb-6">
             Get In <span className="text-cyber-green">Touch</span>
           </h1>
@@ -148,7 +148,7 @@ const Contact = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="cyber-card space-y-6">
+              <form onSubmit={handleSubmit} className="cyber-card space-y-6 contact-form">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white drop-shadow mb-2">
                     Name *
