@@ -29,6 +29,7 @@ export default {
     },
     extend: {
       screens: {
+        // Standard breakpoints
         'xs': '475px',
         'sm': '640px',
         'md': '768px',
@@ -37,14 +38,39 @@ export default {
         '2xl': '1400px',
         '3xl': '1600px',
         '4xl': '1920px',
-        // Custom breakpoints for specific devices
-        'mobile-s': '320px',
-        'mobile-m': '375px',
-        'mobile-l': '425px',
-        'tablet': '768px',
+        
+        // Mobile devices - iPhone series
+        'mobile-s': '320px',      // iPhone SE (1st gen), iPhone 5/5S/5C
+        'mobile-m': '375px',      // iPhone 6/7/8, iPhone X/XS, iPhone 12/13/14 mini
+        'mobile-l': '390px',      // iPhone 12/13/14, iPhone 15
+        'mobile-xl': '414px',     // iPhone 6/7/8 Plus, iPhone XR, iPhone 11
+        'mobile-2xl': '428px',    // iPhone 14 Plus, iPhone 15 Plus
+        
+        // Mobile devices - Android series
+        'android-s': '360px',     // Samsung Galaxy S8, S9, S10e
+        'android-m': '384px',     // Google Pixel 4, 5
+        'android-l': '412px',     // Samsung Galaxy S10, S20, S21
+        'android-xl': '450px',    // Samsung Galaxy Note series
+        
+        // Small tablets
+        'tablet-s': '600px',      // Samsung Galaxy Tab A, iPad mini (portrait)
+        'tablet-m': '768px',      // iPad (portrait), iPad Air
+        'tablet-l': '810px',      // iPad (landscape)
+        'tablet-xl': '834px',     // iPad Pro 10.5", iPad Air (landscape)
+        
+        // Large tablets
+        'tablet-2xl': '900px',    // Samsung Galaxy Tab S series
+        'tablet-3xl': '1024px',   // iPad Pro 11", iPad Pro 12.9" (portrait)
+        'tablet-4xl': '1080px',   // iPad Pro 12.9" (landscape)
+        
+        // Laptop and Desktop
         'laptop': '1024px',
-        'laptop-l': '1440px',
-        'desktop': '1920px',
+        'laptop-l': '1280px',
+        'laptop-xl': '1440px',
+        'desktop': '1536px',
+        'desktop-l': '1920px',
+        'desktop-xl': '2560px',   // 2K displays
+        'desktop-2xl': '3840px',  // 4K displays
       },
       colors: {
         border: "hsl(var(--border))",
