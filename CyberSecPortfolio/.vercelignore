@@ -1,6 +1,5 @@
 # Ignore server files for Vercel deployment
 server/
-api/
 node_modules/
 *.log
 .env

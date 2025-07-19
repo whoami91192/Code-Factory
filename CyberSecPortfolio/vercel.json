@@ -3,10 +3,15 @@
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "cd client && npm install",
+  "functions": {
+    "client/public/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "destination": "/client/public/api/$1"
     },
     {
       "source": "/(.*)",
