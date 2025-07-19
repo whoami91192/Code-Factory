@@ -53,11 +53,11 @@ const Layout = () => {
       
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-cyber-green" />
-            <span className="text-xl font-cyber font-bold text-cyber-green holographic-text">
+            <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-cyber-green" />
+            <span className="text-lg sm:text-xl font-cyber font-bold text-cyber-green holographic-text">
               CyberSec Portfolio
             </span>
           </div>
@@ -77,20 +77,20 @@ const Layout = () => {
 
       {/* Footer */}
       <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
-        <div className="container py-8">
+        <div className="container py-6 sm:py-8 px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex items-center space-x-2">
-              <Zap className="h-5 w-5 text-cyber-green" />
-                      <span className="text-sm text-muted-foreground glitch-text" data-text="© 2024 John Katsimpris. Securing the digital frontier.">
-          © 2024 John Katsimpris. Securing the digital frontier.
-        </span>
+            <div className="flex items-center space-x-2 text-center">
+              <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-cyber-green" />
+              <span className="text-xs sm:text-sm text-muted-foreground glitch-text" data-text="© 2024 John Katsimpris. Securing the digital frontier.">
+                © 2024 John Katsimpris. Securing the digital frontier.
+              </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 sm:space-x-4 flex-wrap justify-center">
               <a
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
               >
                 GitHub
               </a>
@@ -98,19 +98,19 @@ const Layout = () => {
                 href="https://www.linkedin.com/in/ioannis-katsimpris-2a45991ba/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
               >
                 LinkedIn
               </a>
               <a
                 href="mailto:gianniskatsibris@gmail.com"
-                className="text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
               >
                 Contact
               </a>
               <a
                 href="/terms"
-                className="text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
               >
                 Terms
               </a>
