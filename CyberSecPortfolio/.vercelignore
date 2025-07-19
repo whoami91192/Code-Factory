@@ -1,0 +1,12 @@
+# Ignore server files for Vercel deployment
+server/
+api/
+node_modules/
+*.log
+.env
+.env.local
+.env.production
+.env.development
+
+# Keep only client files
+!client/ 
