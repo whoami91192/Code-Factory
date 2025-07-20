@@ -76,32 +76,30 @@ export default async function handler(req, res) {
     })
 
     const recaptchaResult = await recaptchaResponse.json()
-    console.log('reCAPTCHA verification result:', recaptchaResult)
+    // Security verification completed
 
     if (!recaptchaResult.success) {
       console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
       return res.status(400).json({
         success: false,
-        message: 'reCAPTCHA verification failed. Please try again.',
-        recaptchaErrors: recaptchaResult['error-codes']
+        message: 'Security verification failed. Please try again.'
       })
     }
 
     // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
     const score = recaptchaResult.score || 0
-    console.log('reCAPTCHA score:', score)
+    // Score verification completed
 
     // Use a threshold of 0.5 (you can adjust this based on your needs)
     if (score < 0.5) {
-      console.log('reCAPTCHA score too low:', score)
+      // Score below threshold
       return res.status(400).json({
         success: false,
-        message: 'Security verification failed. Please try again.',
-        recaptchaScore: score
+        message: 'Security verification failed. Please try again.'
       })
     }
 
-    console.log('reCAPTCHA verification successful with score:', score)
+    // Security verification successful
 
     // Check if environment variables are set
     console.log('Checking environment variables...')

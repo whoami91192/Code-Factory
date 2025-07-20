@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-import RecaptchaTest from '../components/RecaptchaTest'
 
 // Declare grecaptcha for TypeScript
 declare global {
@@ -22,7 +21,6 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [captchaScore, setCaptchaScore] = useState<number | null>(null)
 
   // Load reCAPTCHA v3 script
   useEffect(() => {
@@ -40,7 +38,7 @@ const Contact = () => {
   const executeRecaptcha = async (): Promise<string> => {
     return new Promise((resolve, reject) => {
       if (typeof window.grecaptcha === 'undefined') {
-        reject(new Error('reCAPTCHA not loaded'))
+        reject(new Error('Security verification failed'))
         return
       }
 
@@ -62,13 +60,9 @@ const Contact = () => {
     setIsSubmitting(true)
     
     try {
-      // Execute reCAPTCHA v3
-      console.log('Executing reCAPTCHA v3...')
+      // Execute reCAPTCHA v3 silently
       const token = await executeRecaptcha()
       setCaptchaToken(token)
-      console.log('reCAPTCHA token received:', token.substring(0, 20) + '...')
-      
-      console.log('Submitting form data:', formData)
       
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -81,34 +75,27 @@ const Contact = () => {
         })
       })
 
-      console.log('Response status:', response.status)
-      console.log('Response headers:', response.headers)
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const result = await response.json()
-      console.log('Response result:', result)
 
       if (result.success) {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
         setCaptchaToken(null)
-        setCaptchaScore(null)
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000)
       } else {
-        alert('Failed to send message: ' + result.message)
+        alert('Failed to send message. Please try again.')
       }
     } catch (error) {
-      console.error('Error sending message:', error)
-      
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
         alert('Network error. Please check your connection and try again.')
       } else if (error.message.includes('HTTP error')) {
         alert('Server error. Please try again later.')
-      } else if (error.message.includes('reCAPTCHA not loaded')) {
+      } else if (error.message.includes('Security verification failed')) {
         alert('Security verification failed. Please refresh the page and try again.')
       } else {
         alert('Failed to send message. Please try again later.')
@@ -268,7 +255,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-ring-cyber-green placeholder-gray-600"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -289,15 +276,6 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* reCAPTCHA v3 Status */}
-                {captchaToken && (
-                  <div className="bg-cyber-green/10 border border-cyber-green/30 rounded-lg p-3">
-                    <p className="text-cyber-green text-sm">
-                      ✅ Security verification completed
-                    </p>
-                  </div>
-                )}
-
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -305,18 +283,9 @@ const Contact = () => {
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
-                
-                <p className="text-xs text-muted-foreground text-center">
-                  🔒 This form is protected by reCAPTCHA v3. No user interaction required.
-                </p>
               </form>
             )}
           </div>
-        </div>
-
-        {/* reCAPTCHA Test */}
-        <div className="mt-20">
-          <RecaptchaTest />
         </div>
 
         {/* Additional Info */}
