@@ -1,6 +1,16 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-import ReCAPTCHA from 'react-google-recaptcha'
+import RecaptchaTest from '../components/RecaptchaTest'
+
+// Declare grecaptcha for TypeScript
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,20 +22,52 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const [captchaScore, setCaptchaScore] = useState<number | null>(null)
+
+  // Load reCAPTCHA v3 script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E'
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
+
+  const executeRecaptcha = async (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (typeof window.grecaptcha === 'undefined') {
+        reject(new Error('reCAPTCHA not loaded'))
+        return
+      }
+
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E', {
+          action: 'contact_submit'
+        }).then((token: string) => {
+          resolve(token)
+        }).catch((error: any) => {
+          reject(error)
+        })
+      })
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Check if reCAPTCHA is completed
-    if (!captchaToken) {
-      alert('Please complete the reCAPTCHA verification before submitting.')
-      return
-    }
-    
     setIsSubmitting(true)
     
     try {
+      // Execute reCAPTCHA v3
+      console.log('Executing reCAPTCHA v3...')
+      const token = await executeRecaptcha()
+      setCaptchaToken(token)
+      console.log('reCAPTCHA token received:', token.substring(0, 20) + '...')
+      
       console.log('Submitting form data:', formData)
       
       const response = await fetch('/api/contact', {
@@ -35,7 +77,7 @@ const Contact = () => {
         },
         body: JSON.stringify({
           ...formData,
-          captchaToken: captchaToken
+          captchaToken: token
         })
       })
 
@@ -53,7 +95,7 @@ const Contact = () => {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
         setCaptchaToken(null)
-        recaptchaRef.current?.reset()
+        setCaptchaScore(null)
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000)
       } else {
@@ -66,6 +108,8 @@ const Contact = () => {
         alert('Network error. Please check your connection and try again.')
       } else if (error.message.includes('HTTP error')) {
         alert('Server error. Please try again later.')
+      } else if (error.message.includes('reCAPTCHA not loaded')) {
+        alert('Security verification failed. Please refresh the page and try again.')
       } else {
         alert('Failed to send message. Please try again later.')
       }
@@ -79,10 +123,6 @@ const Contact = () => {
       ...prev,
       [e.target.name]: e.target.value
     }))
-  }
-
-  const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token)
   }
 
   const contactInfo = [
@@ -249,35 +289,34 @@ const Contact = () => {
                   />
                 </div>
 
-                {/* reCAPTCHA */}
-                <div className="flex justify-center">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey="6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E"
-                    onChange={handleCaptchaChange}
-                    theme="dark"
-                    className="recaptcha-container"
-                  />
-                </div>
+                {/* reCAPTCHA v3 Status */}
+                {captchaToken && (
+                  <div className="bg-cyber-green/10 border border-cyber-green/30 rounded-lg p-3">
+                    <p className="text-cyber-green text-sm">
+                      ✅ Security verification completed
+                    </p>
+                  </div>
+                )}
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || !captchaToken}
-                  className={`cyber-button-magnetic target-lock w-full ${
-                    !captchaToken ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  disabled={isSubmitting}
+                  className="cyber-button-magnetic target-lock w-full"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
                 
-                {!captchaToken && (
-                  <p className="text-sm text-cyber-warning text-center">
-                    ⚠️ Please complete the reCAPTCHA verification to send your message.
-                  </p>
-                )}
+                <p className="text-xs text-muted-foreground text-center">
+                  🔒 This form is protected by reCAPTCHA v3. No user interaction required.
+                </p>
               </form>
             )}
           </div>
+        </div>
+
+        {/* reCAPTCHA Test */}
+        <div className="mt-20">
+          <RecaptchaTest />
         </div>
 
         {/* Additional Info */}

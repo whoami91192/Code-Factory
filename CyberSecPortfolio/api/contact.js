@@ -87,7 +87,21 @@ export default async function handler(req, res) {
       })
     }
 
-    console.log('reCAPTCHA verification successful')
+    // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
+    const score = recaptchaResult.score || 0
+    console.log('reCAPTCHA score:', score)
+
+    // Use a threshold of 0.5 (you can adjust this based on your needs)
+    if (score < 0.5) {
+      console.log('reCAPTCHA score too low:', score)
+      return res.status(400).json({
+        success: false,
+        message: 'Security verification failed. Please try again.',
+        recaptchaScore: score
+      })
+    }
+
+    console.log('reCAPTCHA verification successful with score:', score)
 
     // Check if environment variables are set
     console.log('Checking environment variables...')
@@ -162,7 +176,7 @@ ${message}
           
           <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
             <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
-            <p style="margin: 5px 0;">✅ reCAPTCHA verification: PASSED</p>
+            <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: PASSED (Score: ${score.toFixed(2)})</p>
             <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
               timeZone: 'Europe/Athens',
               year: 'numeric',
