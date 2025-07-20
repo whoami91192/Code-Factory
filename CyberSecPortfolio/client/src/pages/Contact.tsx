@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +11,18 @@ const Contact = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check if reCAPTCHA is completed
+    if (!captchaToken) {
+      alert('Please complete the reCAPTCHA verification before submitting.')
+      return
+    }
+    
     setIsSubmitting(true)
     
     try {
@@ -23,7 +33,10 @@ const Contact = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          captchaToken: captchaToken
+        })
       })
 
       console.log('Response status:', response.status)
@@ -39,6 +52,8 @@ const Contact = () => {
       if (result.success) {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
+        setCaptchaToken(null)
+        recaptchaRef.current?.reset()
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000)
       } else {
@@ -64,6 +79,10 @@ const Contact = () => {
       ...prev,
       [e.target.name]: e.target.value
     }))
+  }
+
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token)
   }
 
   const contactInfo = [
@@ -230,13 +249,32 @@ const Contact = () => {
                   />
                 </div>
 
+                {/* reCAPTCHA */}
+                <div className="flex justify-center">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey="6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E"
+                    onChange={handleCaptchaChange}
+                    theme="dark"
+                    className="recaptcha-container"
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="cyber-button-magnetic target-lock w-full"
+                  disabled={isSubmitting || !captchaToken}
+                  className={`cyber-button-magnetic target-lock w-full ${
+                    !captchaToken ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
+                
+                {!captchaToken && (
+                  <p className="text-sm text-cyber-warning text-center">
+                    ⚠️ Please complete the reCAPTCHA verification to send your message.
+                  </p>
+                )}
               </form>
             )}
           </div>

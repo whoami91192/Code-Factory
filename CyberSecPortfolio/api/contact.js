@@ -38,9 +38,9 @@ export default async function handler(req, res) {
 
   try {
     console.log('Processing POST request...')
-    const { name, email, subject, message } = req.body
+    const { name, email, subject, message, captchaToken } = req.body
 
-    console.log('Extracted data:', { name, email, subject, message })
+    console.log('Extracted data:', { name, email, subject, message, hasCaptchaToken: !!captchaToken })
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
@@ -51,6 +51,43 @@ export default async function handler(req, res) {
         received: { name: !!name, email: !!email, subject: !!subject, message: !!message }
       })
     }
+
+    // Validate reCAPTCHA token
+    if (!captchaToken) {
+      console.log('Missing reCAPTCHA token')
+      return res.status(400).json({
+        success: false,
+        message: 'reCAPTCHA verification is required'
+      })
+    }
+
+    // Verify reCAPTCHA token with Google
+    console.log('Verifying reCAPTCHA token...')
+    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
+        response: captchaToken,
+        remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+      })
+    })
+
+    const recaptchaResult = await recaptchaResponse.json()
+    console.log('reCAPTCHA verification result:', recaptchaResult)
+
+    if (!recaptchaResult.success) {
+      console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
+      return res.status(400).json({
+        success: false,
+        message: 'reCAPTCHA verification failed. Please try again.',
+        recaptchaErrors: recaptchaResult['error-codes']
+      })
+    }
+
+    console.log('reCAPTCHA verification successful')
 
     // Check if environment variables are set
     console.log('Checking environment variables...')
@@ -125,6 +162,7 @@ ${message}
           
           <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
             <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
+            <p style="margin: 5px 0;">✅ reCAPTCHA verification: PASSED</p>
             <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
               timeZone: 'Europe/Athens',
               year: 'numeric',
