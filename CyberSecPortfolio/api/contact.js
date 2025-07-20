@@ -69,7 +69,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        secret: process.env.RECAPTCHA_SECRET_KEY || '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
+        secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
         response: captchaToken,
         remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
       })

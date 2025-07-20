@@ -1,6 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-import ReCAPTCHA from 'react-google-recaptcha'
+
+// Declare grecaptcha for TypeScript
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,23 +21,49 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
-  const handleRecaptchaChange = (token: string | null) => {
-    setCaptchaToken(token)
+  // Load reCAPTCHA v3 script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E'
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
+
+  const executeRecaptcha = async (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (typeof window.grecaptcha === 'undefined') {
+        reject(new Error('Security verification failed'))
+        return
+      }
+
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E', {
+          action: 'contact_submit'
+        }).then((token: string) => {
+          resolve(token)
+        }).catch((error: any) => {
+          reject(error)
+        })
+      })
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!captchaToken) {
-      alert('Please complete the security verification')
-      return
-    }
-    
     setIsSubmitting(true)
     
     try {
+      // Execute reCAPTCHA v3 silently
+      const token = await executeRecaptcha()
+      setCaptchaToken(token)
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -36,7 +71,7 @@ const Contact = () => {
         },
         body: JSON.stringify({
           ...formData,
-          captchaToken: captchaToken
+          captchaToken: token
         })
       })
 
@@ -50,34 +85,21 @@ const Contact = () => {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
         setCaptchaToken(null)
-        // Reset reCAPTCHA
-        if (recaptchaRef.current) {
-          recaptchaRef.current.reset()
-        }
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000)
       } else {
         alert('Failed to send message. Please try again.')
-        // Reset reCAPTCHA on failure
-        if (recaptchaRef.current) {
-          recaptchaRef.current.reset()
-        }
-        setCaptchaToken(null)
       }
     } catch (error) {
-      console.error('Submit error:', error)
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
         alert('Network error. Please check your connection and try again.')
       } else if (error.message.includes('HTTP error')) {
         alert('Server error. Please try again later.')
+      } else if (error.message.includes('Security verification failed')) {
+        alert('Security verification failed. Please refresh the page and try again.')
       } else {
         alert('Failed to send message. Please try again later.')
       }
-      // Reset reCAPTCHA on error
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset()
-      }
-      setCaptchaToken(null)
     } finally {
       setIsSubmitting(false)
     }
@@ -201,7 +223,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/50 border border-cyber-green/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyber-green focus:ring-1 focus:ring-cyber-green/50 transition-all duration-300"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
                     placeholder="Your full name"
                   />
                 </div>
@@ -217,7 +239,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/50 border border-cyber-green/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyber-green focus:ring-1 focus:ring-cyber-green/50 transition-all duration-300"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -233,7 +255,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-black/50 border border-cyber-green/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyber-green focus:ring-1 focus:ring-cyber-green/50 transition-all duration-300"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-ring-cyber-green placeholder-gray-600"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -249,43 +271,18 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 bg-black/50 border border-cyber-green/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyber-green focus:ring-1 focus:ring-cyber-green/50 transition-all duration-300 resize-none"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green resize-none placeholder-gray-600"
                     placeholder="Tell me about your security needs..."
-                  />
-                </div>
-
-                {/* reCAPTCHA */}
-                <div className="flex justify-center">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E'}
-                    onChange={handleRecaptchaChange}
-                    theme="dark"
-                    size="normal"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || !captchaToken}
-                  className="w-full bg-gradient-to-r from-cyber-green to-emerald-600 text-black font-bold py-4 px-6 rounded-lg hover:from-emerald-500 hover:to-cyber-green transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  disabled={isSubmitting}
+                  className="cyber-button-magnetic target-lock w-full"
                 >
-                  {isSubmitting ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <Clock className="h-5 w-5 animate-spin" />
-                      <span>Sending Message...</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center space-x-2">
-                      <Mail className="h-5 w-5" />
-                      <span>Send Message</span>
-                    </div>
-                  )}
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
-
-                <div className="text-center text-sm text-white/70">
-                  <p>🔒 Your message is protected by advanced security verification</p>
-                </div>
               </form>
             )}
           </div>
