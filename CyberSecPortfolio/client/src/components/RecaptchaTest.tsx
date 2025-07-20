@@ -1,69 +1,24 @@
-import { useState, useEffect } from 'react'
-
-// Declare grecaptcha for TypeScript
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
+import { useState } from 'react'
+import { useRecaptcha } from '../hooks/useRecaptcha'
 
 const RecaptchaTest = () => {
   const [token, setToken] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  // Load reCAPTCHA v3 script
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?render=${import.meta.env.VITE_RECAPTCHA_SITE_KEY}`
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
-
-    return () => {
-      const existingScript = document.head.querySelector('script[src*="recaptcha/api.js"]')
-      if (existingScript) {
-        document.head.removeChild(existingScript)
-      }
-    }
-  }, [])
-
-  const executeRecaptcha = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      if (typeof window.grecaptcha === 'undefined') {
-        reject(new Error('reCAPTCHA not loaded'))
-        return
-      }
-
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY, {
-          action: 'test_action'
-        }).then((token: string) => {
-          resolve(token)
-        }).catch((error: any) => {
-          reject(error)
-        })
-      })
-    })
-  }
+  // Use reCAPTCHA hook
+  const { execute, isLoaded, isLoading, error, resetError } = useRecaptcha({
+    action: 'test_action'
+  })
 
   const testRecaptcha = async () => {
-    setLoading(true)
-    setError(null)
+    resetError()
     setToken(null)
 
     try {
-      const newToken = await executeRecaptcha()
+      const newToken = await execute()
       setToken(newToken)
       console.log('reCAPTCHA token generated:', newToken)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
       console.error('reCAPTCHA error:', err)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -73,10 +28,10 @@ const RecaptchaTest = () => {
       
       <button
         onClick={testRecaptcha}
-        disabled={loading}
+        disabled={isLoading}
         className="cyber-button-magnetic mb-4"
       >
-        {loading ? 'Generating Token...' : 'Test reCAPTCHA'}
+        {isLoading ? 'Generating Token...' : 'Test reCAPTCHA'}
       </button>
 
       {error && (

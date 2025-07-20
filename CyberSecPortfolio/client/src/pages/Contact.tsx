@@ -1,15 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-
-// Declare grecaptcha for TypeScript
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
+import { useRecaptcha } from '../hooks/useRecaptcha'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -22,40 +13,12 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
-  // Load reCAPTCHA v3 script
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?render=${import.meta.env.VITE_RECAPTCHA_SITE_KEY}`
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
+  // Use reCAPTCHA hook
+  const { execute: executeRecaptcha, isLoaded: recaptchaLoaded, error: recaptchaError } = useRecaptcha({
+    action: 'contact_submit'
+  })
 
-    return () => {
-      const existingScript = document.head.querySelector('script[src*="recaptcha/api.js"]')
-      if (existingScript) {
-        document.head.removeChild(existingScript)
-      }
-    }
-  }, [])
 
-  const executeRecaptcha = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      if (typeof window.grecaptcha === 'undefined') {
-        reject(new Error('Security verification failed'))
-        return
-      }
-
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY, {
-          action: 'contact_submit'
-        }).then((token: string) => {
-          resolve(token)
-        }).catch((error: any) => {
-          reject(error)
-        })
-      })
-    })
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -215,6 +178,11 @@ const Contact = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="cyber-card space-y-6 contact-form">
+                {recaptchaError && (
+                  <div className="p-3 bg-red-500/20 border border-red-500/30 rounded text-red-400">
+                    <strong>Security Error:</strong> {recaptchaError}
+                  </div>
+                )}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white drop-shadow mb-2">
                     Name *
