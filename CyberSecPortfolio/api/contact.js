@@ -149,7 +149,7 @@ export default async function handler(req, res) {
         const nodemailer = await import('nodemailer')
         
         // Create transporter with better error handling
-        const transporter = nodemailer.default.createTransporter({
+        const transporter = nodemailer.default.createTransport({
           host: process.env.SMTP_HOST || 'smtp.gmail.com',
           port: parseInt(process.env.SMTP_PORT) || 587,
           secure: false,
