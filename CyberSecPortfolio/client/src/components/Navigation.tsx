@@ -6,8 +6,6 @@ const Navigation = () => {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const [lastScrollY, setLastScrollY] = useState(0)
   const [scrollProgress, setScrollProgress] = useState(0)
 
   // Handle scroll effects
@@ -21,22 +19,13 @@ const Navigation = () => {
       const progress = Math.min((currentScrollY / (documentHeight - windowHeight)) * 100, 100)
       setScrollProgress(progress)
       
-      // Check if scrolled down enough to show floating nav
+      // Show floating nav when scrolled down enough
       setIsScrolled(currentScrollY > 100)
-      
-      // Hide/show nav based on scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setIsVisible(false) // Hide when scrolling down
-      } else {
-        setIsVisible(true) // Show when scrolling up
-      }
-      
-      setLastScrollY(currentScrollY)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+  }, [])
 
   const navItems = [
     { path: '/', label: 'Home' },
@@ -52,7 +41,7 @@ const Navigation = () => {
       {/* Floating Navigation Bar */}
       <div 
         className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ease-out ${
-          isScrolled && isVisible 
+          isScrolled 
             ? 'opacity-100 translate-y-0' 
             : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
