@@ -11,6 +11,7 @@ const Contact = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
   
   const { executeRecaptcha } = useGoogleReCaptcha()
   const isProduction = window.location.hostname === 'code-factory-gamma.vercel.app'
@@ -78,9 +79,13 @@ const Contact = () => {
 
       if (result.success) {
         setIsSubmitted(true)
+        setSubmitMessage(result.message)
         setFormData({ name: '', email: '', subject: '', message: '' })
         // Reset success message after 5 seconds
-        setTimeout(() => setIsSubmitted(false), 5000)
+        setTimeout(() => {
+          setIsSubmitted(false)
+          setSubmitMessage('')
+        }, 5000)
       } else {
         alert('Failed to send message. Please try again.')
       }
@@ -195,11 +200,14 @@ const Contact = () => {
                 <CheckCircle className="h-16 w-16 mx-auto mb-4 text-cyber-green glow-text" />
                 <h3 className="text-xl font-bold mb-2">Message Sent Successfully!</h3>
                 <p className="text-white/90 drop-shadow mb-4">
-                  Thank you for your message. I'll get back to you within 24 hours.
+                  {submitMessage || 'Thank you for your message. I\'ll get back to you within 24 hours.'}
                 </p>
                 <div className="bg-cyber-green/10 border border-cyber-green/30 rounded-lg p-4 mt-4">
                   <p className="text-cyber-green text-sm">
-                    📧 A confirmation email has been sent to your inbox with details of your message.
+                    {submitMessage.includes('email') 
+                      ? '📧 A confirmation email has been sent to your inbox with details of your message.'
+                      : '📝 Your message has been received and logged. I will review it and get back to you soon.'
+                    }
                   </p>
                 </div>
               </div>
