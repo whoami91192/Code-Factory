@@ -134,9 +134,165 @@ export default async function handler(req, res) {
     console.log(JSON.stringify(contactData, null, 2))
     console.log('=== END CONTACT FORM DATA ===')
 
-    // Try to send email using a simple webhook approach
+    // Try to send emails if SMTP configuration is available
+    let emailSent = false
     try {
-      // Send notification to admin via webhook (you can set this up later)
+      console.log('Checking email configuration...')
+      console.log('SMTP_USER exists:', !!process.env.SMTP_USER)
+      console.log('SMTP_PASS exists:', !!process.env.SMTP_PASS)
+      console.log('SMTP_FROM exists:', !!process.env.SMTP_FROM)
+
+      if (process.env.SMTP_USER && process.env.SMTP_PASS && process.env.SMTP_FROM) {
+        console.log('Email configuration found, sending emails...')
+        
+        // Import nodemailer dynamically
+        const nodemailer = await import('nodemailer')
+        
+        // Create transporter with better error handling
+        const transporter = nodemailer.default.createTransporter({
+          host: process.env.SMTP_HOST || 'smtp.gmail.com',
+          port: parseInt(process.env.SMTP_PORT) || 587,
+          secure: false,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
+          },
+          tls: {
+            rejectUnauthorized: false
+          }
+        })
+
+        console.log('Transporter created successfully')
+
+        // Verify connection configuration
+        await transporter.verify()
+        console.log('SMTP connection verified successfully')
+
+        // Email content for admin
+        const adminMailOptions = {
+          from: process.env.SMTP_FROM,
+          to: 'gianniskatsibris@gmail.com',
+          subject: `🔒 Portfolio Contact: ${subject}`,
+          html: `
+            <div style="font-family: 'Courier New', monospace; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #00ff41; border: 2px solid #00ff41; padding: 20px;">
+              <div style="text-align: center; border-bottom: 2px solid #00ff41; padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #00ff41; text-shadow: 0 0 10px #00ff41;">🚨 NEW CONTACT FORM SUBMISSION 🚨</h2>
+                <p style="margin: 5px 0; font-size: 12px; color: #888;">Cyber Security Portfolio Alert</p>
+              </div>
+              
+              <div style="background: #1a1a1a; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #00ff41;">
+                <div style="margin-bottom: 15px;">
+                  <strong style="color: #00ff41;">👤 SENDER:</strong> ${name}
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <strong style="color: #00ff41;">📧 EMAIL:</strong> ${email}
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <strong style="color: #00ff41;">📋 SUBJECT:</strong> ${subject}
+                </div>
+                <div style="margin-bottom: 15px;">
+                  <strong style="color: #00ff41;">💬 MESSAGE:</strong>
+                </div>
+                <div style="background: #2a2a2a; padding: 15px; border-radius: 3px; border: 1px solid #333; white-space: pre-wrap; color: #ffffff;">
+${message}
+                </div>
+              </div>
+              
+              <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
+                <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
+                <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'SKIPPED (Development Mode)'}</p>
+                <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
+                  timeZone: 'Europe/Athens',
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                })}</p>
+                <p style="margin: 5px 0;">🌐 IP: ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}</p>
+              </div>
+            </div>
+          `
+        }
+
+        // Email content for user confirmation
+        const userMailOptions = {
+          from: process.env.SMTP_FROM,
+          to: email,
+          subject: `✅ Message Received - Ioannis Katsimpris | Cyber Security Portfolio`,
+          html: `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; color: #333333; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+                <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">🔒 Ioannis Katsimpris</h1>
+                <p style="margin: 5px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">Cyber Security Professional</p>
+              </div>
+              
+              <div style="padding: 40px 30px;">
+                <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 20px; font-weight: 600;">Thank you for your message!</h2>
+                
+                <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
+                  Dear <strong>${name}</strong>,
+                </p>
+                
+                <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
+                  Thank you for reaching out to me through my Cyber Security Portfolio. I have successfully received your message and I appreciate you taking the time to contact me.
+                </p>
+                
+                <div style="background: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; margin: 25px 0; border-radius: 4px;">
+                  <h3 style="margin: 0 0 10px 0; color: #333333; font-size: 18px; font-weight: 600;">📋 Message Details:</h3>
+                  <p style="margin: 5px 0; color: #555555;"><strong>Subject:</strong> ${subject}</p>
+                  <p style="margin: 5px 0; color: #555555;"><strong>Date:</strong> ${new Date().toLocaleString('en-US', { 
+                    timeZone: 'Europe/Athens',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}</p>
+                </div>
+                
+                <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
+                  I will review your message carefully and get back to you as soon as possible, typically within 24-48 hours.
+                </p>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="https://code-factory-gamma.vercel.app" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; font-size: 16px;">🌐 Visit My Portfolio</a>
+                </div>
+                
+                <div style="border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 30px;">
+                  <p style="margin: 0; color: #888888; font-size: 14px; text-align: center;">
+                    Best regards,<br>
+                    <strong>Ioannis Katsimpris</strong><br>
+                    Cyber Security Professional<br>
+                    <a href="mailto:gianniskatsibris@gmail.com" style="color: #667eea;">gianniskatsibris@gmail.com</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          `
+        }
+
+        console.log('Sending admin email...')
+        await transporter.sendMail(adminMailOptions)
+        console.log('Admin email sent successfully')
+
+        console.log('Sending user confirmation email...')
+        await transporter.sendMail(userMailOptions)
+        console.log('User confirmation email sent successfully')
+
+        emailSent = true
+        console.log('All emails sent successfully')
+      } else {
+        console.log('No email configuration found')
+      }
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError)
+      emailSent = false
+    }
+
+    // Try to send notification via webhook as backup
+    try {
       if (process.env.WEBHOOK_URL) {
         await fetch(process.env.WEBHOOK_URL, {
           method: 'POST',
@@ -144,7 +300,7 @@ export default async function handler(req, res) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            text: `🔒 New Contact Form Submission\n\n👤 **Name:** ${name}\n📧 **Email:** ${email}\n📋 **Subject:** ${subject}\n💬 **Message:** ${message}\n✅ **reCAPTCHA:** ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'SKIPPED'}\n⏰ **Time:** ${new Date().toLocaleString('en-US', { timeZone: 'Europe/Athens' })}\n🌐 **IP:** ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`
+            text: `🔒 New Contact Form Submission\n\n👤 **Name:** ${name}\n📧 **Email:** ${email}\n📋 **Subject:** ${subject}\n💬 **Message:** ${message}\n✅ **reCAPTCHA:** ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'SKIPPED'}\n📧 **Email Sent:** ${emailSent ? 'YES' : 'NO'}\n⏰ **Time:** ${new Date().toLocaleString('en-US', { timeZone: 'Europe/Athens' })}\n🌐 **IP:** ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`
           })
         })
         console.log('Webhook notification sent')
@@ -155,7 +311,9 @@ export default async function handler(req, res) {
 
     res.status(200).json({ 
       success: true, 
-      message: 'Message received successfully! I will get back to you within 24 hours.'
+      message: emailSent 
+        ? 'Message sent successfully! Check your email for confirmation.' 
+        : 'Message received successfully! I will get back to you within 24 hours.'
     })
 
   } catch (error) {
