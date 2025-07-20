@@ -84,8 +84,8 @@ export default async function handler(req, res) {
         score = recaptchaResult.score || 0
         console.log('reCAPTCHA score:', score)
 
-        // Use a threshold of 0.5 (you can adjust this based on your needs)
-        if (score < 0.5) {
+        // Use a threshold of 0.3 (more user-friendly)
+        if (score < 0.3) {
           console.log('Score below threshold:', score)
           return res.status(400).json({
             success: false,
