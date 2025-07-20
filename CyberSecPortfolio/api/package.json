@@ -6,9 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "nodemailer": "^6.9.7"
-  },
+  "dependencies": {},
   "keywords": [
     "api",
     "vercel",
