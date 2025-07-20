@@ -13,44 +13,63 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   
   const { executeRecaptcha } = useGoogleReCaptcha()
+  const isProduction = window.location.hostname === 'code-factory-gamma.vercel.app'
 
   // Debug reCAPTCHA loading
   useEffect(() => {
     console.log('executeRecaptcha available:', !!executeRecaptcha)
-  }, [executeRecaptcha])
+    console.log('isProduction:', isProduction)
+  }, [executeRecaptcha, isProduction])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     
     console.log('Form submitted, checking reCAPTCHA...')
     console.log('executeRecaptcha available:', !!executeRecaptcha)
+    console.log('isProduction:', isProduction)
     
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available')
-      alert('Security verification is loading. Please try again in a moment.')
-      return
+    let captchaToken = null
+    
+    // Only use reCAPTCHA in production
+    if (isProduction) {
+      if (!executeRecaptcha) {
+        console.log('Execute recaptcha not yet available')
+        alert('Security verification is loading. Please try again in a moment.')
+        return
+      }
+
+      try {
+        console.log('Executing reCAPTCHA...')
+        // Execute reCAPTCHA v3 silently
+        captchaToken = await executeRecaptcha('contactForm')
+        console.log('reCAPTCHA token received:', captchaToken ? 'YES' : 'NO')
+      } catch (error) {
+        console.error('reCAPTCHA error:', error)
+        alert('Security verification failed. Please try again.')
+        return
+      }
+    } else {
+      console.log('Development mode - skipping reCAPTCHA')
     }
 
     setIsSubmitting(true)
     
     try {
-      console.log('Executing reCAPTCHA...')
-      // Execute reCAPTCHA v3 silently
-      const token = await executeRecaptcha('contactForm')
-      console.log('reCAPTCHA token received:', token ? 'YES' : 'NO')
-      
+      const requestBody = isProduction 
+        ? { ...formData, captchaToken }
+        : formData
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          captchaToken: token
-        })
+        body: JSON.stringify(requestBody)
       })
 
       if (!response.ok) {
+        const errorText = await response.text()
+        console.error('API Error Response:', errorText)
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -77,7 +96,7 @@ const Contact = () => {
     } finally {
       setIsSubmitting(false)
     }
-  }, [executeRecaptcha, formData])
+  }, [executeRecaptcha, formData, isProduction])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({

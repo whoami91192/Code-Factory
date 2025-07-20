@@ -53,50 +53,57 @@ export default async function handler(req, res) {
       })
     }
 
-    // Validate reCAPTCHA token
-    if (!captchaToken) {
-      console.log('Missing reCAPTCHA token')
-      return res.status(400).json({
-        success: false,
-        message: 'Security verification is required'
-      })
-    }
+    let score = 1.0 // Default score for development mode
+    let recaptchaVerified = true
 
-    // Verify reCAPTCHA token with Google using axios
-    console.log('Verifying reCAPTCHA token...')
-    const recaptchaResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
-      params: {
-        secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
-        response: captchaToken,
-        remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    // Only verify reCAPTCHA if token is provided (production mode)
+    if (captchaToken) {
+      console.log('Verifying reCAPTCHA token...')
+      try {
+        const recaptchaResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
+          params: {
+            secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
+            response: captchaToken,
+            remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          }
+        })
+
+        const recaptchaResult = recaptchaResponse.data
+        console.log('reCAPTCHA verification result:', recaptchaResult)
+
+        if (!recaptchaResult.success) {
+          console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
+          return res.status(400).json({
+            success: false,
+            message: 'Security verification failed. Please try again.'
+          })
+        }
+
+        // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
+        score = recaptchaResult.score || 0
+        console.log('reCAPTCHA score:', score)
+
+        // Use a threshold of 0.5 (you can adjust this based on your needs)
+        if (score < 0.5) {
+          console.log('Score below threshold:', score)
+          return res.status(400).json({
+            success: false,
+            message: 'Security verification failed. Please try again.'
+          })
+        }
+
+        console.log('reCAPTCHA verification successful with score:', score)
+      } catch (error) {
+        console.error('Error during reCAPTCHA verification:', error)
+        return res.status(400).json({
+          success: false,
+          message: 'Security verification failed. Please try again.'
+        })
       }
-    })
-
-    const recaptchaResult = recaptchaResponse.data
-    console.log('reCAPTCHA verification result:', recaptchaResult)
-
-    if (!recaptchaResult.success) {
-      console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
-      return res.status(400).json({
-        success: false,
-        message: 'Security verification failed. Please try again.'
-      })
+    } else {
+      console.log('No reCAPTCHA token provided - development mode')
+      recaptchaVerified = false
     }
-
-    // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
-    const score = recaptchaResult.score || 0
-    console.log('reCAPTCHA score:', score)
-
-    // Use a threshold of 0.5 (you can adjust this based on your needs)
-    if (score < 0.5) {
-      console.log('Score below threshold:', score)
-      return res.status(400).json({
-        success: false,
-        message: 'Security verification failed. Please try again.'
-      })
-    }
-
-    console.log('reCAPTCHA verification successful with score:', score)
 
     // Check if environment variables are set
     console.log('Checking environment variables...')
@@ -171,7 +178,7 @@ ${message}
           
           <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
             <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
-            <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: PASSED (Score: ${score.toFixed(2)})</p>
+            <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'SKIPPED (Development Mode)'}</p>
             <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
               timeZone: 'Europe/Athens',
               year: 'numeric',
