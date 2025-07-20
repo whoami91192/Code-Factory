@@ -478,40 +478,7 @@
   }
 }
 
-/* reCAPTCHA Styles */
-.recaptcha-container {
-  transform: scale(0.9);
-  transform-origin: center;
-}
 
-.recaptcha-container > div {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Dark theme for reCAPTCHA */
-.grecaptcha-badge {
-  visibility: hidden !important;
-}
-
-/* reCAPTCHA iframe styling */
-iframe[src*="recaptcha"] {
-  border-radius: 8px;
-  border: 1px solid rgba(0, 128, 255, 0.3);
-}
-
-/* Mobile reCAPTCHA adjustments */
-@media (max-width: 768px) {
-  .recaptcha-container {
-    transform: scale(0.8);
-  }
-}
-
-@media (max-width: 480px) {
-  .recaptcha-container {
-    transform: scale(0.7);
-  }
-}
 
 .liquid-metal-svg {
   position: fixed;

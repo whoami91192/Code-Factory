@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
 
 // Declare grecaptcha for TypeScript
@@ -255,7 +255,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
                     placeholder="What's this about?"
                   />
                 </div>

@@ -34,7 +34,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const toggleTheme = () => {
     // Do nothing - theme stays dark
-    console.log('Theme toggle disabled - website is always in dark mode')
   }
 
   return (
