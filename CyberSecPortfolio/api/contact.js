@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const axios = require('axios')
 
 export default async function handler(req, res) {
   console.log('=== CONTACT API CALLED ===')
@@ -57,26 +58,22 @@ export default async function handler(req, res) {
       console.log('Missing reCAPTCHA token')
       return res.status(400).json({
         success: false,
-        message: 'reCAPTCHA verification is required'
+        message: 'Security verification is required'
       })
     }
 
-    // Verify reCAPTCHA token with Google
+    // Verify reCAPTCHA token with Google using axios
     console.log('Verifying reCAPTCHA token...')
-    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
+    const recaptchaResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
+      params: {
         secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
         response: captchaToken,
         remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-      })
+      }
     })
 
-    const recaptchaResult = await recaptchaResponse.json()
-    // Security verification completed
+    const recaptchaResult = recaptchaResponse.data
+    console.log('reCAPTCHA verification result:', recaptchaResult)
 
     if (!recaptchaResult.success) {
       console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
@@ -88,18 +85,18 @@ export default async function handler(req, res) {
 
     // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
     const score = recaptchaResult.score || 0
-    // Score verification completed
+    console.log('reCAPTCHA score:', score)
 
     // Use a threshold of 0.5 (you can adjust this based on your needs)
     if (score < 0.5) {
-      // Score below threshold
+      console.log('Score below threshold:', score)
       return res.status(400).json({
         success: false,
         message: 'Security verification failed. Please try again.'
       })
     }
 
-    // Security verification successful
+    console.log('reCAPTCHA verification successful with score:', score)
 
     // Check if environment variables are set
     console.log('Checking environment variables...')
@@ -248,21 +245,13 @@ ${message}
             <div style="text-align: center; margin: 30px 0;">
               <a href="https://code-factory-gamma.vercel.app" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; font-size: 16px;">🌐 Visit My Portfolio</a>
             </div>
-          </div>
-          
-          <!-- Footer -->
-          <div style="background: #f8f9fa; padding: 25px 30px; text-align: center; border-top: 1px solid #e0e0e0;">
-            <p style="margin: 0 0 10px 0; color: #666666; font-size: 14px;">
-              <strong>Ioannis Katsimpris</strong><br>
-              Cyber Security Professional & Penetration Tester
-            </p>
-            <p style="margin: 0 0 15px 0; color: #888888; font-size: 12px;">
-              🔐 Specializing in Security Audits | 🛡️ Penetration Testing | 🔍 Incident Response
-            </p>
-            <div style="border-top: 1px solid #e0e0e0; padding-top: 15px;">
-              <p style="margin: 0; color: #999999; font-size: 11px;">
-                This is an automated confirmation email. Please do not reply to this message.<br>
-                If you have any questions, please use the contact form on my website.
+            
+            <div style="border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 30px;">
+              <p style="margin: 0; color: #888888; font-size: 14px; text-align: center;">
+                Best regards,<br>
+                <strong>Ioannis Katsimpris</strong><br>
+                Cyber Security Professional<br>
+                <a href="mailto:gianniskatsibris@gmail.com" style="color: #667eea;">gianniskatsibris@gmail.com</a>
               </p>
             </div>
           </div>
@@ -270,53 +259,26 @@ ${message}
       `
     }
 
-    console.log('Email options set, attempting to send...')
+    console.log('Sending admin email...')
+    await transporter.sendMail(adminMailOptions)
+    console.log('Admin email sent successfully')
 
-    // Send admin notification email
-    console.log('Sending admin notification...')
-    const adminResult = await transporter.sendMail(adminMailOptions)
-    console.log('Admin email sent successfully:', adminResult.messageId)
+    console.log('Sending user confirmation email...')
+    await transporter.sendMail(userMailOptions)
+    console.log('User confirmation email sent successfully')
 
-    // Send user confirmation email
-    console.log('Sending user confirmation...')
-    const userResult = await transporter.sendMail(userMailOptions)
-    console.log('User email sent successfully:', userResult.messageId)
-
-    res.status(200).json({
-      success: true,
-      message: 'Emails sent successfully',
-      adminMessageId: adminResult.messageId,
-      userMessageId: userResult.messageId,
-      timestamp: new Date().toISOString()
+    console.log('All emails sent successfully')
+    res.status(200).json({ 
+      success: true, 
+      message: 'Message sent successfully! Check your email for confirmation.' 
     })
 
   } catch (error) {
-    console.error('=== EMAIL SENDING ERROR ===')
-    console.error('Error type:', error.constructor.name)
-    console.error('Error message:', error.message)
-    console.error('Error code:', error.code)
-    console.error('Error stack:', error.stack)
-    console.error('Full error object:', error)
-    
-    // Provide more specific error messages
-    let errorMessage = 'Failed to send email. Please try again later.'
-    
-    if (error.code === 'EAUTH') {
-      errorMessage = 'Email authentication failed. Please check credentials.'
-    } else if (error.code === 'ECONNECTION') {
-      errorMessage = 'Email server connection failed. Please try again later.'
-    } else if (error.code === 'ETIMEDOUT') {
-      errorMessage = 'Email request timed out. Please try again later.'
-    } else if (error.message.includes('nodemailer')) {
-      errorMessage = 'Email service configuration error.'
-    }
-    
-    res.status(500).json({
-      success: false,
-      message: errorMessage,
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      errorCode: error.code,
-      timestamp: new Date().toISOString()
+    console.error('Error in contact API:', error)
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to send message. Please try again later.',
+      error: error.message 
     })
   }
 } 

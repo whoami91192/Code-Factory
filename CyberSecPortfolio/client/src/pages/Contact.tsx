@@ -1,15 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-
-// Declare grecaptcha for TypeScript
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,49 +11,23 @@ const Contact = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  
+  const { executeRecaptcha } = useGoogleReCaptcha()
 
-  // Load reCAPTCHA v3 script
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E'
-    script.async = true
-    script.defer = true
-    document.head.appendChild(script)
-
-    return () => {
-      document.head.removeChild(script)
-    }
-  }, [])
-
-  const executeRecaptcha = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      if (typeof window.grecaptcha === 'undefined') {
-        reject(new Error('Security verification failed'))
-        return
-      }
-
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E', {
-          action: 'contact_submit'
-        }).then((token: string) => {
-          resolve(token)
-        }).catch((error: any) => {
-          reject(error)
-        })
-      })
-    })
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available')
+      alert('Security verification is loading. Please try again in a moment.')
+      return
+    }
+
     setIsSubmitting(true)
     
     try {
       // Execute reCAPTCHA v3 silently
-      const token = await executeRecaptcha()
-      setCaptchaToken(token)
+      const token = await executeRecaptcha('contactForm')
       
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -84,7 +49,6 @@ const Contact = () => {
       if (result.success) {
         setIsSubmitted(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
-        setCaptchaToken(null)
         // Reset success message after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000)
       } else {
@@ -95,15 +59,13 @@ const Contact = () => {
         alert('Network error. Please check your connection and try again.')
       } else if (error.message.includes('HTTP error')) {
         alert('Server error. Please try again later.')
-      } else if (error.message.includes('Security verification failed')) {
-        alert('Security verification failed. Please refresh the page and try again.')
       } else {
         alert('Failed to send message. Please try again later.')
       }
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [executeRecaptcha, formData])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -255,7 +217,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
                     placeholder="What's this about?"
                   />
                 </div>
