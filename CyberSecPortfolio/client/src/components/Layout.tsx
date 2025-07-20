@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
+import FloatingNavigation from './FloatingNavigation'
 import ScrollToTop from './ScrollToTop'
 import PageScrollToTop from './PageScrollToTop'
 import { Shield, Zap } from 'lucide-react'
@@ -52,9 +53,9 @@ const Layout = () => {
         }}
       />
       
-      {/* Simple Header for Logo */}
+      {/* Header with Navigation */}
       <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
-        <div className="container flex h-14 sm:h-16 items-center justify-center px-4 sm:px-6">
+        <div className="container flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-cyber-green" />
@@ -62,11 +63,14 @@ const Layout = () => {
               CyberSec Portfolio
             </span>
           </div>
+
+          {/* Regular Navigation */}
+          <Navigation />
         </div>
       </header>
 
-      {/* Floating Navigation */}
-      <Navigation />
+      {/* Floating Navigation (appears when scrolled) */}
+      <FloatingNavigation />
 
       {/* Page Scroll to Top - Auto scroll on page change */}
       <PageScrollToTop />
