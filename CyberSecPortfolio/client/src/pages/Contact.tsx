@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
@@ -14,8 +14,16 @@ const Contact = () => {
   
   const { executeRecaptcha } = useGoogleReCaptcha()
 
+  // Debug reCAPTCHA loading
+  useEffect(() => {
+    console.log('executeRecaptcha available:', !!executeRecaptcha)
+  }, [executeRecaptcha])
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    console.log('Form submitted, checking reCAPTCHA...')
+    console.log('executeRecaptcha available:', !!executeRecaptcha)
     
     if (!executeRecaptcha) {
       console.log('Execute recaptcha not yet available')
@@ -26,8 +34,10 @@ const Contact = () => {
     setIsSubmitting(true)
     
     try {
+      console.log('Executing reCAPTCHA...')
       // Execute reCAPTCHA v3 silently
       const token = await executeRecaptcha('contactForm')
+      console.log('reCAPTCHA token received:', token ? 'YES' : 'NO')
       
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -45,6 +55,7 @@ const Contact = () => {
       }
 
       const result = await response.json()
+      console.log('API response:', result)
 
       if (result.success) {
         setIsSubmitted(true)
@@ -55,6 +66,7 @@ const Contact = () => {
         alert('Failed to send message. Please try again.')
       }
     } catch (error) {
+      console.error('Error in form submission:', error)
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
         alert('Network error. Please check your connection and try again.')
       } else if (error.message.includes('HTTP error')) {
