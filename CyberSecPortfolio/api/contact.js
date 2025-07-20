@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer')
-const axios = require('axios')
 
 export default async function handler(req, res) {
   console.log('=== CONTACT API CALLED ===')
@@ -60,15 +59,19 @@ export default async function handler(req, res) {
     if (captchaToken) {
       console.log('Verifying reCAPTCHA token...')
       try {
-        const recaptchaResponse = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
-          params: {
+        const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
             secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
             response: captchaToken,
             remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-          }
+          })
         })
 
-        const recaptchaResult = recaptchaResponse.data
+        const recaptchaResult = await recaptchaResponse.json()
         console.log('reCAPTCHA verification result:', recaptchaResult)
 
         if (!recaptchaResult.success) {
