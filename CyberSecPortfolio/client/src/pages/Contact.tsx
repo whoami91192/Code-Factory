@@ -25,13 +25,16 @@ const Contact = () => {
   // Load reCAPTCHA v3 script
   useEffect(() => {
     const script = document.createElement('script')
-    script.src = 'https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E'
+    script.src = `https://www.google.com/recaptcha/api.js?render=${import.meta.env.VITE_RECAPTCHA_SITE_KEY}`
     script.async = true
     script.defer = true
     document.head.appendChild(script)
 
     return () => {
-      document.head.removeChild(script)
+      const existingScript = document.head.querySelector('script[src*="recaptcha/api.js"]')
+      if (existingScript) {
+        document.head.removeChild(existingScript)
+      }
     }
   }, [])
 
@@ -43,7 +46,7 @@ const Contact = () => {
       }
 
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E', {
+        window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY, {
           action: 'contact_submit'
         }).then((token: string) => {
           resolve(token)

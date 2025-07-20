@@ -63,41 +63,57 @@ export default async function handler(req, res) {
 
     // Verify reCAPTCHA token with Google
     console.log('Verifying reCAPTCHA token...')
-    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
-        response: captchaToken,
-        remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    let recaptchaResult
+    try {
+      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: captchaToken,
+          remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        })
       })
-    })
 
-    const recaptchaResult = await recaptchaResponse.json()
-    // Security verification completed
+      if (!recaptchaResponse.ok) {
+        throw new Error(`reCAPTCHA API responded with status: ${recaptchaResponse.status}`)
+      }
+
+      recaptchaResult = await recaptchaResponse.json()
+      console.log('reCAPTCHA verification response:', recaptchaResult)
+    } catch (error) {
+      console.error('Error during reCAPTCHA verification:', error)
+      return res.status(500).json({
+        success: false,
+        message: 'Security verification service unavailable. Please try again later.'
+      })
+    }
 
     if (!recaptchaResult.success) {
       console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
       return res.status(400).json({
         success: false,
-        message: 'Security verification failed. Please try again.'
+        message: 'Security verification failed. Please try again.',
+        error: recaptchaResult['error-codes']
       })
     }
 
     // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
     const score = recaptchaResult.score || 0
-    // Score verification completed
-
+    console.log('reCAPTCHA score:', score)
+    
     // Use a threshold of 0.5 (you can adjust this based on your needs)
     if (score < 0.5) {
-      // Score below threshold
+      console.log('Score below threshold (0.5):', score)
       return res.status(400).json({
         success: false,
         message: 'Security verification failed. Please try again.'
       })
     }
+    
+    console.log('reCAPTCHA verification successful with score:', score)
 
     // Security verification successful
 
