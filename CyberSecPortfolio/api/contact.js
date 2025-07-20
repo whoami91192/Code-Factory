@@ -222,13 +222,16 @@ ${message}
           to: email,
           subject: `✅ Message Received - Ioannis Katsimpris | Cyber Security Portfolio`,
           html: `
-            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; color: #333333; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
-              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
-                <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">🔒 Ioannis Katsimpris</h1>
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f5f5; padding: 20px;">
+              <!-- Header with gradient -->
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+                <div style="font-size: 24px; margin-bottom: 5px;">🔒</div>
+                <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">Ioannis Katsimpris</h1>
                 <p style="margin: 5px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">Cyber Security Professional</p>
               </div>
               
-              <div style="padding: 40px 30px;">
+              <!-- Main content -->
+              <div style="background: #ffffff; padding: 40px 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                 <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 20px; font-weight: 600;">Thank you for your message!</h2>
                 
                 <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
@@ -239,8 +242,12 @@ ${message}
                   Thank you for reaching out to me through my Cyber Security Portfolio. I have successfully received your message and I appreciate you taking the time to contact me.
                 </p>
                 
+                <!-- Message Details Section -->
                 <div style="background: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; margin: 25px 0; border-radius: 4px;">
-                  <h3 style="margin: 0 0 10px 0; color: #333333; font-size: 18px; font-weight: 600;">📋 Message Details:</h3>
+                  <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <span style="font-size: 18px; margin-right: 8px;">📋</span>
+                    <h3 style="margin: 0; color: #333333; font-size: 18px; font-weight: 600;">Message Details:</h3>
+                  </div>
                   <p style="margin: 5px 0; color: #555555;"><strong>Subject:</strong> ${subject}</p>
                   <p style="margin: 5px 0; color: #555555;"><strong>Date:</strong> ${new Date().toLocaleString('en-US', { 
                     timeZone: 'Europe/Athens',
@@ -253,19 +260,62 @@ ${message}
                 </div>
                 
                 <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
-                  I will review your message carefully and get back to you as soon as possible, typically within 24-48 hours.
+                  I will review your message carefully and get back to you as soon as possible, typically within 24-48 hours. If your inquiry is urgent, please don't hesitate to reach out through alternative channels.
                 </p>
                 
-                <div style="text-align: center; margin: 30px 0;">
-                  <a href="https://code-factory-gamma.vercel.app" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; font-size: 16px;">🌐 Visit My Portfolio</a>
+                <!-- What to Expect Next Section -->
+                <div style="background: #e8f4fd; border: 1px solid #bee5eb; border-radius: 6px; padding: 20px; margin: 25px 0;">
+                  <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <span style="font-size: 18px; margin-right: 8px;">⏰</span>
+                    <h4 style="margin: 0; color: #0c5460; font-size: 16px; font-weight: 600;">What to expect next:</h4>
+                  </div>
+                  <ul style="margin: 0; padding-left: 20px; color: #0c5460;">
+                    <li style="margin: 5px 0;">Detailed response to your inquiry</li>
+                    <li style="margin: 5px 0;">Additional information if requested</li>
+                    <li style="margin: 5px 0;">Follow-up questions if needed</li>
+                  </ul>
                 </div>
                 
-                <div style="border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 30px;">
-                  <p style="margin: 0; color: #888888; font-size: 14px; text-align: center;">
-                    Best regards,<br>
-                    <strong>Ioannis Katsimpris</strong><br>
-                    Cyber Security Professional<br>
-                    <a href="mailto:gianniskatsibris@gmail.com" style="color: #667eea;">gianniskatsibris@gmail.com</a>
+                <p style="margin: 0 0 20px 0; color: #555555; font-size: 16px; line-height: 1.6;">
+                  In the meantime, feel free to explore my portfolio to learn more about my expertise in cyber security, penetration testing, and security consulting.
+                </p>
+                
+                <!-- Call to Action Button -->
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="https://code-factory-gamma.vercel.app" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);">
+                    🌐 Visit My Portfolio
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Footer -->
+              <div style="background: #ffffff; margin-top: 20px; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                <div style="margin-bottom: 20px;">
+                  <h3 style="margin: 0 0 5px 0; color: #333333; font-size: 18px; font-weight: 600;">Ioannis Katsimpris</h3>
+                  <p style="margin: 0; color: #666666; font-size: 14px;">Cyber Security Professional & Penetration Tester</p>
+                </div>
+                
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                  <div style="display: flex; align-items: center; color: #666666; font-size: 12px;">
+                    <span style="font-size: 16px; margin-right: 5px;">🔒</span>
+                    <span>Specializing in Security Audits</span>
+                  </div>
+                  <div style="width: 1px; height: 20px; background: #ddd;"></div>
+                  <div style="display: flex; align-items: center; color: #666666; font-size: 12px;">
+                    <span style="font-size: 16px; margin-right: 5px;">🛡️</span>
+                    <span>Penetration Testing</span>
+                  </div>
+                  <div style="width: 1px; height: 20px; background: #ddd;"></div>
+                  <div style="display: flex; align-items: center; color: #666666; font-size: 12px;">
+                    <span style="font-size: 16px; margin-right: 5px;">🔍</span>
+                    <span>Incident Response</span>
+                  </div>
+                </div>
+                
+                <div style="border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                  <p style="margin: 0; color: #888888; font-size: 12px; line-height: 1.4;">
+                    This is an automated confirmation email. Please do not reply to this message.<br>
+                    If you have any questions, please use the contact form on my website.
                   </p>
                 </div>
               </div>
