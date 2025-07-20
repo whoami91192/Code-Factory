@@ -56,50 +56,61 @@ export default async function handler(req, res) {
     // Only verify reCAPTCHA if token is provided (production mode)
     if (captchaToken) {
       console.log('Verifying reCAPTCHA token...')
-      try {
-        const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
-            response: captchaToken,
-            remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+      
+      // Skip reCAPTCHA verification if in debug mode
+      if (process.env.SKIP_RECAPTCHA === 'true') {
+        console.log('Skipping reCAPTCHA verification (debug mode)')
+        score = 1.0
+        recaptchaVerified = true
+      } else {
+        try {
+          const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
+              response: captchaToken,
+              remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            })
           })
-        })
 
-        const recaptchaResult = await recaptchaResponse.json()
-        console.log('reCAPTCHA verification result:', recaptchaResult)
+          const recaptchaResult = await recaptchaResponse.json()
+          console.log('reCAPTCHA verification result:', recaptchaResult)
 
-        if (!recaptchaResult.success) {
-          console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
+          if (!recaptchaResult.success) {
+            console.log('reCAPTCHA verification failed:', recaptchaResult['error-codes'])
+            return res.status(400).json({
+              success: false,
+              message: 'Security verification failed. Please try again.'
+            })
+          }
+
+          // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
+          score = recaptchaResult.score || 0
+          console.log('reCAPTCHA score:', score)
+          console.log('reCAPTCHA action:', recaptchaResult.action)
+          console.log('reCAPTCHA challenge_ts:', recaptchaResult.challenge_ts)
+          console.log('reCAPTCHA hostname:', recaptchaResult.hostname)
+
+          // Use a very low threshold for now (0.1) to debug
+          if (score < 0.1) {
+            console.log('Score below threshold:', score)
+            return res.status(400).json({
+              success: false,
+              message: 'Security verification failed. Please try again.'
+            })
+          }
+
+          console.log('reCAPTCHA verification successful with score:', score)
+        } catch (error) {
+          console.error('Error during reCAPTCHA verification:', error)
           return res.status(400).json({
             success: false,
             message: 'Security verification failed. Please try again.'
           })
         }
-
-        // Check reCAPTCHA v3 score (0.0 = bot, 1.0 = human)
-        score = recaptchaResult.score || 0
-        console.log('reCAPTCHA score:', score)
-
-        // Use a threshold of 0.3 (more user-friendly)
-        if (score < 0.3) {
-          console.log('Score below threshold:', score)
-          return res.status(400).json({
-            success: false,
-            message: 'Security verification failed. Please try again.'
-          })
-        }
-
-        console.log('reCAPTCHA verification successful with score:', score)
-      } catch (error) {
-        console.error('Error during reCAPTCHA verification:', error)
-        return res.status(400).json({
-          success: false,
-          message: 'Security verification failed. Please try again.'
-        })
       }
     } else {
       console.log('No reCAPTCHA token provided - development mode')
