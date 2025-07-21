@@ -11,6 +11,12 @@ export const useRecaptcha = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  
+  // Debug logging
+  console.log('reCAPTCHA Hook - Environment check:', {
+    siteKey: siteKey ? `${siteKey.substring(0, 10)}...` : 'NOT FOUND',
+    envVars: Object.keys(import.meta.env).filter(key => key.includes('RECAPTCHA'))
+  })
 
   useEffect(() => {
     const checkRecaptchaLoaded = () => {
