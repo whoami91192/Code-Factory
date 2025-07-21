@@ -35,10 +35,9 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google.com; frame-src 'self' https://www.google.com;" />
     <title>Cyber Security Engineer - John Katsimpris | Professional Security Solutions</title>
     <meta name="description" content="John Katsimpris - Professional Cyber Security Engineer specializing in penetration testing, security audits, incident response, and security consulting. Expert in protecting digital assets." />
     <meta name="keywords" content="cyber security engineer, john katsimpris, penetration testing, security audits, incident response, cybersecurity consulting, security tools, digital forensics" />
@@ -56,76 +55,196 @@
       (function() {
         'use strict';
         
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', function(e) {
-          e.preventDefault();
-          return false;
-        });
+        // Global variables for tracking
+        let devToolsOpen = false;
+        let warningCount = 0;
+        let lastWarningTime = 0;
         
-        // Disable keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-          // F12
-          if (e.key === 'F12') {
+        // Aggressive protection - disable everything
+        function disableAll() {
+          // Disable right-click context menu
+          document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             showDevToolsWarning();
             return false;
-          }
+          }, true);
           
-          // Ctrl+Shift+I (Chrome/Firefox)
-          if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-            e.preventDefault();
-            showDevToolsWarning();
-            return false;
-          }
+          // Disable all keyboard shortcuts
+          document.addEventListener('keydown', function(e) {
+            // Block all common developer tools shortcuts
+            const blockedKeys = [
+              'F12', 'F5', 'F11', 'F9', 'F8', 'F7',
+              'I', 'J', 'C', 'U', 'S', 'R'
+            ];
+            
+            // Block Ctrl+ combinations
+            if (e.ctrlKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+            
+            // Block Shift+ combinations
+            if (e.shiftKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+            
+            // Block Alt+ combinations
+            if (e.altKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+            
+            // Block specific keys
+            if (blockedKeys.includes(e.key.toUpperCase())) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+            
+            // Block function keys
+            if (e.key.startsWith('F') && e.key.length <= 3) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+          }, true);
           
-          // Ctrl+Shift+J (Chrome)
-          if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+          // Disable text selection
+          document.addEventListener('selectstart', function(e) {
             e.preventDefault();
-            showDevToolsWarning();
+            e.stopPropagation();
             return false;
-          }
+          }, true);
           
-          // Ctrl+Shift+C (Chrome)
-          if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+          // Disable copy/paste
+          document.addEventListener('copy', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             showDevToolsWarning();
             return false;
-          }
+          }, true);
           
-          // Ctrl+U (View Source)
-          if (e.ctrlKey && e.key === 'u') {
+          document.addEventListener('paste', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             showDevToolsWarning();
             return false;
-          }
+          }, true);
           
-          // Ctrl+Shift+U (Firefox)
-          if (e.ctrlKey && e.shiftKey && e.key === 'U') {
+          // Disable cut
+          document.addEventListener('cut', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             showDevToolsWarning();
             return false;
-          }
-        });
+          }, true);
+          
+          // Disable drag and drop
+          document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          }, true);
+          
+          // Disable mouse events that could be used for inspection
+          document.addEventListener('mousedown', function(e) {
+            if (e.button === 2) { // Right click
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+          }, true);
+          
+          // Disable wheel events
+          document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              showDevToolsWarning();
+              return false;
+            }
+          }, true);
+        }
         
-        // Disable text selection
-        document.addEventListener('selectstart', function(e) {
-          e.preventDefault();
-          return false;
-        });
-        
-        // Developer tools detection
+        // Advanced developer tools detection
         function detectDevTools() {
-          const threshold = 160;
+          const threshold = 100; // More sensitive threshold
+          
+          // Method 1: Window size detection
           const widthThreshold = window.outerWidth - window.innerWidth > threshold;
           const heightThreshold = window.outerHeight - window.innerHeight > threshold;
           
-          if (widthThreshold || heightThreshold) {
+          // Method 2: Console timing detection
+          const start = performance.now();
+          console.log('%c', 'color: transparent');
+          const end = performance.now();
+          const consoleTiming = end - start > 50;
+          
+          // Method 3: Debugger detection
+          let debuggerDetected = false;
+          try {
+            const startDebug = performance.now();
+            debugger;
+            const endDebug = performance.now();
+            debuggerDetected = endDebug - startDebug > 50;
+          } catch (e) {
+            debuggerDetected = false;
+          }
+          
+          // Method 4: Element size detection
+          const element = document.createElement('div');
+          element.style.position = 'absolute';
+          element.style.top = '-9999px';
+          element.style.left = '-9999px';
+          element.style.width = '100px';
+          element.style.height = '100px';
+          element.style.overflow = 'scroll';
+          document.body.appendChild(element);
+          
+          const scrollWidth = element.offsetWidth - element.clientWidth;
+          const scrollHeight = element.offsetHeight - element.clientHeight;
+          
+          document.body.removeChild(element);
+          
+          const elementSizeDetected = scrollWidth > 0 || scrollHeight > 0;
+          
+          // Method 5: Firebug detection
+          const firebugDetected = window.console && (window.console.firebug || window.console.exception);
+          
+          // Method 6: Chrome DevTools detection
+          const chromeDevToolsDetected = window.chrome && window.chrome.webstore;
+          
+          // Method 7: Safari DevTools detection
+          const safariDevToolsDetected = window.safari && window.safari.pushNotification;
+          
+          // Check if any detection method triggered
+          if (widthThreshold || heightThreshold || consoleTiming || debuggerDetected || 
+              elementSizeDetected || firebugDetected || chromeDevToolsDetected || safariDevToolsDetected) {
+            devToolsOpen = true;
             showDevToolsWarning();
+          } else {
+            devToolsOpen = false;
           }
         }
         
-        // Show warning message
+        // Enhanced warning message
         function showDevToolsWarning() {
+          const now = Date.now();
+          if (now - lastWarningTime < 2000) return; // Prevent spam
+          lastWarningTime = now;
+          warningCount++;
+          
           if (document.getElementById('devtools-warning')) return;
           
           const warning = document.createElement('div');
@@ -136,55 +255,140 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.98);
             z-index: 999999;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Arial, sans-serif;
-            color: white;
+            font-family: 'Courier New', monospace;
+            color: #ff0000;
+            backdrop-filter: blur(10px);
           `;
+          
+          const warningLevel = warningCount > 3 ? 'CRITICAL' : warningCount > 1 ? 'WARNING' : 'NOTICE';
+          const warningColor = warningCount > 3 ? '#ff0000' : warningCount > 1 ? '#ff6600' : '#ffaa00';
           
           warning.innerHTML = `
             <div style="
-              background: #1a1a1a;
-              border: 2px solid #ff4444;
-              border-radius: 10px;
-              padding: 30px;
-              max-width: 500px;
+              background: #000000;
+              border: 3px solid ${warningColor};
+              border-radius: 15px;
+              padding: 40px;
+              max-width: 600px;
               text-align: center;
-              box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
+              box-shadow: 0 0 50px ${warningColor}40;
+              animation: pulse 2s infinite;
             ">
-              <h2 style="color: #ff4444; margin-bottom: 20px;">⚠️ Developer Tools Detected</h2>
-              <p style="margin-bottom: 20px; line-height: 1.6;">
-                The use of developer tools, automation bots, or inspection tools is restricted on this website for security reasons.
+              <h1 style="color: ${warningColor}; margin-bottom: 20px; font-size: 24px; text-shadow: 0 0 10px ${warningColor};">
+                🚨 ${warningLevel} - DEVELOPER TOOLS DETECTED 🚨
+              </h1>
+              <p style="margin-bottom: 20px; line-height: 1.8; font-size: 16px; color: #ffffff;">
+                <strong>SECURITY VIOLATION DETECTED!</strong><br>
+                The use of developer tools, automation bots, or inspection tools is <strong>STRICTLY FORBIDDEN</strong> on this website.
               </p>
-              <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;">
-                This includes: Browser Developer Tools (F12), View Source (Ctrl+U), Inspect Element, Automation scripts, and Debugging tools.
+              <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid ${warningColor};">
+                <h3 style="color: ${warningColor}; margin-bottom: 15px;">BLOCKED ACTIVITIES:</h3>
+                <ul style="text-align: left; color: #cccccc; line-height: 1.6;">
+                  <li>🔒 Browser Developer Tools (F12)</li>
+                  <li>🔒 View Source (Ctrl+U)</li>
+                  <li>🔒 Inspect Element (Ctrl+Shift+I)</li>
+                  <li>🔒 Console Access (Ctrl+Shift+J)</li>
+                  <li>🔒 Automation Scripts & Bots</li>
+                  <li>🔒 Debugging Tools</li>
+                  <li>🔒 Network Inspection</li>
+                  <li>🔒 Code Analysis Tools</li>
+                </ul>
+              </div>
+              <p style="color: #ff6666; font-size: 14px; margin-bottom: 25px;">
+                <strong>Warning #${warningCount}</strong> - Repeated violations may result in permanent access restrictions.
               </p>
-              <button onclick="this.parentElement.parentElement.remove()" style="
-                background: #ff4444;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: bold;
-              ">
-                Close Tools & Continue
-              </button>
+              <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="closeWarning()" style="
+                  background: ${warningColor};
+                  color: white;
+                  border: none;
+                  padding: 15px 30px;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  font-size: 16px;
+                  transition: all 0.3s;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                  🔒 CLOSE TOOLS & CONTINUE
+                </button>
+                <button onclick="forceClose()" style="
+                  background: #333333;
+                  color: white;
+                  border: 2px solid ${warningColor};
+                  padding: 15px 30px;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-weight: bold;
+                  font-size: 16px;
+                  transition: all 0.3s;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                  ⚠️ CONTINUE ANYWAY
+                </button>
+              </div>
             </div>
           `;
           
+          // Add CSS animation
+          const style = document.createElement('style');
+          style.textContent = `
+            @keyframes pulse {
+              0%, 100% { box-shadow: 0 0 50px ${warningColor}40; }
+              50% { box-shadow: 0 0 80px ${warningColor}60; }
+            }
+          `;
+          document.head.appendChild(style);
+          
           document.body.appendChild(warning);
+          
+          // Auto-close after 30 seconds
+          setTimeout(() => {
+            if (document.getElementById('devtools-warning')) {
+              closeWarning();
+            }
+          }, 30000);
         }
         
-        // Run detection periodically
-        setInterval(detectDevTools, 1000);
+        // Global functions for buttons
+        window.closeWarning = function() {
+          const warning = document.getElementById('devtools-warning');
+          if (warning) {
+            warning.remove();
+          }
+        };
+        
+        window.forceClose = function() {
+          const warning = document.getElementById('devtools-warning');
+          if (warning) {
+            warning.remove();
+          }
+          // Additional tracking could be added here
+        };
+        
+        // Initialize protection
+        disableAll();
+        
+        // Run detection more frequently
+        setInterval(detectDevTools, 500);
         
         // Additional protection on load
         window.addEventListener('load', function() {
           detectDevTools();
+          // Disable all again after load
+          disableAll();
+        });
+        
+        // Prevent page unload if dev tools are open
+        window.addEventListener('beforeunload', function(e) {
+          if (devToolsOpen) {
+            e.preventDefault();
+            e.returnValue = 'Developer tools are still open. Please close them before leaving.';
+            return e.returnValue;
+          }
         });
         
       })();
