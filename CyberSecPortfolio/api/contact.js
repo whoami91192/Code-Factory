@@ -87,11 +87,11 @@ export default async function handler(req, res) {
     }
     
     // Validate message length
-    if (message.length < 10) {
+    if (message.length < 5) {
       console.log('Message too short:', message.length)
       return res.status(400).json({
         success: false,
-        message: 'Message must be at least 10 characters long'
+        message: 'Message must be at least 5 characters long'
       })
     }
     

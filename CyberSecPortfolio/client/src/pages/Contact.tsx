@@ -108,7 +108,8 @@ const Contact = () => {
           setSubmitMessage('')
         }, 5000)
       } else {
-        alert('Failed to send message. Please try again.')
+        // Show validation errors to user
+        setRecaptchaError(result.message || 'Failed to send message. Please try again.')
       }
     } catch (error) {
       console.error('Error in form submission:', error)
