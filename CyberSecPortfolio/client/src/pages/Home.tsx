@@ -1,10 +1,31 @@
 import { Link } from 'react-router-dom'
 import { Shield, Zap, Code, Target, ArrowRight, Users, Award } from 'lucide-react'
+import { useEffect } from 'react'
 import SecurityDashboard from '../components/SecurityDashboard'
 import InteractiveTerminal from '../components/InteractiveTerminal'
 import NewsTable from '../components/NewsTable'
 
 const Home = () => {
+  // Ensure page starts at the top when component mounts
+  useEffect(() => {
+    // Immediate scroll to top
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    })
+    
+    // Additional scroll after a small delay to ensure all components are loaded
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      })
+    }, 100)
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   const features = [
     {
