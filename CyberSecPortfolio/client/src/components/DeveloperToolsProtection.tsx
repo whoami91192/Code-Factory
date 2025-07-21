@@ -18,7 +18,6 @@ declare global {
 const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ children }) => {
   const [showWarning, setShowWarning] = useState(false);
   const [warningCount, setWarningCount] = useState(0);
-  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     let devtools = {
@@ -26,7 +25,7 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
       orientation: null as string | null
     };
 
-    const threshold = 80; // Much more sensitive threshold
+    const threshold = 160;
 
     const emitEvent = (isOpen: boolean, orientation?: string) => {
       window.dispatchEvent(new CustomEvent('devtoolschange', {
@@ -117,228 +116,128 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
       }
     });
 
-    // Ultra-aggressive keyboard detection
+    // Enhanced keyboard detection
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Block ALL function keys
-      if (e.key.startsWith('F') && e.key.length <= 3) {
+      // F12
+      if (e.key === 'F12') {
         e.preventDefault();
-        e.stopPropagation();
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
         return false;
       }
       
-      // Block ALL Ctrl combinations
-      if (e.ctrlKey) {
+      // Ctrl+Shift+I (Chrome/Firefox)
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
         e.preventDefault();
-        e.stopPropagation();
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
         return false;
       }
       
-      // Block ALL Shift combinations
-      if (e.shiftKey) {
+      // Ctrl+Shift+J (Chrome)
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
         e.preventDefault();
-        e.stopPropagation();
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
         return false;
       }
       
-      // Block ALL Alt combinations
-      if (e.altKey) {
+      // Ctrl+Shift+C (Chrome)
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
         e.preventDefault();
-        e.stopPropagation();
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
         return false;
       }
       
-      // Block specific developer tools keys
-      const blockedKeys = ['F12', 'F5', 'F11', 'F9', 'F8', 'F7', 'I', 'J', 'C', 'U', 'S', 'R'];
-      if (blockedKeys.includes(e.key.toUpperCase())) {
+      // Ctrl+U (View Source)
+      if (e.ctrlKey && e.key === 'u') {
         e.preventDefault();
-        e.stopPropagation();
+        setShowWarning(true);
+        setWarningCount(prev => prev + 1);
+        return false;
+      }
+      
+      // Ctrl+Shift+U (Firefox)
+      if (e.ctrlKey && e.shiftKey && e.key === 'U') {
+        e.preventDefault();
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
         return false;
       }
     };
 
-    // Ultra-aggressive mouse protection
+    // Right-click detection
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
-      e.stopPropagation();
-      setShowWarning(true);
-      setWarningCount(prev => prev + 1);
-      return false;
-    };
-    
-    // Block all mouse events that could be used for inspection
-    const handleMouseDown = (e: MouseEvent) => {
-      if (e.button === 2) { // Right click
-        e.preventDefault();
-        e.stopPropagation();
-        setShowWarning(true);
-        setWarningCount(prev => prev + 1);
-        return false;
-      }
-    };
-    
-    // Block wheel events with Ctrl (zoom)
-    const handleWheel = (e: WheelEvent) => {
-      if (e.ctrlKey) {
-        e.preventDefault();
-        e.stopPropagation();
-        setShowWarning(true);
-        setWarningCount(prev => prev + 1);
-        return false;
-      }
-    };
-    
-    // Block copy/paste
-    const handleCopy = (e: ClipboardEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setShowWarning(true);
-      setWarningCount(prev => prev + 1);
-      return false;
-    };
-    
-    const handlePaste = (e: ClipboardEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setShowWarning(true);
-      setWarningCount(prev => prev + 1);
-      return false;
-    };
-    
-    const handleCut = (e: ClipboardEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
       setShowWarning(true);
       setWarningCount(prev => prev + 1);
       return false;
     };
 
-    // Add all event listeners with capture phase
-    document.addEventListener('keydown', handleKeyDown, true);
-    document.addEventListener('contextmenu', handleContextMenu, true);
-    document.addEventListener('mousedown', handleMouseDown, true);
-    document.addEventListener('wheel', handleWheel, true);
-    document.addEventListener('copy', handleCopy, true);
-    document.addEventListener('paste', handlePaste, true);
-    document.addEventListener('cut', handleCut, true);
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('contextmenu', handleContextMenu);
     
-    // Run detection more frequently
-    const detectionInterval = setInterval(detectDevTools, 300);
+    // Run detection periodically
+    const detectionInterval = setInterval(detectDevTools, 1000);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown, true);
-      document.removeEventListener('contextmenu', handleContextMenu, true);
-      document.removeEventListener('mousedown', handleMouseDown, true);
-      document.removeEventListener('wheel', handleWheel, true);
-      document.removeEventListener('copy', handleCopy, true);
-      document.removeEventListener('paste', handlePaste, true);
-      document.removeEventListener('cut', handleCut, true);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('contextmenu', handleContextMenu);
       clearInterval(detectionInterval);
     };
   }, []);
 
   const handleCloseWarning = () => {
     setShowWarning(false);
-    // Reset warning count after successful close
-    if (warningCount > 5) {
-      setWarningCount(0);
-    }
   };
 
   const handleContinueAnyway = () => {
     setShowWarning(false);
-    // Increment warning count for continued violations
-    setWarningCount(prev => prev + 1);
-    
-    // Block access after too many violations
-    if (warningCount > 10) {
-      setIsBlocked(true);
-    }
+    // You could implement additional tracking here
   };
 
-  if (isBlocked) {
-    return (
-      <div className="fixed inset-0 z-[9999] bg-black bg-opacity-95 flex items-center justify-center p-4">
-        <div className="bg-black border-4 border-red-600 rounded-lg p-8 max-w-lg mx-auto text-center shadow-2xl">
-          <div className="text-red-500 text-8xl mb-6">🚫</div>
-          <h1 className="text-red-500 text-3xl font-bold mb-6 text-shadow-lg">
-            ACCESS BLOCKED
-          </h1>
-          <p className="text-white text-lg mb-6">
-            <strong>PERMANENT ACCESS RESTRICTION</strong><br/>
-            Multiple security violations detected. Access to this website has been permanently blocked.
-          </p>
-          <div className="bg-red-900 p-4 rounded-lg mb-6">
-            <p className="text-red-200 text-sm">
-              Violations: {warningCount} attempts to access developer tools<br/>
-              Blocked: {new Date().toLocaleString()}
-            </p>
-          </div>
-          <button
-            onClick={() => window.location.href = 'about:blank'}
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold text-lg transition-colors"
-          >
-            EXIT SITE
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (showWarning) {
-    const warningLevel = warningCount > 5 ? 'CRITICAL' : warningCount > 2 ? 'WARNING' : 'NOTICE';
-    const warningColor = warningCount > 5 ? 'red' : warningCount > 2 ? 'orange' : 'yellow';
-    
     return (
-      <div className="fixed inset-0 z-[9999] bg-black bg-opacity-95 flex items-center justify-center p-4">
-        <div className={`bg-black border-4 border-${warningColor}-500 rounded-lg p-8 max-w-2xl mx-auto text-center shadow-2xl animate-pulse`}>
-          <div className={`text-${warningColor}-500 text-8xl mb-6`}>🚨</div>
-          <h1 className={`text-${warningColor}-500 text-3xl font-bold mb-6 text-shadow-lg`}>
-            {warningLevel} - DEVELOPER TOOLS DETECTED
-          </h1>
-          <p className="text-white text-lg mb-6">
-            <strong>SECURITY VIOLATION DETECTED!</strong><br/>
-            The use of developer tools, automation bots, or inspection tools is <strong>STRICTLY FORBIDDEN</strong>.
+      <div className="fixed inset-0 z-[9999] bg-black bg-opacity-90 flex items-center justify-center p-4">
+        <div className="bg-red-900 border-2 border-red-500 rounded-lg p-8 max-w-md mx-auto text-center shadow-2xl">
+          <div className="text-red-400 text-6xl mb-4">⚠️</div>
+          <h2 className="text-red-100 text-2xl font-bold mb-4">
+            Developer Tools Detected
+          </h2>
+          <p className="text-red-200 mb-6">
+            The use of developer tools, automation bots, or inspection tools is restricted on this website for security reasons.
           </p>
-          <div className="bg-gray-900 p-6 rounded-lg mb-6 border-l-4 border-red-500">
-            <h3 className={`text-${warningColor}-400 text-xl font-bold mb-4`}>BLOCKED ACTIVITIES:</h3>
-            <ul className="text-gray-300 text-left space-y-2">
-              <li>🔒 Browser Developer Tools (F12)</li>
-              <li>🔒 View Source (Ctrl+U)</li>
-              <li>🔒 Inspect Element (Ctrl+Shift+I)</li>
-              <li>🔒 Console Access (Ctrl+Shift+J)</li>
-              <li>🔒 Automation Scripts & Bots</li>
-              <li>🔒 Debugging Tools</li>
-              <li>🔒 Network Inspection</li>
-              <li>🔒 Code Analysis Tools</li>
+          <div className="text-red-300 text-sm mb-6">
+            <p>This includes:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Browser Developer Tools (F12)</li>
+              <li>View Source (Ctrl+U)</li>
+              <li>Inspect Element</li>
+              <li>Automation scripts</li>
+              <li>Debugging tools</li>
             </ul>
           </div>
-          <div className="text-red-400 text-lg mb-6">
-            <strong>Warning #{warningCount}</strong> - Repeated violations will result in permanent access restrictions.
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleCloseWarning}
-              className={`bg-${warningColor}-600 hover:bg-${warningColor}-700 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all transform hover:scale-105`}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
             >
-              🔒 CLOSE TOOLS & CONTINUE
+              Close Tools & Continue
             </button>
             <button
               onClick={handleContinueAnyway}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all transform hover:scale-105 border-2 border-red-500"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
             >
-              ⚠️ CONTINUE ANYWAY
+              Continue Anyway
             </button>
           </div>
+          {warningCount > 1 && (
+            <p className="text-red-400 text-xs mt-4">
+              Warning #{warningCount} - Repeated violations may result in access restrictions.
+            </p>
+          )}
         </div>
       </div>
     );
