@@ -67,6 +67,8 @@ const Home = () => {
                   <span className="text-cyber-green">Cyber</span> Security
                   <br />
                   <span className="text-cyber-blue">Engineer</span>
+                  <br />
+                  <span className="text-cyber-yellow text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>
                 <p className="text-xl text-white/90 drop-shadow max-w-lg">
                   Securing digital assets through advanced threat detection, 
