@@ -122,6 +122,9 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    /* Additional protection against developer tools */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
   }
   
   /* Disable drag and drop */
@@ -141,6 +144,48 @@
     -o-user-select: none;
     user-select: none;
     pointer-events: none;
+  }
+  
+  /* Additional developer tools protection */
+  * {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Prevent view source */
+  html {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Disable developer tools shortcuts */
+  *:focus {
+    outline: none !important;
+  }
+  
+  /* Prevent drag and drop of elements */
+  * {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+  
+  /* Hide scrollbars in developer tools */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Prevent selection of text */
+  ::selection {
+    background: transparent;
+  }
+  
+  ::-moz-selection {
+    background: transparent;
   }
 }
 
