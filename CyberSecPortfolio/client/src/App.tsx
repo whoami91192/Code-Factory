@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
@@ -68,6 +69,7 @@ function App() {
                 </Route>
               </Routes>
               <Toaster />
+              <Analytics />
             </>
           ) : (
             <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />
