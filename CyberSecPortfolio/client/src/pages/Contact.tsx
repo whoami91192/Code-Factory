@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock, AlertCircle } from 'lucide-react'
-import { useRecaptcha } from '../hooks/useRecaptcha'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +12,6 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  
-  // reCAPTCHA hook
-  const { executeRecaptcha, isLoaded: recaptchaLoaded, error: recaptchaError } = useRecaptcha()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,47 +51,12 @@ const Contact = () => {
       console.log('📤 Sending message...')
       console.log('📝 Form data:', formData)
       
-      // Generate reCAPTCHA token
-      let captchaToken = null
-      console.log('🔍 reCAPTCHA Status Check:', {
-        recaptchaLoaded,
-        executeRecaptchaAvailable: !!executeRecaptcha,
-        windowGrecaptchaExists: !!(window as any).grecaptcha,
-        recaptchaError
-      })
-      
-      if (recaptchaLoaded && executeRecaptcha) {
-        console.log('🔒 Generating reCAPTCHA token...')
-        captchaToken = await executeRecaptcha('contact_form')
-        if (!captchaToken) {
-          console.error('❌ reCAPTCHA token generation failed')
-          setErrorMessage('Security verification failed. Please try again.')
-          setIsSubmitting(false)
-          return
-        }
-        console.log('✅ reCAPTCHA token generated successfully:', captchaToken.substring(0, 20) + '...')
-      } else {
-        console.warn('⚠️ reCAPTCHA not available, proceeding without token')
-        console.warn('⚠️ This means the form is NOT protected in production!')
-        
-        // In production, we might want to be more strict
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-          console.error('🚨 Production environment detected without reCAPTCHA protection!')
-          setErrorMessage('Security system not ready. Please refresh the page and try again.')
-          setIsSubmitting(false)
-          return
-        }
-      }
-      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          captchaToken
-        })
+        body: JSON.stringify(formData)
       })
 
       console.log('📊 Response status:', response.status)
@@ -250,13 +211,6 @@ const Contact = () => {
                     <p className="text-red-400 text-sm">{errorMessage}</p>
                   </div>
                 )}
-                
-                {recaptchaError && (
-                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-center space-x-2">
-                    <AlertCircle className="h-5 w-5 text-yellow-400 flex-shrink-0" />
-                    <p className="text-yellow-400 text-sm">Security verification error: {recaptchaError}</p>
-                  </div>
-                )}
 
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white drop-shadow mb-2">
@@ -324,21 +278,15 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || !recaptchaLoaded}
+                  disabled={isSubmitting}
                   className="cyber-button-magnetic target-lock w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : !recaptchaLoaded ? 'Loading Security...' : 'Send Message'}
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
                 
-                <div className="text-xs text-white/60 text-center space-y-1">
-                  <p>Your message will be sent directly to my email. I typically respond within 24 hours.</p>
-                  {recaptchaLoaded && (
-                    <div className="flex items-center justify-center space-x-1 text-cyber-green">
-                      <Shield className="h-3 w-3" />
-                      <span>Protected by reCAPTCHA v3</span>
-                    </div>
-                  )}
-                </div>
+                <p className="text-xs text-white/60 text-center">
+                  Your message will be sent directly to my email. I typically respond within 24 hours.
+                </p>
               </form>
             )}
           </div>

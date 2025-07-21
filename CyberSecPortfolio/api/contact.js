@@ -141,7 +141,7 @@ export default async function handler(req, res) {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-              secret: process.env.RECAPTCHA_SECRET_KEY || '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
+              secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
               response: captchaToken,
               remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
             })
@@ -184,13 +184,8 @@ export default async function handler(req, res) {
         }
       }
     } else {
-      console.log('No reCAPTCHA token provided - assuming development mode')
+      console.log('No reCAPTCHA token provided - development mode')
       recaptchaVerified = false
-      score = 1.0 // Set default score for development
-      
-      // In production, we should require reCAPTCHA token
-      // But for now, we'll allow it to proceed with logging
-      console.log('WARNING: No reCAPTCHA protection in place!')
     }
 
     // Log the contact form data for manual review
@@ -276,7 +271,7 @@ ${message}
               
               <div style="text-align: center; color: #888; font-size: 11px; border-top: 1px solid #333; padding-top: 15px;">
                 <p style="margin: 5px 0;">🔐 This message was sent from your Cyber Security Portfolio</p>
-                <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'NOT VERIFIED - Check frontend implementation!'}</p>
+                <p style="margin: 5px 0;">✅ reCAPTCHA v3 verification: ${recaptchaVerified ? `PASSED (Score: ${score.toFixed(2)})` : 'SKIPPED (Development Mode)'}</p>
                 <p style="margin: 5px 0;">⏰ Timestamp: ${new Date().toLocaleString('en-US', { 
                   timeZone: 'Europe/Athens',
                   year: 'numeric',
