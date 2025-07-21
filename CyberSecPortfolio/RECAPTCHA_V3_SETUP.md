@@ -150,6 +150,7 @@ console.log('reCAPTCHA verification result:', {
    - Check CSP headers
    - Verify script inclusion
    - Check network connectivity
+   - Use `debug-recaptcha.html` to test independently
 
 2. **"Invalid site key"**
    - Verify domain configuration
@@ -165,6 +166,38 @@ console.log('reCAPTCHA verification result:', {
    - Adjust threshold upward
    - Implement manual review process
    - Add user feedback mechanism
+
+5. **"reCAPTCHA v3 verification: NOT VERIFIED" in production**
+   - Check if frontend is generating tokens properly
+   - Verify reCAPTCHA script is loading
+   - Use browser dev tools to inspect network requests
+   - Check console logs for reCAPTCHA errors
+   - Test with `debug-recaptcha.html` file
+
+### Debugging Steps
+
+1. **Check reCAPTCHA Loading:**
+   ```javascript
+   // In browser console
+   console.log('grecaptcha available:', typeof grecaptcha !== 'undefined');
+   console.log('ready function:', typeof grecaptcha?.ready);
+   console.log('execute function:', typeof grecaptcha?.execute);
+   ```
+
+2. **Test Token Generation:**
+   ```javascript
+   // In browser console (after reCAPTCHA loads)
+   grecaptcha.ready(() => {
+     grecaptcha.execute('6LcLUIkrAAAAEHbhqGdvIi6YPy93ghOu1BO0N0E', {action: 'test'})
+       .then(token => console.log('Token generated:', token))
+       .catch(error => console.error('Token generation failed:', error));
+   });
+   ```
+
+3. **Use Debug File:**
+   - Open `debug-recaptcha.html` in your browser
+   - Check status and generate tokens
+   - Test API integration directly
 
 ### Debug Commands
 

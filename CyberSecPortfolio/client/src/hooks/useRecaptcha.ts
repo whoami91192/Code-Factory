@@ -23,36 +23,48 @@ export const useRecaptcha = (): UseRecaptchaReturn => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    console.log('🔍 useRecaptcha: Initializing...')
+    
     // Check if reCAPTCHA is already loaded
     if (window.grecaptcha && window.grecaptcha.ready) {
+      console.log('✅ reCAPTCHA already loaded')
       window.grecaptcha.ready(() => {
+        console.log('✅ reCAPTCHA ready callback fired')
         setIsLoaded(true)
         setError(null)
       })
       return
     }
 
+    console.log('⏳ Waiting for reCAPTCHA to load...')
+    
     // Wait for script to load
     const checkRecaptcha = () => {
       if (window.grecaptcha && window.grecaptcha.ready) {
+        console.log('✅ reCAPTCHA detected, calling ready...')
         window.grecaptcha.ready(() => {
+          console.log('✅ reCAPTCHA ready callback completed')
           setIsLoaded(true)
           setError(null)
         })
       } else {
-        // Keep checking every 100ms for up to 10 seconds
+        // Keep checking every 100ms for up to 15 seconds
         const startTime = Date.now()
         const interval = setInterval(() => {
+          console.log('⏳ Checking for reCAPTCHA...', Date.now() - startTime, 'ms')
           if (window.grecaptcha && window.grecaptcha.ready) {
             clearInterval(interval)
+            console.log('✅ reCAPTCHA finally loaded!')
             window.grecaptcha.ready(() => {
+              console.log('✅ reCAPTCHA ready callback completed (delayed)')
               setIsLoaded(true)
               setError(null)
             })
-          } else if (Date.now() - startTime > 10000) {
-            // Timeout after 10 seconds
+          } else if (Date.now() - startTime > 15000) {
+            // Timeout after 15 seconds
             clearInterval(interval)
-            setError('reCAPTCHA failed to load')
+            console.error('❌ reCAPTCHA failed to load after 15 seconds')
+            setError('reCAPTCHA failed to load - please refresh the page')
           }
         }, 100)
       }

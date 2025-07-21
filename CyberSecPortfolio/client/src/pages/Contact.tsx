@@ -57,17 +57,34 @@ const Contact = () => {
       
       // Generate reCAPTCHA token
       let captchaToken = null
+      console.log('🔍 reCAPTCHA Status Check:', {
+        recaptchaLoaded,
+        executeRecaptchaAvailable: !!executeRecaptcha,
+        windowGrecaptchaExists: !!(window as any).grecaptcha,
+        recaptchaError
+      })
+      
       if (recaptchaLoaded && executeRecaptcha) {
         console.log('🔒 Generating reCAPTCHA token...')
         captchaToken = await executeRecaptcha('contact_form')
         if (!captchaToken) {
+          console.error('❌ reCAPTCHA token generation failed')
           setErrorMessage('Security verification failed. Please try again.')
           setIsSubmitting(false)
           return
         }
-        console.log('✅ reCAPTCHA token generated successfully')
+        console.log('✅ reCAPTCHA token generated successfully:', captchaToken.substring(0, 20) + '...')
       } else {
-        console.log('⚠️ reCAPTCHA not available, proceeding without token')
+        console.warn('⚠️ reCAPTCHA not available, proceeding without token')
+        console.warn('⚠️ This means the form is NOT protected in production!')
+        
+        // In production, we might want to be more strict
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          console.error('🚨 Production environment detected without reCAPTCHA protection!')
+          setErrorMessage('Security system not ready. Please refresh the page and try again.')
+          setIsSubmitting(false)
+          return
+        }
       }
       
       const response = await fetch('/api/contact', {
