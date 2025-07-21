@@ -165,12 +165,23 @@ export default async function handler(req, res) {
           console.log('reCAPTCHA challenge_ts:', recaptchaResult.challenge_ts)
           console.log('reCAPTCHA hostname:', recaptchaResult.hostname)
 
-          // Use a very low threshold for now (0.1) to debug
-          if (score < 0.1) {
-            console.log('Score below threshold:', score)
+          // Check if action matches expected action
+          const expectedAction = 'contact_form'
+          if (recaptchaResult.action && recaptchaResult.action !== expectedAction) {
+            console.log('Action mismatch. Expected:', expectedAction, 'Got:', recaptchaResult.action)
             return res.status(400).json({
               success: false,
-              message: 'Security verification failed. Please try again.'
+              message: 'Security verification failed. Invalid action.'
+            })
+          }
+
+          // Use a reasonable threshold for production (0.5 is recommended)
+          const threshold = 0.5
+          if (score < threshold) {
+            console.log('Score below threshold:', score, 'Required:', threshold)
+            return res.status(400).json({
+              success: false,
+              message: 'Security verification failed. Please try again or contact support if this persists.'
             })
           }
 

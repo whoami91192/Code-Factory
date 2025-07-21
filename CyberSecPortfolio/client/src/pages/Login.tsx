@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Shield, Lock } from 'lucide-react'
+import { useRecaptcha } from '../hooks/useRecaptcha'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -11,6 +12,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  
+  const { executeRecaptcha, isLoaded: recaptchaLoaded } = useRecaptcha()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,6 +21,19 @@ const Login = () => {
     setError('')
 
     try {
+      // Execute reCAPTCHA v3 for login action
+      let captchaToken = null
+      if (recaptchaLoaded && executeRecaptcha) {
+        console.log('🔒 Executing reCAPTCHA v3 for login...')
+        captchaToken = await executeRecaptcha('login')
+        if (!captchaToken) {
+          setError('Security verification failed. Please try again.')
+          setIsLoading(false)
+          return
+        }
+        console.log('✅ reCAPTCHA token obtained for login')
+      }
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
       
@@ -120,13 +136,18 @@ const Login = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !recaptchaLoaded}
               className="cyber-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
                   Authenticating...
+                </div>
+              ) : !recaptchaLoaded ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                  Loading Security...
                 </div>
               ) : (
                 <>
@@ -143,6 +164,13 @@ const Login = () => {
             <div className="text-xs text-white/90 drop-shadow space-y-1">
               <div><strong>Username:</strong> admin</div>
               <div><strong>Password:</strong> admin123</div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-white/20">
+              <div className="flex items-center justify-center space-x-2 text-xs text-white/60">
+                <Shield className="h-3 w-3 text-cyber-green" />
+                <span>Protected by reCAPTCHA v3</span>
+                <span className={`inline-block w-2 h-2 rounded-full ${recaptchaLoaded ? 'bg-cyber-green' : 'bg-yellow-500'}`}></span>
+              </div>
             </div>
           </div>
         </div>

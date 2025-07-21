@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Mail, MapPin, Shield, CheckCircle, Clock, AlertCircle } from 'lucide-react'
+import { useRecaptcha } from '../hooks/useRecaptcha'
+import RecaptchaStatus from '../components/RecaptchaStatus'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  
+  const { executeRecaptcha, isLoaded: recaptchaLoaded } = useRecaptcha()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,12 +55,27 @@ const Contact = () => {
       console.log('📤 Sending message...')
       console.log('📝 Form data:', formData)
       
+      // Execute reCAPTCHA v3
+      let captchaToken = null
+      if (recaptchaLoaded && executeRecaptcha) {
+        console.log('🔒 Executing reCAPTCHA v3...')
+        captchaToken = await executeRecaptcha('contact_form')
+        if (!captchaToken) {
+          setErrorMessage('Security verification failed. Please try again.')
+          return
+        }
+        console.log('✅ reCAPTCHA token obtained')
+      }
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          captchaToken
+        })
       })
 
       console.log('📊 Response status:', response.status)
@@ -123,6 +142,11 @@ const Contact = () => {
             Ready to secure your systems? Let's discuss your cybersecurity needs 
             and how I can help protect your digital assets.
           </p>
+        </div>
+
+        {/* reCAPTCHA Status */}
+        <div className="mb-8">
+          <RecaptchaStatus />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
@@ -278,15 +302,20 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !recaptchaLoaded}
                   className="cyber-button-magnetic target-lock w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? 'Sending...' : !recaptchaLoaded ? 'Loading Security...' : 'Send Message'}
                 </button>
                 
-                <p className="text-xs text-white/60 text-center">
-                  Your message will be sent directly to my email. I typically respond within 24 hours.
-                </p>
+                <div className="text-xs text-white/60 text-center space-y-1">
+                  <p>Your message will be sent directly to my email. I typically respond within 24 hours.</p>
+                  <div className="flex items-center justify-center space-x-2">
+                    <Shield className="h-3 w-3 text-cyber-green" />
+                    <span>Protected by reCAPTCHA v3</span>
+                    <span className={`inline-block w-2 h-2 rounded-full ${recaptchaLoaded ? 'bg-cyber-green' : 'bg-yellow-500'}`}></span>
+                  </div>
+                </div>
               </form>
             )}
           </div>
