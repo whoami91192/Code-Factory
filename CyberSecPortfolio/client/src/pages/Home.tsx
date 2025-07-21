@@ -71,8 +71,8 @@ const Home = () => {
                   <span className="text-cyber-yellow text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>
                 <p className="text-xl text-white/90 drop-shadow max-w-lg">
-                  Seasoned cybersecurity specialist and cloud infrastructure expert with over a decade of experience 
-                  in Azure/AWS environments, advanced threat detection, and AI-powered security solutions.
+                  Building fortress-like cloud environments and deploying intelligent security systems 
+                  to protect organizations from evolving cyber threats.
                 </p>
               </div>
 
