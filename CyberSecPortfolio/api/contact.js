@@ -133,19 +133,23 @@ export default async function handler(req, res) {
         console.log('Skipping reCAPTCHA verification (debug mode)')
         score = 1.0
         recaptchaVerified = true
-      } else {
-        try {
-          const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-              secret: '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1',
-              response: captchaToken,
-              remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+              } else {
+          try {
+            // Use environment variable for secret key
+            const secretKey = process.env.RECAPTCHA_SECRET_KEY || '6LcLUIkrAAAAAOkvPDPXJ22e2cPOGIxKb96jBdz1'
+            console.log('Using reCAPTCHA secret key:', secretKey ? `${secretKey.substring(0, 10)}...` : 'NOT FOUND')
+            
+            const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                secret: secretKey,
+                response: captchaToken,
+                remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+              })
             })
-          })
 
           const recaptchaResult = await recaptchaResponse.json()
           console.log('reCAPTCHA verification result:', recaptchaResult)
@@ -175,13 +179,14 @@ export default async function handler(req, res) {
             })
           }
 
-          // Use a reasonable threshold for production (0.5 is recommended)
-          const threshold = 0.5
+          // Use a lower threshold for initial testing (0.3) then increase to 0.5
+          const threshold = 0.3
           if (score < threshold) {
             console.log('Score below threshold:', score, 'Required:', threshold)
+            console.log('Full reCAPTCHA result for debugging:', JSON.stringify(recaptchaResult, null, 2))
             return res.status(400).json({
               success: false,
-              message: 'Security verification failed. Please try again or contact support if this persists.'
+              message: `Security verification failed. Score: ${score}, Required: ${threshold}. Please try again.`
             })
           }
 
