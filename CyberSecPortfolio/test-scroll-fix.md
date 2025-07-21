@@ -9,7 +9,7 @@ The home page was opening directly at the Interactive Terminal section instead o
 3. **Added hash fragment clearing** - Removes any URL hash that might cause unwanted scrolling
 4. **Added console logging** - For debugging scroll behavior
 
-## How to Test
+#### How to Test
 
 ### 1. Start the Development Server
 ```bash
