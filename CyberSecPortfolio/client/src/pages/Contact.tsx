@@ -1,6 +1,5 @@
-import { useState, useCallback, useEffect } from 'react'
-import { Mail, MapPin, Shield, CheckCircle, Clock } from 'lucide-react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { useState } from 'react'
+import { Mail, MapPin, Shield, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,124 +11,89 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
-  const [recaptchaError, setRecaptchaError] = useState('')
-  
-  const { executeRecaptcha } = useGoogleReCaptcha()
-  const isProduction = false // Disabled reCAPTCHA due to insufficient traffic
+  const [errorMessage, setErrorMessage] = useState('')
 
-  // Debug reCAPTCHA loading
-  useEffect(() => {
-    console.log('=== reCAPTCHA DEBUG ===')
-    console.log('executeRecaptcha available:', !!executeRecaptcha)
-    console.log('isProduction:', isProduction)
-    console.log('window.location.hostname:', window.location.hostname)
-    console.log('Site key:', '6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E')
-    
-    // Check if reCAPTCHA script is loaded
-    const recaptchaScript = document.querySelector('script[src*="recaptcha"]')
-    console.log('reCAPTCHA script found:', !!recaptchaScript)
-    
-    if (recaptchaScript) {
-      console.log('reCAPTCHA script src:', recaptchaScript.getAttribute('src'))
-    }
-  }, [executeRecaptcha, isProduction])
-
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setRecaptchaError('')
     
-    console.log('=== FORM SUBMISSION DEBUG ===')
-    console.log('Form submitted, checking reCAPTCHA...')
-    console.log('executeRecaptcha available:', !!executeRecaptcha)
-    console.log('isProduction:', isProduction)
+    // Clear previous messages
+    setErrorMessage('')
+    setSubmitMessage('')
     
-    let captchaToken = null
-    
-    // Only use reCAPTCHA in production
-    if (isProduction) {
-      if (!executeRecaptcha) {
-        console.log('Execute recaptcha not available')
-        setRecaptchaError('Security verification failed to load. Please refresh the page and try again.')
-        return
-      }
-
-      try {
-        console.log('Executing reCAPTCHA...')
-        // Execute reCAPTCHA v3 silently
-        captchaToken = await executeRecaptcha('contactForm')
-        console.log('reCAPTCHA token received:', captchaToken ? 'YES' : 'NO')
-        
-        if (!captchaToken) {
-          console.log('No reCAPTCHA token received')
-          setRecaptchaError('Security verification failed. Please try again.')
-          return
-        }
-      } catch (error) {
-        console.error('reCAPTCHA error:', error)
-        setRecaptchaError('Security verification failed. Please try again.')
-        return
-      }
-    } else {
-      console.log('Development mode - skipping reCAPTCHA')
+    // Simple validation
+    if (!formData.name.trim()) {
+      setErrorMessage('Name is required')
+      return
     }
-
+    if (!formData.email.trim()) {
+      setErrorMessage('Email is required')
+      return
+    }
+    if (!formData.subject.trim()) {
+      setErrorMessage('Subject is required')
+      return
+    }
+    if (!formData.message.trim()) {
+      setErrorMessage('Message is required')
+      return
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      setErrorMessage('Please enter a valid email address')
+      return
+    }
+    
     setIsSubmitting(true)
     
     try {
-      const requestBody = isProduction 
-        ? { ...formData, captchaToken }
-        : formData
-
-      console.log('Sending request to API...')
+      console.log('📤 Sending message...')
+      console.log('📝 Form data:', formData)
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(formData)
       })
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('API Error Response:', errorText)
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
+      console.log('📊 Response status:', response.status)
+      
       const result = await response.json()
-      console.log('API response:', result)
+      console.log('📄 Response:', result)
 
-      if (result.success) {
+      if (response.ok && result.success) {
         setIsSubmitted(true)
-        setSubmitMessage(result.message)
+        setSubmitMessage(result.message || 'Message sent successfully!')
         setFormData({ name: '', email: '', subject: '', message: '' })
-        // Reset success message after 5 seconds
+        
+        // Reset success message after 10 seconds
         setTimeout(() => {
           setIsSubmitted(false)
           setSubmitMessage('')
-        }, 5000)
+        }, 10000)
       } else {
-        // Show validation errors to user
-        setRecaptchaError(result.message || 'Failed to send message. Please try again.')
+        setErrorMessage(result.message || 'Failed to send message. Please try again.')
       }
+      
     } catch (error) {
-      console.error('Error in form submission:', error)
-      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-        alert('Network error. Please check your connection and try again.')
-      } else if (error.message.includes('HTTP error')) {
-        alert('Server error. Please try again later.')
-      } else {
-        alert('Failed to send message. Please try again later.')
-      }
+      console.error('❌ Error:', error)
+      setErrorMessage('Network error. Please check your connection and try again.')
     } finally {
       setIsSubmitting(false)
     }
-  }, [executeRecaptcha, formData, isProduction])
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    
+    // Clear error when user starts typing
+    if (errorMessage) {
+      setErrorMessage('')
+    }
   }
 
   const contactInfo = [
@@ -220,21 +184,34 @@ const Contact = () => {
             {isSubmitted ? (
               <div className="cyber-card text-center py-12">
                 <CheckCircle className="h-16 w-16 mx-auto mb-4 text-cyber-green glow-text" />
-                <h3 className="text-xl font-bold mb-2">Message Sent Successfully!</h3>
+                <h3 className="text-xl font-bold mb-2 text-white">Message Sent Successfully!</h3>
                 <p className="text-white/90 drop-shadow mb-4">
-                  {submitMessage || 'Thank you for your message. I\'ll get back to you within 24 hours.'}
+                  {submitMessage}
                 </p>
                 <div className="bg-cyber-green/10 border border-cyber-green/30 rounded-lg p-4 mt-4">
                   <p className="text-cyber-green text-sm">
-                    {submitMessage.includes('email') 
-                      ? '📧 A confirmation email has been sent to your inbox with details of your message.'
-                      : '📝 Your message has been received and logged. I will review it and get back to you soon.'
-                    }
+                    📧 A confirmation email has been sent to your inbox. I will review your message and get back to you soon.
                   </p>
                 </div>
+                <button
+                  onClick={() => {
+                    setIsSubmitted(false)
+                    setSubmitMessage('')
+                  }}
+                  className="mt-4 px-6 py-2 bg-cyber-green/20 text-cyber-green border border-cyber-green/30 rounded-md hover:bg-cyber-green/30 transition-colors"
+                >
+                  Send Another Message
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="cyber-card space-y-6 contact-form">
+                {errorMessage && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex items-center space-x-2">
+                    <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+                    <p className="text-red-400 text-sm">{errorMessage}</p>
+                  </div>
+                )}
+
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white drop-shadow mb-2">
                     Name *
@@ -246,7 +223,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600 text-white"
                     placeholder="Your full name"
                   />
                 </div>
@@ -262,7 +239,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600 text-white"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -278,7 +255,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green placeholder-gray-600 text-white"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -294,22 +271,22 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green resize-none placeholder-gray-600"
+                    className="w-full p-3 bg-muted border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-cyber-green resize-none placeholder-gray-600 text-white"
                     placeholder="Tell me about your security needs..."
                   />
                 </div>
 
-                {recaptchaError && (
-                  <p className="text-red-500 text-sm">{recaptchaError}</p>
-                )}
-
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="cyber-button-magnetic target-lock w-full"
+                  className="cyber-button-magnetic target-lock w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
+                
+                <p className="text-xs text-white/60 text-center">
+                  Your message will be sent directly to my email. I typically respond within 24 hours.
+                </p>
               </form>
             )}
           </div>
