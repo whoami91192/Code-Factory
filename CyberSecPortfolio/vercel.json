@@ -1,22 +1,30 @@
 {
-  "framework": "vite",
-  "buildCommand": "cd client && npm run build",
-  "outputDirectory": "client/dist",
-  "installCommand": "cd client && npm install",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
-  "crons": [
+  "routes": [
     {
-      "path": "/api/news",
-      "schedule": "0 6 * * *"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/dist/$1"
     }
-  ]
+  ],
+  "env": {
+    "RECAPTCHA_SECRET_KEY": "@recaptcha-secret-key"
+  },
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 30
+    }
+  }
 } 
