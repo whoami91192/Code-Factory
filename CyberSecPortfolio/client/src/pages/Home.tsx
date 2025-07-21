@@ -64,15 +64,15 @@ const Home = () => {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-6xl font-cyber font-bold">
-                  <span className="text-cyber-green">Cyber</span> Security
+                  <span className="text-cyber-green">Systems</span> and
                   <br />
-                  <span className="text-cyber-blue">Engineer</span>
+                  <span className="text-cyber-blue">Cloud Engineer</span>
                   <br />
                   <span className="text-cyber-yellow text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>
                 <p className="text-xl text-white/90 drop-shadow max-w-lg">
-                  Securing digital assets through advanced threat detection, 
-                  penetration testing, and security automation.
+                  Seasoned cybersecurity specialist and cloud infrastructure expert with over a decade of experience 
+                  in Azure/AWS environments, advanced threat detection, and AI-powered security solutions.
                 </p>
               </div>
 
