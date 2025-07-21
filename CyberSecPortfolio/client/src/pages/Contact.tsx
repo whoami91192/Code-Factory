@@ -12,19 +12,33 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
+  const [recaptchaError, setRecaptchaError] = useState('')
   
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const isProduction = window.location.hostname === 'code-factory-gamma.vercel.app'
+  const isProduction = false // Disabled reCAPTCHA due to insufficient traffic
 
   // Debug reCAPTCHA loading
   useEffect(() => {
+    console.log('=== reCAPTCHA DEBUG ===')
     console.log('executeRecaptcha available:', !!executeRecaptcha)
     console.log('isProduction:', isProduction)
+    console.log('window.location.hostname:', window.location.hostname)
+    console.log('Site key:', '6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E')
+    
+    // Check if reCAPTCHA script is loaded
+    const recaptchaScript = document.querySelector('script[src*="recaptcha"]')
+    console.log('reCAPTCHA script found:', !!recaptchaScript)
+    
+    if (recaptchaScript) {
+      console.log('reCAPTCHA script src:', recaptchaScript.getAttribute('src'))
+    }
   }, [executeRecaptcha, isProduction])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
+    setRecaptchaError('')
     
+    console.log('=== FORM SUBMISSION DEBUG ===')
     console.log('Form submitted, checking reCAPTCHA...')
     console.log('executeRecaptcha available:', !!executeRecaptcha)
     console.log('isProduction:', isProduction)
@@ -34,8 +48,8 @@ const Contact = () => {
     // Only use reCAPTCHA in production
     if (isProduction) {
       if (!executeRecaptcha) {
-        console.log('Execute recaptcha not yet available')
-        alert('Security verification is loading. Please try again in a moment.')
+        console.log('Execute recaptcha not available')
+        setRecaptchaError('Security verification failed to load. Please refresh the page and try again.')
         return
       }
 
@@ -44,9 +58,15 @@ const Contact = () => {
         // Execute reCAPTCHA v3 silently
         captchaToken = await executeRecaptcha('contactForm')
         console.log('reCAPTCHA token received:', captchaToken ? 'YES' : 'NO')
+        
+        if (!captchaToken) {
+          console.log('No reCAPTCHA token received')
+          setRecaptchaError('Security verification failed. Please try again.')
+          return
+        }
       } catch (error) {
         console.error('reCAPTCHA error:', error)
-        alert('Security verification failed. Please try again.')
+        setRecaptchaError('Security verification failed. Please try again.')
         return
       }
     } else {
@@ -60,6 +80,7 @@ const Contact = () => {
         ? { ...formData, captchaToken }
         : formData
 
+      console.log('Sending request to API...')
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -276,6 +297,10 @@ const Contact = () => {
                     placeholder="Tell me about your security needs..."
                   />
                 </div>
+
+                {recaptchaError && (
+                  <p className="text-red-500 text-sm">{recaptchaError}</p>
+                )}
 
                 <button
                   type="submit"

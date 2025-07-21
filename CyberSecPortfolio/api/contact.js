@@ -3,6 +3,32 @@ export default async function handler(req, res) {
   console.log('Method:', req.method)
   console.log('Headers:', req.headers)
   console.log('Body:', req.body)
+  
+  // Simple rate limiting - store in memory (not ideal for production)
+  const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  const now = Date.now()
+  const rateLimitWindow = 5 * 60 * 1000 // 5 minutes
+  const maxRequests = 3 // Max 3 requests per 5 minutes
+  
+  // Get existing requests for this IP
+  if (!global.rateLimitStore) {
+    global.rateLimitStore = new Map()
+  }
+  
+  const clientRequests = global.rateLimitStore.get(clientIP) || []
+  const recentRequests = clientRequests.filter(time => now - time < rateLimitWindow)
+  
+  if (recentRequests.length >= maxRequests) {
+    console.log('Rate limit exceeded for IP:', clientIP)
+    return res.status(429).json({
+      success: false,
+      message: 'Too many requests. Please wait a few minutes before trying again.'
+    })
+  }
+  
+  // Add current request
+  recentRequests.push(now)
+  global.rateLimitStore.set(clientIP, recentRequests)
 
   // Enable CORS for all origins
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -47,6 +73,51 @@ export default async function handler(req, res) {
         success: false,
         message: 'All fields are required',
         received: { name: !!name, email: !!email, subject: !!subject, message: !!message }
+      })
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      console.log('Invalid email format:', email)
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter a valid email address'
+      })
+    }
+    
+    // Validate message length
+    if (message.length < 10) {
+      console.log('Message too short:', message.length)
+      return res.status(400).json({
+        success: false,
+        message: 'Message must be at least 10 characters long'
+      })
+    }
+    
+    if (message.length > 2000) {
+      console.log('Message too long:', message.length)
+      return res.status(400).json({
+        success: false,
+        message: 'Message must be less than 2000 characters'
+      })
+    }
+    
+    // Validate name length
+    if (name.length < 2 || name.length > 100) {
+      console.log('Invalid name length:', name.length)
+      return res.status(400).json({
+        success: false,
+        message: 'Name must be between 2 and 100 characters'
+      })
+    }
+    
+    // Validate subject length
+    if (subject.length < 5 || subject.length > 200) {
+      console.log('Invalid subject length:', subject.length)
+      return res.status(400).json({
+        success: false,
+        message: 'Subject must be between 5 and 200 characters'
       })
     }
 
