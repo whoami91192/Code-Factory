@@ -62,8 +62,7 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
         {/* Content */}
         <div className="space-y-4 text-white/90 drop-shadow">
           <p>
-            This website uses cookies to enhance your experience and ensure proper functionality. 
-            Cookies are essential for the website's operation and security features.
+            This website uses cookies to improve your experience and ensure proper functionality. Cookies are essential for the operation and security features of this website.
           </p>
           
           <div className="space-y-2">
@@ -77,8 +76,7 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
           </div>
 
           <p className="text-sm text-white/70">
-            You cannot proceed to use the website without accepting cookies. 
-            These cookies are necessary for security and functionality purposes.
+            You cannot continue to use the website without accepting cookies. If you click "Decline", your ability to enter and access the web app will be immediately removed. Cookies are required for security and functionality purposes.
           </p>
         </div>
 
