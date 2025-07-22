@@ -54,9 +54,10 @@ function App() {
     <ThemeProvider>
       <DeveloperToolsProtection>
         <div className="min-h-screen bg-background text-foreground">
-          {cookiesAccepted ? (
-            <>
-              <Routes>
+          <Routes>
+            <Route path="/cookie-required" element={<CookieRequired />} />
+            {cookiesAccepted ? (
+              <>
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />
                   <Route path="about" element={<About />} />
@@ -67,14 +68,13 @@ function App() {
                   <Route path="terms" element={<Terms />} />
                   <Route path="login" element={<Login />} />
                 </Route>
-                <Route path="/cookie-required" element={<CookieRequired />} />
-              </Routes>
-              <Toaster />
-              <Analytics />
-            </>
-          ) : (
-            <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />
-          )}
+                <Toaster />
+                <Analytics />
+              </>
+            ) : (
+              <Route path="*" element={<CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />} />
+            )}
+          </Routes>
         </div>
       </DeveloperToolsProtection>
     </ThemeProvider>
