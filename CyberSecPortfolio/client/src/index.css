@@ -240,15 +240,11 @@
   .cyber-button {
     @apply relative overflow-hidden bg-cyber-card border border-cyber-primary text-cyber-primary px-6 py-3 font-cyber font-bold transition-all duration-300 rounded-lg;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1;
   }
   
   .cyber-button:hover {
     @apply bg-cyber-primary text-background shadow-lg;
     box-shadow: 
-      0 8px 25px rgba(0, 0, 0, 0.3),
       0 0 20px rgba(0, 128, 255, 0.4),
       0 0 40px rgba(0, 128, 255, 0.2);
     transform: translateY(-2px);
@@ -258,26 +254,11 @@
     content: '';
     @apply absolute inset-0 bg-cyber-primary opacity-0 transition-opacity duration-300;
     transform: translateX(-100%);
-    z-index: -1;
   }
   
   .cyber-button:hover::before {
     @apply opacity-20;
     transform: translateX(0);
-  }
-  
-  .cyber-button:active {
-    transform: translateY(0);
-    box-shadow: 
-      0 4px 15px rgba(0, 0, 0, 0.3),
-      0 0 10px rgba(0, 128, 255, 0.3);
-  }
-  
-  .cyber-button:focus {
-    outline: none;
-    box-shadow: 
-      0 0 0 2px rgba(0, 128, 255, 0.3),
-      0 4px 15px rgba(0, 0, 0, 0.2);
   }
   
   .cyber-card {
@@ -314,62 +295,14 @@
   
   .cyber-button-outline {
     @apply relative overflow-hidden bg-transparent border border-cyber-primary text-cyber-primary px-6 py-3 font-cyber font-bold transition-all duration-300 rounded-lg;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1;
   }
   
   .cyber-button-outline:hover {
     @apply bg-cyber-primary text-background shadow-lg;
     box-shadow: 
-      0 8px 25px rgba(0, 0, 0, 0.3),
       0 0 20px rgba(0, 128, 255, 0.4),
       0 0 40px rgba(0, 128, 255, 0.2);
     transform: translateY(-2px);
-  }
-  
-  .cyber-button-outline:active {
-    transform: translateY(0);
-    box-shadow: 
-      0 4px 15px rgba(0, 0, 0, 0.2),
-      0 0 10px rgba(0, 128, 255, 0.3);
-  }
-  
-  .cyber-button-outline:focus {
-    outline: none;
-    box-shadow: 
-      0 0 0 2px rgba(0, 128, 255, 0.3),
-      0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cyber-button.variant-outline {
-    @apply bg-transparent border-2 border-cyber-secondary text-cyber-secondary;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cyber-button.variant-outline:hover {
-    @apply bg-cyber-secondary text-background;
-    box-shadow: 
-      0 8px 25px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(0, 255, 128, 0.4),
-      0 0 40px rgba(0, 255, 128, 0.2);
-    transform: translateY(-2px);
-  }
-  
-  .cyber-button.variant-outline:active {
-    transform: translateY(0);
-    box-shadow: 
-      0 4px 15px rgba(0, 0, 0, 0.2),
-      0 0 10px rgba(0, 255, 128, 0.3);
-  }
-  
-  .cyber-button.variant-outline:focus {
-    outline: none;
-    box-shadow: 
-      0 0 0 2px rgba(0, 255, 128, 0.3),
-      0 4px 15px rgba(0, 0, 0, 0.1);
   }
   
   .cyber-input {
@@ -885,7 +818,6 @@ iframe[src*="recaptcha"] {
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  z-index: 1;
 }
 
 .cyber-button-magnetic::before {
@@ -895,40 +827,22 @@ iframe[src*="recaptcha"] {
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(0, 128, 255, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, hsl(var(--cyber-secondary) / 0.3) 0%, transparent 70%);
   transform: translate(-50%, -50%);
-  transition: all 0.4s ease-out;
+  transition: all 0.3s ease-out;
   border-radius: 50%;
-  z-index: -1;
-  pointer-events: none;
 }
 
 .cyber-button-magnetic:hover::before {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
 }
 
 .cyber-button-magnetic:hover {
-  transform: scale(1.05) translateY(-2px);
+  transform: scale(1.05);
   box-shadow: 
-    0 12px 35px rgba(0, 0, 0, 0.4),
-    0 0 30px rgba(0, 128, 255, 0.4),
-    0 0 60px rgba(0, 128, 255, 0.2);
-}
-
-.cyber-button-magnetic:active {
-  transform: scale(1.02) translateY(0);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.3),
-    0 0 15px rgba(0, 128, 255, 0.3);
-}
-
-.cyber-button-magnetic:focus {
-  outline: none;
-  box-shadow: 
-    0 0 0 2px rgba(0, 128, 255, 0.4),
-    0 8px 25px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(0, 128, 255, 0.3);
+    0 0 30px hsl(var(--cyber-primary) / 0.4),
+    0 0 60px hsl(var(--cyber-accent) / 0.2);
 }
 
 /* Responsive Adjustments */
