@@ -12,6 +12,12 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     const checkAuth = () => {
+      // Cookie consent check
+      const cookieConsent = localStorage.getItem('cookieConsent');
+      if (cookieConsent !== 'accepted') {
+        navigate('/cookie-required');
+        return;
+      }
       const token = localStorage.getItem('authToken')
       const user = localStorage.getItem('user')
 
