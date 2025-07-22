@@ -6,6 +6,8 @@ import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
 import GoogleAnalytics from './components/GoogleAnalytics'
 import ServiceWorkerRegistration from './components/ServiceWorkerRegistration'
+import CSPInitializer from './components/CSPInitializer'
+import { runSecurityTests } from './utils/csp-test'
 
 
 import CookieConsent from './components/CookieConsent'
@@ -44,6 +46,15 @@ function App() {
     };
   }, []);
 
+  // Run security tests in development
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        runSecurityTests();
+      }, 3000); // Wait for CSP to initialize
+    }
+  }, []);
+
   const handleCookieAccept = () => {
     setCookiesAccepted(true);
   };
@@ -58,6 +69,7 @@ function App() {
   return (
     <ThemeProvider>
       <DeveloperToolsProtection>
+        <CSPInitializer />
         <div className="min-h-screen bg-background text-foreground">
           {cookiesAccepted ? (
             <>
