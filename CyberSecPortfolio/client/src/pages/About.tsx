@@ -67,7 +67,7 @@ const About = () => {
                     <ul className="text-white/90 drop-shadow text-sm space-y-1">
                       <li>• Monitor system and cloud infrastructure health using Azure Monitor, AWS CloudWatch</li>
                       <li>• Optimized secure data storage with scalable cloud storage solutions</li>
-                      <li>• Troubleshot complex networking, systemd service failures, and kernel-level issues</li>
+                      <li>• Troubleshoot complex networking, systemd service failures, and kernel-level issues</li>
                       <li>• Deployed and managed Linux-based servers (Ubuntu, RHEL, CentOS) for AI-ready environments</li>
                       <li>• Managed AI workloads using containerized environments (Docker, Kubernetes)</li>
                     </ul>
