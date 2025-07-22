@@ -89,8 +89,8 @@ const Layout = () => {
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex items-center space-x-2 text-center">
               <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-cyber-green" />
-              <span className="text-xs sm:text-sm text-muted-foreground glitch-text" data-text="© 2024 John Katsimpris. Securing the digital frontier.">
-                © 2024 John Katsimpris. Securing the digital frontier.
+              <span className="text-xs sm:text-sm text-muted-foreground glitch-text" data-text={`© ${new Date().getFullYear()} John Katsimpris. Securing the digital frontier.`}>
+                © {new Date().getFullYear()} John Katsimpris. Securing the digital frontier.
               </span>
             </div>
             <div className="flex items-center space-x-3 sm:space-x-4 flex-wrap justify-center">
