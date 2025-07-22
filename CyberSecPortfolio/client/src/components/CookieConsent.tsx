@@ -26,7 +26,7 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
   const handleDecline = () => {
     localStorage.setItem('cookieConsent', 'declined')
     setIsVisible(false)
-    window.location.href = '/cookie-required'
+    onDecline()
   }
 
   if (!isVisible) {

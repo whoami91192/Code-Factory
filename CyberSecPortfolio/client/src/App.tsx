@@ -15,7 +15,6 @@ import Contact from './pages/Contact'
 import RansomwareCalculator from './pages/RansomwareCalculator'
 import Terms from './pages/Terms'
 import Login from './pages/Login'
-import CookieRequired from './pages/CookieRequired'
 
 function App() {
   const [cookiesAccepted, setCookiesAccepted] = useState(false);
@@ -47,7 +46,8 @@ function App() {
   };
 
   const handleCookieDecline = () => {
-    // Δεν χρειάζεται πλέον, το CookieConsent χειρίζεται το redirect
+    // Redirect to a blank page or show message
+    window.location.href = 'about:blank';
   };
 
   return (
@@ -67,7 +67,6 @@ function App() {
                   <Route path="terms" element={<Terms />} />
                   <Route path="login" element={<Login />} />
                 </Route>
-                <Route path="/cookie-required" element={<CookieRequired />} />
               </Routes>
               <Toaster />
               <Analytics />
