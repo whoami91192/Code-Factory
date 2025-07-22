@@ -1,23 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/../api/$1"
-    },
-    {
-      "source": "/sitemap.xml",
-      "destination": "/sitemap.xml"
-    },
-    {
-      "source": "/robots.txt",
-      "destination": "/robots.txt"
-    },
-    {
-      "source": "/manifest.json",
-      "destination": "/manifest.json"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/((?!sitemap\\.xml$|robots\\.txt$|manifest\\.json$|sw\\.js$|.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)).*)",
       "destination": "/index.html"
     }
   ],
@@ -50,19 +34,11 @@
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/sw.js",
       "headers": [
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
+          "key": "Content-Type",
+          "value": "application/javascript"
         }
       ]
     }
