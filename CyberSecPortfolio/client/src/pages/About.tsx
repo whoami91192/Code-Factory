@@ -34,7 +34,7 @@ const About = () => {
             JOHN <span className="text-cyber-secondary">KATSIMPRIS</span>
           </h1>
           <p className="text-2xl text-cyber-primary font-cyber mb-4">
-            PROFESSIONAL SECURITY SERVICES
+            SYSTEMS AND CLOUD ENGINEER
           </p>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Seasoned cybersecurity specialist and cloud infrastructure expert with over a decade of experience 
