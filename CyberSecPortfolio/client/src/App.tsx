@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
@@ -91,7 +92,7 @@ function App() {
                 <>
                   <Analytics />
                   <GoogleAnalytics />
-
+                  <SpeedInsights />
                 </>
               )}
               {/* Service Worker Registration for PWA */}

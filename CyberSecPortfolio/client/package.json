@@ -29,11 +29,11 @@
     "@types/d3": "^7.4.3",
     "@types/three": "^0.178.1",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "d3": "^7.9.0",
     "lucide-react": "^0.294.0",
-
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-recaptcha-v3": "^1.11.0",
@@ -46,7 +46,6 @@
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react": "^4.1.1",
