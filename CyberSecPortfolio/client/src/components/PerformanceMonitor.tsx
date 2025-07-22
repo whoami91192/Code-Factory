@@ -169,22 +169,22 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
         connection: (navigator as any).connection?.effectiveType || 'unknown'
       };
 
-      // Temporarily disabled - API endpoint not ready
       // Send to your analytics endpoint
-      // await fetch('/api/analytics/performance', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(payload),
-      // });
+      await fetch('/api/analytics/performance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
       
-      // Log locally instead
+      // Also log locally in development
       if (process.env.NODE_ENV === 'development') {
-        console.log('📊 Performance Analytics:', payload);
+        console.log('📊 Performance Analytics sent:', payload);
       }
     } catch (error) {
       console.error('Failed to send performance metrics:', error);
+      // Don't throw - fail silently to not break the app
     }
   };
 
