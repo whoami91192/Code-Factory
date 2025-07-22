@@ -24,14 +24,12 @@ const Login = () => {
       // Execute reCAPTCHA v3 for login action
       let captchaToken = null
       if (recaptchaLoaded && executeRecaptcha) {
-        console.log('🔒 Executing reCAPTCHA v3 for login...')
         captchaToken = await executeRecaptcha('login')
         if (!captchaToken) {
           setError('Security verification failed. Please try again.')
           setIsLoading(false)
           return
         }
-        console.log('✅ reCAPTCHA token obtained for login')
       }
       
       // Simulate API call

@@ -52,19 +52,16 @@ const Contact = () => {
     setIsSubmitting(true)
     
     try {
-      console.log('📤 Sending message...')
-      console.log('📝 Form data:', formData)
+      
       
       // Execute reCAPTCHA v3
       let captchaToken = null
       if (recaptchaLoaded && executeRecaptcha) {
-        console.log('🔒 Executing reCAPTCHA v3...')
         captchaToken = await executeRecaptcha('contact_form')
         if (!captchaToken) {
           setErrorMessage('Security verification failed. Please try again.')
           return
         }
-        console.log('✅ reCAPTCHA token obtained')
       }
       
       const response = await fetch('/api/contact', {
@@ -78,10 +75,7 @@ const Contact = () => {
         })
       })
 
-      console.log('📊 Response status:', response.status)
-      
       const result = await response.json()
-      console.log('📄 Response:', result)
 
       if (response.ok && result.success) {
         setIsSubmitted(true)

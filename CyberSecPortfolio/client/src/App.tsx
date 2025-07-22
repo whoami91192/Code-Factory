@@ -56,7 +56,7 @@ function App() {
   const handlePerformanceMetrics = (metrics: any) => {
     // Log performance metrics in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('🚀 Performance Metrics:', metrics);
+  
     }
   };
 
