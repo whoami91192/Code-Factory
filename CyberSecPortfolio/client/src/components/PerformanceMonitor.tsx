@@ -177,14 +177,8 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
         },
         body: JSON.stringify(payload),
       });
-      
-      // Also log locally in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📊 Performance Analytics sent:', payload);
-      }
     } catch (error) {
       console.error('Failed to send performance metrics:', error);
-      // Don't throw - fail silently to not break the app
     }
   };
 
