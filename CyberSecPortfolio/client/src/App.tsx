@@ -4,6 +4,9 @@ import { Analytics } from '@vercel/analytics/react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
+import GoogleAnalytics from './components/GoogleAnalytics'
+import ServiceWorkerRegistration from './components/ServiceWorkerRegistration'
+import PerformanceMonitor from './components/PerformanceMonitor'
 
 import CookieConsent from './components/CookieConsent'
 import DeveloperToolsProtection from './components/DeveloperToolsProtection'
@@ -50,6 +53,13 @@ function App() {
     setCookiesAccepted(true);
   };
 
+  const handlePerformanceMetrics = (metrics: any) => {
+    // Log performance metrics in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🚀 Performance Metrics:', metrics);
+    }
+  };
+
   return (
     <ThemeProvider>
       <DeveloperToolsProtection>
@@ -70,7 +80,18 @@ function App() {
               </Routes>
               <Toaster />
               {/* Only show Analytics if cookies were accepted */}
-              {localStorage.getItem('cookieConsent') === 'accepted' && <Analytics />}
+              {localStorage.getItem('cookieConsent') === 'accepted' && (
+                <>
+                  <Analytics />
+                  <GoogleAnalytics />
+                  <PerformanceMonitor 
+                    onMetrics={handlePerformanceMetrics}
+                    enableReporting={true}
+                  />
+                </>
+              )}
+              {/* Service Worker Registration for PWA */}
+              <ServiceWorkerRegistration />
             </>
           ) : (
             <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />
