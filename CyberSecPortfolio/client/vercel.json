@@ -1,10 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
       "source": "/sitemap.xml",
       "destination": "/sitemap.xml"
     },
@@ -50,29 +46,19 @@
       ]
     },
     {
-      "source": "/sw.js",
+      "source": "/api/(.*)",
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    },
-    {
-      "source": "/js/(.*)",
-      "headers": [
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
         {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    },
-    {
-      "source": "/css/(.*)",
-      "headers": [
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
         {
-          "key": "Content-Type",
-          "value": "text/css"
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
         }
       ]
     }
