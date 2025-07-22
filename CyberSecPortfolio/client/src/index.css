@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import './mobile-optimizations.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import './mobile-optimizations.css';
 
 @layer base {
   :root {

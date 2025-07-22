@@ -228,14 +228,7 @@ const MyPage = () => {
 };
 ```
 
-### Performance Monitoring
-```typescript
-// Monitor Core Web Vitals
-<PerformanceMonitor 
-  onMetrics={(metrics) => console.log(metrics)}
-  enableReporting={true}
-/>
-```
+
 
 ### Service Worker Management
 ```typescript
