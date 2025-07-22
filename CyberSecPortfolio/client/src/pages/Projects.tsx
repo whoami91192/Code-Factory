@@ -1,5 +1,6 @@
-import { Shield, Code, Target, Zap } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Shield, Code, Users, Award, Eye, Lock, FileText, QrCode, Network, Terminal, Database, Bug, Zap, Cpu, Server, Globe, Key, Fingerprint, Brain, Rocket, Target, ShieldCheck, AlertTriangle, Clock, Star, GitBranch, ExternalLink, ArrowRight } from 'lucide-react'
 
 const Projects = () => {
   const projects = [
@@ -175,12 +176,13 @@ const Projects = () => {
               Let's build something amazing together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contact"
-                className="cyber-button"
+              <Link
+                to="/contact"
+                className="cyber-button-magnetic target-lock flex items-center justify-center space-x-2"
               >
-                Get In Touch
-              </a>
+                <span>Get In Touch</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>
