@@ -19,8 +19,8 @@ const SEO: React.FC<SEOProps> = ({
   title = "John Katsimpris | Cyber Security Engineer & Penetration Tester",
   description = "Expert Cyber Security Engineer specializing in penetration testing, security audits, incident response, and cybersecurity consulting. Professional security services for protecting digital assets.",
   keywords = "cyber security engineer, john katsimpris, penetration testing, security audits, incident response, cybersecurity consulting, security tools, digital forensics, ethical hacking, vulnerability assessment",
-  image = "https://your-domain.com/og-image.jpg",
-  url = "https://your-domain.com",
+  image = "https://www.jksecurestack.com/og-image.jpg",
+  url = "https://www.jksecurestack.com",
   type = "website",
   author = "John Katsimpris",
   publishedTime,
@@ -29,8 +29,8 @@ const SEO: React.FC<SEOProps> = ({
   tags = []
 }) => {
   const fullTitle = title.includes("John Katsimpris") ? title : `${title} | John Katsimpris`;
-  const fullUrl = url.startsWith('http') ? url : `https://your-domain.com${url}`;
-  const fullImage = image.startsWith('http') ? image : `https://your-domain.com${image}`;
+  const fullUrl = url.startsWith('http') ? url : `https://www.jksecurestack.com${url}`;
+  const fullImage = image.startsWith('http') ? image : `https://www.jksecurestack.com${image}`;
 
   return (
     <Helmet>

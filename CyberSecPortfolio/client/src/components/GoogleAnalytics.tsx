@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with your actual Google Analytics ID
+const GA_TRACKING_ID = 'GTM-KSTPSXRD'; // JK SecureStack Google Analytics ID
 
 const GoogleAnalytics: React.FC = () => {
   const location = useLocation();
@@ -25,21 +25,17 @@ const GoogleAnalytics: React.FC = () => {
   }, [location]);
 
   useEffect(() => {
-    // Load Google Analytics script
+    // Load Google Tag Manager script
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${GA_TRACKING_ID}`;
     document.head.appendChild(script);
 
-    // Initialize gtag function
+    // Initialize dataLayer and GTM
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function() {
-      window.dataLayer.push(arguments);
-    };
-    window.gtag('js', new Date());
-    window.gtag('config', GA_TRACKING_ID, {
-      page_title: document.title,
-      page_location: window.location.href,
+    window.dataLayer.push({
+      'gtm.start': new Date().getTime(),
+      event: 'gtm.js'
     });
 
     return () => {

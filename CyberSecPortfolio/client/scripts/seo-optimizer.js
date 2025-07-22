@@ -3,7 +3,7 @@ const path = require('path');
 
 class SEOOptimizer {
   constructor() {
-    this.domain = 'https://your-domain.com'; // Replace with your domain
+    this.domain = 'https://www.jksecurestack.com'; // JK SecureStack domain
     this.issues = [];
     this.suggestions = [];
   }

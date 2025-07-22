@@ -52,8 +52,8 @@ const useSEO = (config: SEOConfig) => {
     updateMetaTag('name', 'googlebot', noindex ? 'noindex, nofollow' : 'index, follow');
 
     // Update Open Graph tags
-    const fullUrl = canonical || url || `https://your-domain.com${location.pathname}`;
-    const fullImage = image || 'https://your-domain.com/og-image.jpg';
+    const fullUrl = canonical || url || `https://www.jksecurestack.com${location.pathname}`;
+    const fullImage = image || 'https://www.jksecurestack.com/og-image.jpg';
 
     updateMetaTag('property', 'og:title', fullTitle);
     updateMetaTag('property', 'og:description', description || 'Expert Cyber Security Engineer specializing in penetration testing, security audits, incident response, and cybersecurity consulting.');

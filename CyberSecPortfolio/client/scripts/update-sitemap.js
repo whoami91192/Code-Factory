@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const DOMAIN = 'https://your-domain.com'; // Replace with your actual domain
+const DOMAIN = 'https://www.jksecurestack.com'; // JK SecureStack domain
 const SITEMAP_PATH = path.join(__dirname, '../public/sitemap.xml');
 
 // Pages configuration
