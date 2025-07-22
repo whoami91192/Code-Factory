@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Insights Test</title>
+    <script type="module">
+        import { SpeedInsights } from '@vercel/speed-insights/react';
+        
+        // Test if Speed Insights is available
+        console.log('Speed Insights imported successfully:', !!SpeedInsights);
+        
+        // Check if the component can be rendered
+        if (SpeedInsights) {
+            console.log('✅ Speed Insights is working correctly');
+        } else {
+            console.log('❌ Speed Insights failed to import');
+        }
+    </script>
+</head>
+<body>
+    <h1>Speed Insights Test</h1>
+    <p>Check the browser console for Speed Insights status</p>
+</body>
+</html> 

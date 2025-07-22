@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { ThemeProvider } from './contexts/ThemeContext'
+import SpeedInsightsDebug from './components/SpeedInsightsDebug'
 import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
 import GoogleAnalytics from './components/GoogleAnalytics'
@@ -92,9 +93,12 @@ function App() {
                 <>
                   <Analytics />
                   <GoogleAnalytics />
-                  <SpeedInsights />
                 </>
               )}
+              {/* Speed Insights - Always load for performance monitoring */}
+              <SpeedInsights />
+              {/* Speed Insights Debug Component */}
+              <SpeedInsightsDebug />
               {/* Service Worker Registration for PWA */}
               <ServiceWorkerRegistration />
             </>
