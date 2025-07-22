@@ -1676,3 +1676,49 @@ iframe[src*="recaptcha"] {
     font-size: 1.25rem !important;
   }
 } 
+
+/* Scroll to Top Button */
+.scroll-to-top-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: hsl(200 100% 50%);
+  color: hsl(220 25% 4%);
+  border: 2px solid hsl(200 100% 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px hsl(200 100% 50% / 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.scroll-to-top-button:hover {
+  background-color: hsl(160 100% 45%);
+  border-color: hsl(160 100% 45%);
+  transform: scale(1.1);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    0 0 30px hsl(160 100% 45% / 0.4);
+}
+
+.scroll-to-top-button:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .scroll-to-top-button {
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+  }
+} 
