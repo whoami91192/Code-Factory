@@ -19,13 +19,29 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
   const [showWarning, setShowWarning] = useState(false);
   const [warningCount, setWarningCount] = useState(0);
 
+  // Mobile browser detection
+  const isMobileBrowser = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    const isSafari = /safari/.test(userAgent) && !/chrome/.test(userAgent);
+    const isIOS = /iphone|ipad|ipod/.test(userAgent);
+    
+    return isMobile || isSafari || isIOS;
+  };
+
   useEffect(() => {
+    // Skip protection on mobile browsers
+    if (isMobileBrowser()) {
+      return;
+    }
+
     let devtools = {
       open: false,
       orientation: null as string | null
     };
 
-    const threshold = 160;
+    // Increased threshold for better accuracy
+    const threshold = 200;
 
     const emitEvent = (isOpen: boolean, orientation?: string) => {
       window.dispatchEvent(new CustomEvent('devtoolschange', {
@@ -64,7 +80,7 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
     main({emitEvents: true});
     setInterval(main, 500);
 
-    // Additional detection methods
+    // Additional detection methods (only on desktop)
     const detectDevTools = () => {
       // Method 1: Console.log timing
       const start = performance.now();
@@ -87,7 +103,7 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
         }
       };
 
-      // Method 3: Element size detection
+      // Method 3: Element size detection (less aggressive)
       const element = document.createElement('div');
       element.style.position = 'absolute';
       element.style.top = '-9999px';
@@ -102,7 +118,8 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
       
       document.body.removeChild(element);
       
-      if (scrollWidth > 0 || scrollHeight > 0) {
+      // Only trigger if scrollbars are significantly present
+      if (scrollWidth > 20 || scrollHeight > 20) {
         setShowWarning(true);
         setWarningCount(prev => prev + 1);
       }
@@ -116,7 +133,7 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
       }
     });
 
-    // Enhanced keyboard detection
+    // Enhanced keyboard detection (only on desktop)
     const handleKeyDown = (e: KeyboardEvent) => {
       // F12
       if (e.key === 'F12') {
@@ -167,7 +184,7 @@ const DeveloperToolsProtection: React.FC<DeveloperToolsProtectionProps> = ({ chi
       }
     };
 
-    // Right-click detection
+    // Right-click detection (only on desktop)
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
       setShowWarning(true);
