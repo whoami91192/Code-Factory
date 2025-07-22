@@ -330,14 +330,14 @@ ${message}
         const userMailOptions = {
           from: process.env.SMTP_FROM,
           to: email,
-          subject: `✅ Message Received - Ioannis Katsimpris | Cyber Security Portfolio`,
+          subject: `✅ Message Received - Ioannis Katsimpris | Professional Security Portfolio`,
           html: `
             <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #f5f5f5; padding: 20px;">
               <!-- Header with gradient -->
               <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
                 <div style="font-size: 24px; margin-bottom: 5px;">🔒</div>
                 <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">Ioannis Katsimpris</h1>
-                <p style="margin: 5px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">Cyber Security Professional</p>
+                <p style="margin: 5px 0 0 0; color: #ffffff; font-size: 16px; opacity: 0.9;">Professional Security Services</p>
               </div>
               
               <!-- Main content -->
@@ -402,7 +402,7 @@ ${message}
               <div style="background: #ffffff; margin-top: 20px; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
                 <div style="margin-bottom: 20px;">
                   <h3 style="margin: 0 0 5px 0; color: #333333; font-size: 18px; font-weight: 600;">Ioannis Katsimpris</h3>
-                  <p style="margin: 0; color: #666666; font-size: 14px;">Cyber Security Professional & Penetration Tester</p>
+                  <p style="margin: 0; color: #666666; font-size: 14px;">Professional Security Services</p>
                 </div>
                 
                 <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
