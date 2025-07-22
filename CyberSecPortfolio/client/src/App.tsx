@@ -20,9 +20,9 @@ function App() {
   const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
   useEffect(() => {
-    // Check if cookies are accepted
+    // Check if user has made a cookie choice
     const cookieConsent = localStorage.getItem('cookieConsent');
-    if (cookieConsent === 'accepted') {
+    if (cookieConsent === 'accepted' || cookieConsent === 'declined') {
       setCookiesAccepted(true);
     }
 
@@ -46,8 +46,8 @@ function App() {
   };
 
   const handleCookieDecline = () => {
-    // Redirect to a blank page or show message
-    window.location.href = 'about:blank';
+    // Allow entry but with limited cookies
+    setCookiesAccepted(true);
   };
 
   return (
@@ -69,7 +69,8 @@ function App() {
                 </Route>
               </Routes>
               <Toaster />
-              <Analytics />
+              {/* Only show Analytics if cookies were accepted */}
+              {localStorage.getItem('cookieConsent') === 'accepted' && <Analytics />}
             </>
           ) : (
             <CookieConsent onAccept={handleCookieAccept} onDecline={handleCookieDecline} />

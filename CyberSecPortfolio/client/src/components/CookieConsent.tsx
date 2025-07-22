@@ -40,7 +40,6 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
         <button
           onClick={handleDecline}
           className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
-          disabled
         >
           <X className="h-5 w-5" />
         </button>
@@ -53,16 +52,16 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
           </h2>
         </div>
 
-        {/* Warning Icon */}
-        <div className="flex items-center space-x-2 mb-4 p-3 bg-cyber-red/10 rounded-md border border-cyber-red/20">
-          <AlertTriangle className="h-5 w-5 text-cyber-red" />
-          <span className="text-cyber-red font-medium">Required Action</span>
+        {/* Info Icon */}
+        <div className="flex items-center space-x-2 mb-4 p-3 bg-cyber-blue/10 rounded-md border border-cyber-blue/20">
+          <Shield className="h-5 w-5 text-cyber-blue" />
+          <span className="text-cyber-blue font-medium">Cookie Preferences</span>
         </div>
 
         {/* Content */}
         <div className="space-y-4 text-white/90 drop-shadow">
           <p>
-            This website uses cookies to improve your experience and ensure proper functionality. Cookies are essential for the operation and security features of this website.
+            This website uses cookies to improve your experience and ensure proper functionality. You can choose your cookie preferences below.
           </p>
           
           <div className="space-y-2">
@@ -75,9 +74,11 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
             </ul>
           </div>
 
-          <p className="text-sm text-white/70">
-            You cannot continue to use the website without accepting cookies. If you click "Decline", your ability to enter and access the web app will be immediately removed. Cookies are required for security and functionality purposes.
-          </p>
+          <div className="p-3 bg-cyber-green/10 rounded-md border border-cyber-green/20">
+            <p className="text-sm text-cyber-green">
+              <strong>Note:</strong> You can enter the website with either option. "Accept All" enables full functionality including analytics, while "Essential Only" limits cookies to basic functionality.
+            </p>
+          </div>
         </div>
 
         {/* Buttons */}
@@ -94,14 +95,14 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
             onClick={handleDecline}
             className="cyber-button variant-outline flex-1"
           >
-            Decline - Exit
+            Essential Cookies Only
           </button>
         </div>
 
         {/* Footer */}
         <div className="mt-6 pt-4 border-t border-cyber-primary/20">
           <p className="text-xs text-white/60 text-center">
-            By clicking "Accept", you agree to the use of cookies in accordance with our policy.
+            By clicking either option, you agree to our cookie policy. You can change your preferences later in settings.
           </p>
         </div>
       </div>
