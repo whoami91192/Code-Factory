@@ -17,7 +17,8 @@
     "seo:analyze": "node scripts/seo-optimizer.js analyze",
     "seo:optimize": "node scripts/seo-optimizer.js",
     "seo:validate": "node scripts/seo-optimizer.js validate-structured-data",
-    "seo:full-check": "npm run seo:analyze && npm run seo:update-sitemap"
+    "seo:full-check": "npm run seo:analyze && npm run seo:update-sitemap",
+    "favicon:generate": "node scripts/generate-favicons.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
