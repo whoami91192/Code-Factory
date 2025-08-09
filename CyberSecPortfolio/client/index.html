@@ -28,28 +28,6 @@
     <meta name="theme-color" content="#0F1419" />
     <meta name="msapplication-TileColor" content="#0F1419" />
     
-    <!-- Mobile Web App -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="John Katsimpris - Cyber Security Portfolio" />
-    
-    <!-- Touch & Interaction -->
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="apple-touch-fullscreen" content="yes" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta name="msapplication-config" content="none" />
-    
-    <!-- Mobile Performance -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
-    <!-- Device Specific -->
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="viewport-fit" content="cover" />
-    
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
@@ -92,43 +70,44 @@
     <meta name="rating" content="general" />
     <meta name="coverage" content="worldwide" />
     <meta name="target" content="all" />
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="MobileOptimized" content="width" />
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.jksecurestack.com" />
     
-    <!-- Preconnect to external domains for performance -->
+    <!-- Critical Performance Optimizations -->
+    
+    <!-- 1. Preconnect to critical domains (limit to 4 for best performance) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.google.com" crossorigin>
-    <link rel="preconnect" href="https://www.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
-    <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin>
-    <link rel="preconnect" href="https://vitals.vercel-insights.com" crossorigin>
     
-    <!-- DNS prefetch for additional performance -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://www.google.com">
-    <link rel="dns-prefetch" href="https://www.googleapis.com">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <!-- 2. DNS prefetch for additional domains -->
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://va.vercel-scripts.com">
+    <link rel="dns-prefetch" href="https://vitals.vercel-insights.com">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
     
-    <!-- Google Fonts with display=swap for better performance -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- 3. Preload critical resources -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" crossorigin>
+    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
     
-    <!-- Google Tag Manager - Externalized for CSP compliance -->
-    <script src="/src/utils/gtm.js" nonce="REPLACE_WITH_NONCE" defer></script>
+    <!-- 4. Optimized Google Fonts loading with font-display=swap and preload -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
     
-    <!-- reCAPTCHA v3 -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E" async defer></script>
+    <!-- 5. Preload critical fonts -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
     
-    <!-- PWA Manifest -->
+    <!-- 6. Defer non-critical CSS -->
+    <link rel="preload" href="/src/mobile-optimizations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/mobile-optimizations.css"></noscript>
+    
+    <!-- 7. PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
     
-    <!-- Apple Touch Icons -->
+    <!-- 8. Apple Touch Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
@@ -139,27 +118,153 @@
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
     
-    <!-- Favicon -->
+    <!-- 9. Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="/src/main.tsx" as="script" />
+    <!-- 10. Critical CSS Inline (for above-the-fold content) -->
+    <style id="critical-css">
+      /* Critical CSS for above-the-fold content */
+      :root {
+        --background: #0F1419;
+        --foreground: #E6EDF3;
+        --primary: #00ff41;
+        --primary-foreground: #0F1419;
+        --secondary: #1a1a1a;
+        --secondary-foreground: #E6EDF3;
+        --muted: #2a2a2a;
+        --muted-foreground: #A1A1A1;
+        --accent: #00ff41;
+        --accent-foreground: #0F1419;
+        --destructive: #ff4444;
+        --destructive-foreground: #E6EDF3;
+        --border: #2a2a2a;
+        --input: #2a2a2a;
+        --ring: #00ff41;
+        --radius: 0.5rem;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        background-color: var(--background);
+        color: var(--foreground);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+      
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Loading spinner for better perceived performance */
+      .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--muted);
+        border-top: 3px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+      
+      /* Hide content until loaded */
+      .content-loaded {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      
+      .content-loaded.loaded {
+        opacity: 1;
+      }
+    </style>
     
-    <!-- External Scripts for CSP Compliance -->
+    <!-- 11. Deferred Scripts for CSP Compliance -->
+    <script src="/src/utils/gtm.js" nonce="REPLACE_WITH_NONCE" defer></script>
     <script src="/src/utils/structured-data.js" nonce="REPLACE_WITH_NONCE" defer></script>
     <script src="/src/utils/security.js" nonce="REPLACE_WITH_NONCE" defer></script>
+    
+    <!-- 12. Deferred reCAPTCHA (load only when needed) -->
+    <script>
+      // Load reCAPTCHA only when needed
+      function loadRecaptcha() {
+        if (!window.grecaptcha) {
+          const script = document.createElement('script');
+          script.src = 'https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E';
+          script.async = true;
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      }
+      // Load reCAPTCHA when user interacts with forms
+      document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+          form.addEventListener('focusin', loadRecaptcha, { once: true });
+        });
+      });
+    </script>
   </head>
   <body>
+    <!-- Loading spinner for better perceived performance -->
+    <div id="loading-spinner" class="loading-spinner"></div>
+    
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KSTPSXRD"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
-    <div id="root"></div>
+    <div id="root" class="content-loaded">
+      <!-- Content will be loaded here -->
+    </div>
+    
+    <!-- Main script with optimized loading -->
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Performance optimization script -->
+    <script>
+      // Remove loading spinner when content is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const root = document.getElementById('root');
+        
+        if (loadingSpinner) {
+          loadingSpinner.style.display = 'none';
+        }
+        
+        if (root) {
+          root.classList.add('loaded');
+        }
+      });
+      
+      // Preload critical resources
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function(err) {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+        });
+      }
+    </script>
   </body>
 </html> 

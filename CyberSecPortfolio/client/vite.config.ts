@@ -49,29 +49,42 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       // Enable source maps for debugging
       sourcemap: mode === 'development',
-      // Optimize chunk splitting for better caching
+      // Optimize chunk splitting for better caching and mobile performance
       rollupOptions: {
         output: {
           manualChunks: {
-            // Core React libraries
+            // Core React libraries - critical for initial load
             'react-vendor': ['react', 'react-dom'],
-            // Routing
+            // Routing - load when needed
             'router': ['react-router-dom'],
-            // UI components
-            'ui-components': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-icons', '@radix-ui/react-label', '@radix-ui/react-slot', '@radix-ui/react-toast'],
-            // 3D and visualization
+            // UI components - load when needed
+            'ui-components': [
+              '@radix-ui/react-dialog', 
+              '@radix-ui/react-dropdown-menu', 
+              '@radix-ui/react-icons', 
+              '@radix-ui/react-label', 
+              '@radix-ui/react-slot', 
+              '@radix-ui/react-toast'
+            ],
+            // 3D and visualization - heavy, load on demand
             'visualization': ['three', 'd3'],
-            // Utilities
+            // Utilities - small, can be inlined
             'utils': ['clsx', 'class-variance-authority', 'tailwind-merge'],
-            // Icons
+            // Icons - load when needed
             'icons': ['lucide-react'],
-            // Heavy components - separate chunks
+            // Heavy components - separate chunks for lazy loading
             'heavy-components': [
               './src/components/NetworkTopology3D',
               './src/components/LiveThreatMap',
               './src/components/MalwareAnalysisChart',
               './src/components/SecurityDashboard',
               './src/components/InteractiveTerminal'
+            ],
+            // Security and utils - critical for functionality
+            'security-utils': [
+              './src/utils/security.js',
+              './src/utils/gtm.js',
+              './src/utils/structured-data.js'
             ],
           },
           // Optimize file names for better caching
@@ -89,63 +102,79 @@ export default defineConfig(({ mode }) => {
             if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
               return `images/[name]-[hash].${ext}`;
             }
+            if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
+              return `fonts/[name]-[hash].${ext}`;
+            }
             return `assets/[name]-[hash].${ext}`;
           },
         },
       },
-      // Optimize build performance
+      // Optimize build performance and reduce bundle size
       minify: 'terser',
       terserOptions: {
         compress: {
           drop_console: mode === 'production',
           drop_debugger: mode === 'production',
-          pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+          pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug', 'console.warn'] : [],
+          passes: 2,
         },
         mangle: {
-          safari10: true,
+          toplevel: true,
+        },
+        format: {
+          comments: false,
         },
       },
-      // Enable CSS code splitting
-      cssCodeSplit: true,
-      // Optimize assets
-      assetsInlineLimit: 4096, // 4kb
-      // Enable tree shaking
-      target: 'esnext',
+      // Optimize for mobile performance
+      target: 'es2015', // Better compatibility for mobile browsers
+      // Reduce chunk size warnings threshold for mobile
+      chunkSizeWarningLimit: 1000,
     },
-    preview: {
-      port: 3000,
-      host: true,
+    // Optimize CSS for mobile
+    css: {
+      devSourcemap: mode === 'development',
+      postcss: {
+        plugins: [
+          // Add mobile-specific optimizations
+          require('autoprefixer')({
+            overrideBrowserslist: [
+              '> 1%',
+              'last 2 versions',
+              'not dead',
+              'not ie 11'
+            ]
+          }),
+          // Optimize for mobile performance
+          require('cssnano')({
+            preset: ['default', {
+              discardComments: {
+                removeAll: true,
+              },
+              normalizeWhitespace: true,
+              colormin: true,
+              minifyFontValues: true,
+              minifySelectors: true,
+            }]
+          })
+        ]
+      }
     },
-    define: {
-      'process.env.VITE_RECAPTCHA_SITE_KEY': JSON.stringify(env.VITE_RECAPTCHA_SITE_KEY),
-    },
-    // Optimize dependencies
+    // Optimize for mobile performance
     optimizeDeps: {
       include: [
         'react',
         'react-dom',
-        'react-router-dom',
-        '@radix-ui/react-dialog',
-        '@radix-ui/react-dropdown-menu',
-        '@radix-ui/react-icons',
-        '@radix-ui/react-label',
-        '@radix-ui/react-slot',
-        '@radix-ui/react-toast',
-        'clsx',
-        'class-variance-authority',
-        'tailwind-merge',
-        'lucide-react',
+        'react-router-dom'
       ],
       exclude: [
-        // Exclude heavy components from pre-bundling
-        './src/components/NetworkTopology3D',
-        './src/components/LiveThreatMap',
-        './src/components/MalwareAnalysisChart',
-      ],
+        'three',
+        'd3'
+      ]
     },
-    // Performance optimizations
-    esbuild: {
-      drop: mode === 'production' ? ['console', 'debugger'] : [],
-    },
+    // Mobile-specific optimizations
+    define: {
+      __DEV__: mode === 'development',
+      __PROD__: mode === 'production'
+    }
   }
 }) 
