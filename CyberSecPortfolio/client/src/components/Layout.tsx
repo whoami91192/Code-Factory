@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import FloatingNavigation from './FloatingNavigation'
 import ScrollToTop from './ScrollToTop'
@@ -117,198 +117,50 @@ const Layout = () => {
       <PageScrollToTop />
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         <Outlet />
       </main>
 
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
+
       {/* Footer */}
-      <footer className="bg-cyber-card/50 border-t border-cyber-green/20 py-12">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-8">
-            {/* Company Info */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Shield className="h-6 w-6 text-cyber-green" />
-                <span className="text-lg font-cyber font-bold text-cyber-green">
-                  CyberSec Portfolio
-                </span>
-              </div>
-              <p className="text-white/80 text-sm">
-                Professional cybersecurity services and consulting for modern organizations.
-              </p>
+      <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
+        <div className="container py-6 sm:py-8 px-4 sm:px-6">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="flex items-center space-x-2 text-center">
+              <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-cyber-green" />
+              <span className="text-xs sm:text-sm text-muted-foreground glitch-text" data-text={`© ${new Date().getFullYear()} John Katsimpris. Securing the digital frontier.`}>
+                © {new Date().getFullYear()} John Katsimpris. Securing the digital frontier.
+              </span>
             </div>
-
-            {/* Quick Links */}
-            <div className="space-y-4">
-              <h3 className="text-cyber-green font-bold">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><Link to="/about" className="text-white/80 hover:text-cyber-green transition-colors text-sm">About</Link></li>
-                <li><Link to="/projects" className="text-white/80 hover:text-cyber-green transition-colors text-sm">Projects</Link></li>
-                <li><Link to="/tools" className="text-white/80 hover:text-cyber-green transition-colors text-sm">Tools</Link></li>
-                <li><Link to="/contact" className="text-white/80 hover:text-cyber-green transition-colors text-sm">Contact</Link></li>
-              </ul>
-            </div>
-
-            {/* Social Media */}
-            <div className="space-y-4">
-              <h3 className="text-cyber-green font-bold">Connect With Us</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a 
-                    href="https://linkedin.com/in/johnkatsimpris" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://twitter.com/johnkatsimpris" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    Twitter/X
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://github.com/johnkatsimpris" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="mailto:gianniskatsibris@gmail.com" 
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    Email
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* External Resources */}
-            <div className="space-y-4">
-              <h3 className="text-cyber-green font-bold">External Resources</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a 
-                    href="https://owasp.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    OWASP Foundation
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://nvd.nist.gov" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    NIST NVD
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://cve.mitre.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    CVE Database
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.sans.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    SANS Institute
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Security Standards */}
-            <div className="space-y-4">
-              <h3 className="text-cyber-green font-bold">Security Standards</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a 
-                    href="https://www.iso.org/isoiec-27001-information-security.html" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    ISO 27001
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.pcisecuritystandards.org" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    PCI DSS
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://gdpr.eu" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    GDPR
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="https://www.nist.gov/cyberframework" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
-                  >
-                    NIST Framework
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Footer */}
-          <div className="border-t border-cyber-green/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white/60 text-sm">
-              © 2024 John Katsimpris. All rights reserved.
-            </p>
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              <Link to="/terms" className="text-white/60 hover:text-cyber-green transition-colors text-sm">
-                Terms of Service
-              </Link>
-              <span className="text-white/40">|</span>
-              <Link to="/contact" className="text-white/60 hover:text-cyber-green transition-colors text-sm">
-                Privacy Policy
-              </Link>
+            <div className="flex items-center space-x-3 sm:space-x-4 flex-wrap justify-center">
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/ioannis-katsimpris-2a45991ba/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="mailto:gianniskatsibris@gmail.com"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+              >
+                Contact
+              </a>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* Scroll to Top Button */}
-      <ScrollToTop />
     </div>
   )
 }
