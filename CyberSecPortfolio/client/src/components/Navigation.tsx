@@ -36,7 +36,7 @@ const Navigation = () => {
 
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden cyber-button p-2 sm:p-3"
+        className="md:hidden cyber-button p-2 sm:p-3 touch-target"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
       >
@@ -45,14 +45,14 @@ const Navigation = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-background/95 backdrop-blur border-b md:hidden z-50">
+        <div className="absolute top-16 left-0 right-0 bg-background/95 backdrop-blur border-b md:hidden z-50 safe-area-top">
           <div className="container py-4 px-4">
             <div className="flex flex-col space-y-3 sm:space-y-4">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`relative px-3 py-3 sm:py-2 text-sm font-medium transition-all duration-300 magnetic-attraction target-lock rounded-lg ${
+                  className={`relative px-3 py-3 sm:py-2 text-sm font-medium transition-all duration-300 magnetic-attraction target-lock rounded-lg touch-target ${
                     location.pathname === item.path
                       ? 'text-cyber-green holographic-text bg-cyber-card/50'
                       : 'text-muted-foreground hover:text-cyber-green hover:bg-cyber-card/30'

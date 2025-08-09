@@ -95,7 +95,7 @@ const Layout = () => {
       {visualEffects}
       
       {/* Header with Navigation */}
-      <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
+      <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow safe-area-top">
         <div className="container flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           {/* Logo */}
           <div className="flex items-center space-x-2">
@@ -125,7 +125,7 @@ const Layout = () => {
       <ScrollToTop />
 
       {/* Footer */}
-      <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
+      <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow safe-area-bottom">
         <div className="container py-6 sm:py-8 px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex items-center space-x-2 text-center">
@@ -139,7 +139,7 @@ const Layout = () => {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction touch-target"
               >
                 GitHub
               </a>
@@ -147,13 +147,13 @@ const Layout = () => {
                 href="https://www.linkedin.com/in/ioannis-katsimpris-2a45991ba/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction touch-target"
               >
                 LinkedIn
               </a>
               <a
                 href="mailto:gianniskatsibris@gmail.com"
-                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction touch-target"
               >
                 Contact
               </a>

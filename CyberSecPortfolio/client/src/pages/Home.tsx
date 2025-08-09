@@ -69,39 +69,39 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background liquid-metal-glow">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
+      <section className="relative overflow-hidden py-12 md:py-20 lg:py-32 hero-section">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Hero Content */}
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-6xl font-cyber font-bold">
+                <h1 className="text-2xl md:text-4xl lg:text-6xl font-cyber font-bold">
                   <span className="text-cyber-green">Systems</span> and
                   <br />
                   <span className="text-cyber-blue">Cloud Engineer</span>
                   <br />
-                  <span className="text-cyber-yellow text-2xl lg:text-4xl">John Katsimpris</span>
+                  <span className="text-cyber-yellow text-xl md:text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>
-                <p className="text-xl text-white/90 drop-shadow max-w-lg">
+                <p className="text-base md:text-xl text-white/90 drop-shadow max-w-lg">
                   Building fortress-like cloud environments and deploying intelligent security systems 
                   to protect organizations from evolving cyber threats.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/tools" className="cyber-button-magnetic target-lock">
+                <Link to="/tools" className="cyber-button-magnetic target-lock touch-target">
                   Explore Tools
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
-                <Link to="/projects" className="cyber-button-magnetic target-lock">
+                <Link to="/projects" className="cyber-button-magnetic target-lock touch-target">
                   View Projects
                 </Link>
               </div>
             </div>
 
             {/* Hero Visual */}
-            <div className="relative">
-              <div className="terminal-bg rounded-lg p-8 border border-cyber-green/30">
+            <div className="relative order-first lg:order-last">
+              <div className="terminal-bg rounded-lg p-4 md:p-8 border border-cyber-green/30">
                 <div className="flex items-center space-x-2 mb-4">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 bg-cyber-red rounded-full"></div>
@@ -124,23 +124,23 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-cyber-card/50">
+      <section className="py-12 md:py-20 bg-cyber-card/50">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
               Security Services
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Comprehensive cybersecurity solutions tailored to protect your digital assets
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="cyber-card p-6 text-center hover:scale-105 transition-transform duration-300">
-                <feature.icon className={`h-12 w-12 mx-auto mb-4 ${feature.color}`} />
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+              <div key={index} className="cyber-card p-4 md:p-6 text-center hover:scale-105 transition-transform duration-300 touch-target">
+                <feature.icon className={`h-8 w-8 md:h-12 md:w-12 mx-auto mb-4 ${feature.color}`} />
+                <h3 className="text-lg md:text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-sm md:text-base text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -148,29 +148,29 @@ const Home = () => {
       </section>
 
       {/* Interactive Tools Section */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
               Interactive Security Tools
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Experience our cutting-edge security tools and dashboards
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Security Dashboard */}
-            <div className="cyber-card p-6">
-              <h3 className="text-2xl font-bold text-cyber-green mb-4">Security Dashboard</h3>
+            <div className="cyber-card p-4 md:p-6">
+              <h3 className="text-xl md:text-2xl font-bold text-cyber-green mb-4">Security Dashboard</h3>
               <Suspense fallback={<ComponentLoader />}>
                 <SecurityDashboard />
               </Suspense>
             </div>
 
             {/* Interactive Terminal */}
-            <div className="cyber-card p-6">
-              <h3 className="text-2xl font-bold text-cyber-green mb-4">Interactive Terminal</h3>
+            <div className="cyber-card p-4 md:p-6">
+              <h3 className="text-xl md:text-2xl font-bold text-cyber-green mb-4">Interactive Terminal</h3>
               <Suspense fallback={<ComponentLoader />}>
                 <InteractiveTerminal />
               </Suspense>
@@ -180,13 +180,13 @@ const Home = () => {
       </section>
 
       {/* News Section */}
-      <section className="py-20 bg-cyber-card/50">
+      <section className="py-12 md:py-20 bg-cyber-card/50">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
               Latest Security News
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Stay updated with the latest cybersecurity threats and trends
             </p>
           </div>

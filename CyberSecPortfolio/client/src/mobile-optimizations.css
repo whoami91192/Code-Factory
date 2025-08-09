@@ -61,6 +61,258 @@
   }
 }
 
+/* ===== SAMSUNG S23 SPECIFIC OPTIMIZATIONS ===== */
+@media (min-width: 393px) and (max-width: 393px) {
+  /* Samsung S23 Portrait Mode */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: 100% !important;
+  }
+  
+  /* Typography optimizations for S23 */
+  h1 {
+    font-size: 2rem !important;
+    line-height: 2.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 1.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.375rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  p {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  /* Button optimizations for S23 */
+  .cyber-button {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  .cyber-button-magnetic {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+  }
+  
+  /* Card optimizations for S23 */
+  .cyber-card {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  /* Grid optimizations for S23 */
+  .grid {
+    gap: 1rem !important;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Form optimizations for S23 */
+  .cyber-input,
+  .cyber-textarea {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Navigation optimizations for S23 */
+  .mobile-nav-container {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)) !important;
+  }
+  
+  /* Hero section optimizations for S23 */
+  .hero-section {
+    padding: 2rem 1rem !important;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem !important;
+    line-height: 2.25rem !important;
+  }
+  
+  .hero-section p {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  /* Timeline optimizations for S23 */
+  .timeline-container {
+    padding: 0 1rem !important;
+  }
+  
+  .timeline-card {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Footer optimizations for S23 */
+  footer {
+    padding: 1.5rem 1rem !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* ===== MODERN MOBILE DEVICES (Samsung S23, iPhone 14, etc.) ===== */
+@media (min-width: 390px) and (max-width: 430px) {
+  /* Modern mobile devices optimization */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: 100% !important;
+  }
+  
+  /* Typography optimizations for modern mobile */
+  h1 {
+    font-size: 2rem !important;
+    line-height: 2.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 1.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.375rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  p {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  /* Button optimizations for modern mobile */
+  .cyber-button {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  .cyber-button-magnetic {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+  }
+  
+  /* Card optimizations for modern mobile */
+  .cyber-card {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  /* Grid optimizations for modern mobile */
+  .grid {
+    gap: 1rem !important;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Form optimizations for modern mobile */
+  .cyber-input,
+  .cyber-textarea {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Navigation optimizations for modern mobile */
+  .mobile-nav-container {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)) !important;
+  }
+  
+  /* Hero section optimizations for modern mobile */
+  .hero-section {
+    padding: 2rem 1rem !important;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem !important;
+    line-height: 2.25rem !important;
+  }
+  
+  .hero-section p {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  /* Timeline optimizations for modern mobile */
+  .timeline-container {
+    padding: 0 1rem !important;
+  }
+  
+  .timeline-card {
+    padding: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Footer optimizations for modern mobile */
+  footer {
+    padding: 1.5rem 1rem !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* ===== SAMSUNG S23 LANDSCAPE OPTIMIZATIONS ===== */
+@media (min-width: 393px) and (max-width: 393px) and (orientation: landscape) {
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  h1 {
+    font-size: 1.75rem !important;
+    line-height: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+    line-height: 1.5rem !important;
+  }
+  
+  .hero-section {
+    padding: 1.5rem 0.75rem !important;
+  }
+  
+  .cyber-card {
+    padding: 1rem !important;
+  }
+}
+
 /* ===== FOLDABLE DEVICES ===== */
 /* Samsung Galaxy Z Fold/Flip support */
 @media (min-width: 280px) and (max-width: 717px) {
