@@ -28,7 +28,7 @@ const VirtualSOC: React.FC = () => {
   const [activeThreats, setActiveThreats] = useState(0);
   const [resolvedThreats, setResolvedThreats] = useState(0);
 
-  // Generate mock security events
+  // Generate mock security events with throttling
   useEffect(() => {
     const eventTypes = [
       { type: 'threat', message: 'Suspicious login attempt detected', severity: 'high' as const },
@@ -52,9 +52,9 @@ const VirtualSOC: React.FC = () => {
     };
 
     const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.8) { // Reduced from 0.7 to 0.8 for less frequent events
         const newEvent = generateEvent();
-        setEvents(prev => [newEvent, ...prev.slice(0, 9)]);
+        setEvents(prev => [newEvent, ...prev.slice(0, 8)]); // Reduced from 9 to 8
         
         if (newEvent.type === 'threat') {
           setActiveThreats(prev => prev + 1);
@@ -63,7 +63,7 @@ const VirtualSOC: React.FC = () => {
           setActiveThreats(prev => Math.max(0, prev - 1));
         }
       }
-    }, 2000);
+    }, 3000); // Increased from 2000ms to 3000ms for better performance
 
     return () => clearInterval(interval);
   }, []);

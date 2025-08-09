@@ -114,22 +114,22 @@ const SecurityDashboard = () => {
 
   const [isConnected, setIsConnected] = useState(true)
 
-  // Simulate real-time updates
+  // Simulate real-time updates with throttling
   useEffect(() => {
     const interval = setInterval(() => {
       setMetrics(prev => prev.map(metric => ({
         ...metric,
         value: metric.id === 'uptime' 
-          ? Math.max(99.5, metric.value + (Math.random() - 0.5) * 0.1)
+          ? Math.max(99.5, metric.value + (Math.random() - 0.5) * 0.05) // Reduced change
           : metric.id === 'connections'
-          ? Math.max(100, Math.min(200, metric.value + (Math.random() - 0.5) * 10))
+          ? Math.max(100, Math.min(200, metric.value + (Math.random() - 0.5) * 5)) // Reduced change
           : metric.id === 'cpu'
-          ? Math.max(20, Math.min(80, metric.value + (Math.random() - 0.5) * 5))
+          ? Math.max(20, Math.min(80, metric.value + (Math.random() - 0.5) * 2)) // Reduced change
           : metric.id === 'memory'
-          ? Math.max(60, Math.min(90, metric.value + (Math.random() - 0.5) * 3))
+          ? Math.max(60, Math.min(90, metric.value + (Math.random() - 0.5) * 1.5)) // Reduced change
           : metric.value
       })))
-    }, 3000)
+    }, 5000) // Increased from 3000ms to 5000ms for better performance
 
     return () => clearInterval(interval)
   }, [])

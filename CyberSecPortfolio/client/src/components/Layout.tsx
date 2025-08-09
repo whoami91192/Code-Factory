@@ -4,27 +4,44 @@ import FloatingNavigation from './FloatingNavigation'
 import ScrollToTop from './ScrollToTop'
 import PageScrollToTop from './PageScrollToTop'
 import { Shield, Zap } from 'lucide-react'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 
 const Layout = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isReducedMotion, setIsReducedMotion] = useState(false)
+  const mousePositionRef = useRef({ x: 0, y: 0 })
+  const animationFrameRef = useRef<number>()
 
   useEffect(() => {
     // Check for reduced motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     setIsReducedMotion(mediaQuery.matches)
 
+    // Throttled mouse move handler for better performance
     const handleMouseMove = (e: MouseEvent) => {
-      // Only track mouse position if reduced motion is not preferred
       if (!isReducedMotion) {
-        setMousePosition({ x: e.clientX, y: e.clientY })
+        // Store position in ref to avoid excessive state updates
+        mousePositionRef.current = { x: e.clientX, y: e.clientY }
+        
+        // Use requestAnimationFrame for smooth updates
+        if (!animationFrameRef.current) {
+          animationFrameRef.current = requestAnimationFrame(() => {
+            setMousePosition(mousePositionRef.current)
+            animationFrameRef.current = undefined
+          })
+        }
       }
     }
 
     if (!isReducedMotion) {
-      window.addEventListener('mousemove', handleMouseMove)
-      return () => window.removeEventListener('mousemove', handleMouseMove)
+      // Use passive event listener for better performance
+      window.addEventListener('mousemove', handleMouseMove, { passive: true })
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove)
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current)
+        }
+      }
     }
   }, [isReducedMotion])
 

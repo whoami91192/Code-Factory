@@ -1,33 +1,41 @@
 import { ChevronUp } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout>()
 
-  // Show button when page is scrolled up to given distance
-  const toggleVisibility = () => {
-    if (window.pageYOffset > 300) {
-      setIsVisible(true)
-    } else {
-      setIsVisible(false)
-    }
-  }
+  // Throttled scroll handler for better performance
+  const toggleVisibility = useCallback(() => {
+    if (timeoutRef.current) return // Skip if already scheduled
 
-  // Set the scroll event listener
-  useEffect(() => {
-    window.addEventListener('scroll', toggleVisibility)
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility)
-    }
+    timeoutRef.current = setTimeout(() => {
+      const shouldShow = window.pageYOffset > 300
+      setIsVisible(shouldShow)
+      timeoutRef.current = undefined
+    }, 100) // Throttle to 100ms
   }, [])
 
-  // Scroll to top handler
-  const scrollToTop = () => {
+  // Set the scroll event listener with throttling
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisibility, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [toggleVisibility])
+
+  // Optimized scroll to top handler
+  const scrollToTop = useCallback(() => {
+    // Use instant scroll for better performance
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      left: 0,
+      behavior: 'instant'
     })
-  }
+  }, [])
 
   return (
     <>

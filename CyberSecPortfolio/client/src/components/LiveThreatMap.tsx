@@ -122,12 +122,12 @@ const LiveThreatMap = () => {
     attacks.forEach(attack => drawAttack(ctx, attack))
   }, [attacks])
 
-  // Generate new attacks periodically
+  // Generate new attacks periodically with throttling
   useEffect(() => {
     const interval = setInterval(() => {
       const newAttack = generateAttack()
       setAttacks(prev => {
-        const updated = [...prev, newAttack].slice(-20) // Keep last 20 attacks
+        const updated = [...prev, newAttack].slice(-15) // Reduced from 20 to 15
         return updated
       })
       
@@ -137,7 +137,7 @@ const LiveThreatMap = () => {
         lastHour: prev.lastHour + 1,
         highSeverity: prev.highSeverity + (newAttack.severity === 'high' || newAttack.severity === 'critical' ? 1 : 0)
       }))
-    }, 2000) // New attack every 2 seconds
+    }, 3000) // Increased from 2000ms to 3000ms for better performance
 
     return () => clearInterval(interval)
   }, [])

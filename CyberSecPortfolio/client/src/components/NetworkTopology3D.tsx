@@ -154,101 +154,95 @@ const NetworkTopology3D = () => {
       offline: 0x666666
     }
 
-    networkData.forEach((node) => {
-      const geometry = new THREE.SphereGeometry(0.3, 32, 32)
-      const material = new THREE.MeshPhongMaterial({
-        color: nodeColors[node.status],
-        emissive: nodeColors[node.status],
+    networkData.forEach((nodeData) => {
+      const geometry = new THREE.SphereGeometry(0.5, 32, 32)
+      const material = new THREE.MeshStandardMaterial({
+        color: nodeColors[nodeData.status as keyof typeof nodeColors],
+        emissive: nodeData.status === 'compromised' ? 0x330000 : 0x000000,
         emissiveIntensity: 0.2
       })
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.position.set(...node.position)
-      mesh.castShadow = true
-      mesh.receiveShadow = true
-      
-      // Add click event
-      mesh.userData = { node }
-      nodes[node.id] = mesh
-      scene.add(mesh)
-
-      // Add label
-      const canvas = document.createElement('canvas')
-      const context = canvas.getContext('2d')!
-      canvas.width = 256
-      canvas.height = 64
-      context.fillStyle = '#ffffff'
-      context.font = '16px Arial'
-      context.fillText(node.name, 10, 30)
-      context.fillText(node.ip, 10, 50)
-
-      const texture = new THREE.CanvasTexture(canvas)
-      const labelMaterial = new THREE.SpriteMaterial({ map: texture })
-      const label = new THREE.Sprite(labelMaterial)
-      label.position.set(node.position[0], node.position[1] + 0.8, node.position[2])
-      label.scale.set(2, 0.5, 1)
-      scene.add(label)
+      const node = new THREE.Mesh(geometry, material)
+      node.position.set(...nodeData.position)
+      node.castShadow = true
+      node.receiveShadow = true
+      node.userData.node = nodeData
+      nodes[nodeData.id] = node
+      scene.add(node)
     })
 
     // Create connections
-    const connections: THREE.Line[] = []
-    networkData.forEach((node) => {
-      node.connections.forEach((targetId) => {
-        const targetNode = networkData.find(n => n.id === targetId)
+    const connectionMaterial = new THREE.LineBasicMaterial({ color: 0x00ff41, opacity: 0.6, transparent: true })
+    networkData.forEach((nodeData) => {
+      nodeData.connections?.forEach((connectionId) => {
+        const targetNode = networkData.find(n => n.id === connectionId)
         if (targetNode) {
           const geometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(...node.position),
+            new THREE.Vector3(...nodeData.position),
             new THREE.Vector3(...targetNode.position)
           ])
-          const material = new THREE.LineBasicMaterial({ 
-            color: 0x00ff41,
-            opacity: 0.6,
-            transparent: true
-          })
-          const line = new THREE.Line(geometry, material)
+          const line = new THREE.Line(geometry, connectionMaterial)
           scene.add(line)
-          connections.push(line)
         }
       })
     })
 
-    // Raycaster for mouse interaction
+    // Raycaster for mouse interaction with throttling
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
+    let isProcessingClick = false
 
     const onMouseClick = (event: MouseEvent) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+      if (isProcessingClick) return // Skip if already processing
+      
+      isProcessingClick = true
+      
+      // Use requestAnimationFrame for better performance
+      requestAnimationFrame(() => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
-      raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObjects(Object.values(nodes))
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster.intersectObjects(Object.values(nodes))
 
-      if (intersects.length > 0) {
-        const clickedNode = intersects[0].object.userData.node
-        setSelectedNode(clickedNode)
-      } else {
-        setSelectedNode(null)
-      }
+        if (intersects.length > 0) {
+          const clickedNode = intersects[0].object.userData.node
+          setSelectedNode(clickedNode)
+        } else {
+          setSelectedNode(null)
+        }
+        
+        isProcessingClick = false
+      })
     }
 
-    window.addEventListener('click', onMouseClick)
+    window.addEventListener('click', onMouseClick, { passive: true })
 
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate)
+    // Optimized animation loop with throttling
+    let animationId: number
+    let lastTime = 0
+    const targetFPS = 30 // Reduce from 60fps to 30fps for better performance
+    const frameInterval = 1000 / targetFPS
 
-      // Rotate nodes slightly
+    const animate = (currentTime: number) => {
+      animationId = requestAnimationFrame(animate)
+      
+      // Throttle animation updates
+      if (currentTime - lastTime < frameInterval) return
+      lastTime = currentTime
+
+      // Rotate nodes slightly (reduced frequency)
       Object.values(nodes).forEach((node, index) => {
-        node.rotation.y += 0.01
-        node.rotation.x += 0.005
+        node.rotation.y += 0.005 // Reduced from 0.01
+        node.rotation.x += 0.0025 // Reduced from 0.005
       })
 
-      // Pulse effect for compromised nodes
+      // Pulse effect for compromised nodes (reduced frequency)
       networkData.forEach((nodeData) => {
         if (nodeData.status === 'compromised') {
           const node = nodes[nodeData.id]
-          const time = Date.now() * 0.001
+          const time = currentTime * 0.001
           if (node.material instanceof THREE.MeshStandardMaterial) {
-            node.material.emissiveIntensity = 0.3 + Math.sin(time * 3) * 0.2
+            node.material.emissiveIntensity = 0.3 + Math.sin(time * 2) * 0.1 // Reduced frequency
           }
         }
       })
@@ -257,28 +251,36 @@ const NetworkTopology3D = () => {
       renderer.render(scene, camera)
     }
 
-    animate()
+    animate(0)
     setIsLoading(false)
 
-    // Handle resize
+    // Handle resize with throttling
+    let resizeTimeout: NodeJS.Timeout
     const handleResize = () => {
-      if (!mountRef.current) return
+      if (resizeTimeout) clearTimeout(resizeTimeout)
       
-      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight)
+      resizeTimeout = setTimeout(() => {
+        if (!mountRef.current) return
+        
+        camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight)
+      }, 250) // Throttle resize events
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize, { passive: true })
 
-    // Cleanup
     return () => {
       window.removeEventListener('click', onMouseClick)
       window.removeEventListener('resize', handleResize)
-      mountRef.current?.removeChild(renderer.domElement)
+      if (resizeTimeout) clearTimeout(resizeTimeout)
+      if (animationId) cancelAnimationFrame(animationId)
+      if (mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement)
+      }
       renderer.dispose()
     }
-  }, [])
+  }, [networkData])
 
   const getStatusIcon = (status: string) => {
     switch (status) {
