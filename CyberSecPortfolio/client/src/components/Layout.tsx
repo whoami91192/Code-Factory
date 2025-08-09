@@ -149,6 +149,51 @@ const Layout = () => {
               </ul>
             </div>
 
+            {/* Social Media */}
+            <div className="space-y-4">
+              <h3 className="text-cyber-green font-bold">Connect With Us</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a 
+                    href="https://linkedin.com/in/johnkatsimpris" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://twitter.com/johnkatsimpris" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
+                  >
+                    Twitter/X
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="https://github.com/johnkatsimpris" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
+                  >
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="mailto:gianniskatsibris@gmail.com" 
+                    className="text-white/80 hover:text-cyber-green transition-colors text-sm"
+                  >
+                    Email
+                  </a>
+                </li>
+              </ul>
+            </div>
+
             {/* External Resources */}
             <div className="space-y-4">
               <h3 className="text-cyber-green font-bold">External Resources</h3>

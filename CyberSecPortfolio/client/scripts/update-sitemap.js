@@ -1,5 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configuration
 const DOMAIN = 'https://www.jksecurestack.com'; // JK SecureStack domain
@@ -116,22 +120,21 @@ function addPage(pagePath, priority = '0.5', changefreq = 'monthly', title = '')
 }
 
 // Command line interface
-if (require.main === module) {
-  const args = process.argv.slice(2);
+const args = process.argv.slice(2);
+
+if (args.length === 0) {
+  // Update sitemap with current date
+  updateSitemap();
+} else if (args[0] === 'add' && args[1]) {
+  // Add new page
+  const pagePath = args[1];
+  const priority = args[2] || '0.5';
+  const changefreq = args[3] || 'monthly';
+  const title = args[4] || pagePath;
   
-  if (args.length === 0) {
-    // Update sitemap with current date
-    updateSitemap();
-  } else if (args[0] === 'add' && args[1]) {
-    // Add new page
-    const pagePath = args[1];
-    const priority = args[2] || '0.5';
-    const changefreq = args[3] || 'monthly';
-    const title = args[4] || pagePath;
-    
-    addPage(pagePath, priority, changefreq, title);
-  } else if (args[0] === 'help') {
-    console.log(`
+  addPage(pagePath, priority, changefreq, title);
+} else if (args[0] === 'help') {
+  console.log(`
 Sitemap Updater - Usage:
 
 1. Update sitemap with current date:
@@ -159,13 +162,12 @@ Change frequency:
 - monthly: Changes monthly
 - yearly: Changes yearly
 - never: Never changes
-    `);
-  } else {
-    console.log('❌ Invalid arguments. Use "help" for usage information.');
-  }
+  `);
+} else {
+  console.log('❌ Invalid arguments. Use "help" for usage information.');
 }
 
-module.exports = {
+export {
   updateSitemap,
   addPage,
   generateSitemap
