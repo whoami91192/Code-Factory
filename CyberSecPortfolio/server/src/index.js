@@ -7,6 +7,7 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
+import crypto from 'crypto'
 
 // Load environment variables
 dotenv.config()
@@ -22,21 +23,57 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 5000
 
-// Security middleware
+// Generate nonce for CSP
+const generateNonce = () => {
+  return crypto.randomBytes(16).toString('base64')
+}
+
+// Security middleware with enhanced CSP and HSTS
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
-      styleSrc: ["'self'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
-      connectSrc: ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
+      scriptSrc: [
+        "'self'",
+        "'strict-dynamic'",
+        "'nonce-REPLACE_WITH_NONCE'",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "https://www.google.com",
+        "https://www.gstatic.com",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
+        "https://va.vercel-scripts.com"
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://fonts.googleapis.com"
+      ],
+      fontSrc: [
+        "'self'",
+        "https://fonts.gstatic.com"
+      ],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "https://www.google-analytics.com",
+        "https://www.googletagmanager.com"
+      ],
+      connectSrc: [
+        "'self'",
+        "https://www.google.com",
+        "https://www.google-analytics.com",
+        "https://www.googletagmanager.com",
+        "https://va.vercel-scripts.com",
+        "https://vitals.vercel-insights.com"
+      ],
       formAction: ["'self'"],
       frameAncestors: ["'none'"],
       baseUri: ["'self'"],
       objectSrc: ["'none'"],
-      upgradeInsecureRequests: []
+      upgradeInsecureRequests: [],
+      requireTrustedTypesFor: ["'script'"]
     }
   },
   crossOriginEmbedderPolicy: false,
@@ -50,8 +87,36 @@ app.use(helmet({
       geolocation: [],
       payment: []
     }
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
   }
 }))
+
+// Additional security headers
+app.use((req, res, next) => {
+  // HSTS header (already included in helmet but adding for extra security)
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
+  
+  // X-Frame-Options header
+  res.setHeader('X-Frame-Options', 'DENY')
+  
+  // X-Content-Type-Options header
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  
+  // X-XSS-Protection header
+  res.setHeader('X-XSS-Protection', '1; mode=block')
+  
+  // Referrer-Policy header
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+  
+  // Permissions-Policy header
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()')
+  
+  next()
+})
 
 // Rate limiting
 const limiter = rateLimit({

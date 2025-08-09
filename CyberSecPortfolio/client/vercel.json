@@ -1,11 +1,67 @@
 {
   "rewrites": [
     {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
+    },
+    {
+      "source": "/manifest.json",
+      "destination": "/manifest.json"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/favicon.ico"
+    },
+    {
+      "source": "/apple-touch-icon(.*)",
+      "destination": "/apple-touch-icon$1"
+    },
+    {
+      "source": "/favicon-(.*)",
+      "destination": "/favicon-$1"
+    },
+    {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|xml|txt|json))",
+      "destination": "/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
   "routes": [
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/apple-touch-icon(.*)",
+      "dest": "/apple-touch-icon$1"
+    },
+    {
+      "src": "/favicon-(.*)",
+      "dest": "/favicon-$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|xml|txt|json))",
+      "dest": "/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"

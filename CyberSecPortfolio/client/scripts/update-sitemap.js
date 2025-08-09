@@ -2,171 +2,97 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const DOMAIN = 'https://www.jksecurestack.com'; // JK SecureStack domain
-const SITEMAP_PATH = path.join(__dirname, '../public/sitemap.xml');
+const config = {
+  sitemapPath: path.join(__dirname, '../public/sitemap.xml'),
+  baseUrl: 'https://www.jksecurestack.com',
+  pages: [
+    {
+      path: '/',
+      changefreq: 'weekly',
+      priority: '1.0'
+    },
+    {
+      path: '/about',
+      changefreq: 'monthly',
+      priority: '0.8'
+    },
+    {
+      path: '/projects',
+      changefreq: 'weekly',
+      priority: '0.9'
+    },
+    {
+      path: '/tools',
+      changefreq: 'weekly',
+      priority: '0.8'
+    },
+    {
+      path: '/contact',
+      changefreq: 'monthly',
+      priority: '0.7'
+    },
+    {
+      path: '/ransomware-calculator',
+      changefreq: 'monthly',
+      priority: '0.6'
+    },
+    {
+      path: '/terms',
+      changefreq: 'yearly',
+      priority: '0.3'
+    }
+  ]
+};
 
-// Pages configuration
-const pages = [
-  {
-    path: '/',
-    priority: '1.0',
-    changefreq: 'weekly',
-    title: 'Homepage'
-  },
-  {
-    path: '/about',
-    priority: '0.8',
-    changefreq: 'monthly',
-    title: 'About Page'
-  },
-  {
-    path: '/projects',
-    priority: '0.9',
-    changefreq: 'weekly',
-    title: 'Projects Page'
-  },
-  {
-    path: '/tools',
-    priority: '0.8',
-    changefreq: 'weekly',
-    title: 'Tools Page'
-  },
-  {
-    path: '/contact',
-    priority: '0.7',
-    changefreq: 'monthly',
-    title: 'Contact Page'
-  },
-  {
-    path: '/ransomware-calculator',
-    priority: '0.6',
-    changefreq: 'monthly',
-    title: 'Ransomware Calculator'
-  },
-  {
-    path: '/terms',
-    priority: '0.3',
-    changefreq: 'yearly',
-    title: 'Terms Page'
-  }
-];
+// Generate current date in YYYY-MM-DD format
+function getCurrentDate() {
+  const now = new Date();
+  return now.toISOString().split('T')[0];
+}
 
 // Generate sitemap XML
 function generateSitemap() {
-  const today = new Date().toISOString().split('T')[0];
-  
-  let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  const currentDate = getCurrentDate();
+  const urls = config.pages.map(page => {
+    return `  <!-- ${page.path.replace('/', '') || 'Homepage'} Page -->
+  <url>
+    <loc>${config.baseUrl}${page.path}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`;
+  }).join('\n\n  ');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-`;
+${urls}
 
-  pages.forEach(page => {
-    sitemap += `  <!-- ${page.title} -->
-  <url>
-    <loc>${DOMAIN}${page.path}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>
-
-`;
-  });
-
-  sitemap += '</urlset>';
+</urlset>`;
 
   return sitemap;
 }
 
-// Update sitemap file
+// Update sitemap
 function updateSitemap() {
   try {
     const sitemapContent = generateSitemap();
-    fs.writeFileSync(SITEMAP_PATH, sitemapContent, 'utf8');
-    console.log('✅ Sitemap updated successfully!');
-    console.log(`📅 Last updated: ${new Date().toISOString().split('T')[0]}`);
-    console.log(`🌐 Domain: ${DOMAIN}`);
-    console.log(`📄 Pages: ${pages.length}`);
+    fs.writeFileSync(config.sitemapPath, sitemapContent, 'utf8');
+    console.log(`✅ Sitemap updated successfully at ${config.sitemapPath}`);
+    console.log(`📅 Last modified: ${getCurrentDate()}`);
+    console.log(`🔗 Sitemap URL: ${config.baseUrl}/sitemap.xml`);
   } catch (error) {
-    console.error('❌ Error updating sitemap:', error);
+    console.error(`❌ Error updating sitemap: ${error.message}`);
+    process.exit(1);
   }
 }
 
-// Add new page to sitemap
-function addPage(pagePath, priority = '0.5', changefreq = 'monthly', title = '') {
-  const newPage = {
-    path: pagePath,
-    priority,
-    changefreq,
-    title: title || pagePath
-  };
-  
-  // Check if page already exists
-  const existingPage = pages.find(p => p.path === pagePath);
-  if (existingPage) {
-    console.log(`⚠️ Page ${pagePath} already exists in sitemap`);
-    return;
-  }
-  
-  pages.push(newPage);
-  updateSitemap();
-  console.log(`✅ Added new page: ${pagePath}`);
-}
-
-// Command line interface
+// Run if called directly
 if (require.main === module) {
-  const args = process.argv.slice(2);
-  
-  if (args.length === 0) {
-    // Update sitemap with current date
-    updateSitemap();
-  } else if (args[0] === 'add' && args[1]) {
-    // Add new page
-    const pagePath = args[1];
-    const priority = args[2] || '0.5';
-    const changefreq = args[3] || 'monthly';
-    const title = args[4] || pagePath;
-    
-    addPage(pagePath, priority, changefreq, title);
-  } else if (args[0] === 'help') {
-    console.log(`
-Sitemap Updater - Usage:
-
-1. Update sitemap with current date:
-   node update-sitemap.js
-
-2. Add new page:
-   node update-sitemap.js add /new-page 0.7 weekly "New Page Title"
-
-3. Show help:
-   node update-sitemap.js help
-
-Priority levels:
-- 1.0: Homepage
-- 0.9: Important pages (Projects)
-- 0.8: Secondary pages (About, Tools)
-- 0.7: Contact pages
-- 0.6: Utility pages
-- 0.3: Legal pages
-
-Change frequency:
-- always: Always changes
-- hourly: Changes hourly
-- daily: Changes daily
-- weekly: Changes weekly
-- monthly: Changes monthly
-- yearly: Changes yearly
-- never: Never changes
-    `);
-  } else {
-    console.log('❌ Invalid arguments. Use "help" for usage information.');
-  }
+  updateSitemap();
 }
 
-module.exports = {
-  updateSitemap,
-  addPage,
-  generateSitemap
-}; 
+module.exports = { updateSitemap, generateSitemap }; 
