@@ -40,6 +40,7 @@ const CookieConsent = ({ onAccept, onDecline }: CookieConsentProps) => {
         <button
           onClick={handleDecline}
           className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
+          aria-label="Close cookie consent dialog"
         >
           <X className="h-5 w-5" />
         </button>
