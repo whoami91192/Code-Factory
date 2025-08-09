@@ -55,8 +55,8 @@
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     
-    <!-- Enhanced CSP with nonces and strict-dynamic -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-REPLACE_WITH_NONCE' 'strict-dynamic' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google.com https://www.google-analytics.com https://www.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests;" />
+    <!-- Enhanced CSP with comprehensive security and proper nonces -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-REPLACE_WITH_NONCE' 'strict-dynamic' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com; script-src-elem 'self' 'nonce-REPLACE_WITH_NONCE' 'strict-dynamic' https://fonts.googleapis.com https://fonts.gstatic.com https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google.com https://www.google-analytics.com https://www.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.gstatic.com; form-action 'self'; frame-src 'self' https://www.google.com https://www.googletagmanager.com https://www.gstatic.com; base-uri 'self'; object-src 'none'; upgrade-insecure-requests; worker-src 'self'; manifest-src 'self'; media-src 'self';" />
     
     <!-- Enhanced SEO Meta Tags -->
     <title>John Katsimpris | Professional Security Services</title>
@@ -119,12 +119,8 @@
     <!-- Google Fonts with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Google Tag Manager -->
-    <script nonce="REPLACE_WITH_NONCE">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KSTPSXRD');</script>
+    <!-- Google Tag Manager - Externalized for CSP compliance -->
+    <script src="/src/utils/gtm.js" nonce="REPLACE_WITH_NONCE" defer></script>
     
     <!-- reCAPTCHA v3 -->
     <script src="https://www.google.com/recaptcha/api.js?render=6LcLUIkrAAAAAAEhbhqGdyii6YPy93ghOu1B0N0E" async defer></script>
@@ -153,45 +149,8 @@
     <!-- Preload Critical Resources -->
     <link rel="preload" href="/src/main.tsx" as="script" />
     
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "John Katsimpris",
-      "jobTitle": "Cyber Security Engineer",
-      "description": "Expert Cyber Security Engineer specializing in penetration testing, security audits, incident response, and cybersecurity consulting.",
-      "url": "https://www.jksecurestack.com",
-      "image": "https://www.jksecurestack.com/profile-image.jpg",
-      "sameAs": [
-        "https://linkedin.com/in/johnkatsimpris",
-        "https://github.com/johnkatsimpris",
-        "https://twitter.com/johnkatsimpris"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "JK SecureStack - Cyber Security Consultant"
-      },
-      "knowsAbout": [
-        "Penetration Testing",
-        "Security Audits",
-        "Incident Response",
-        "Cybersecurity Consulting",
-        "Digital Forensics",
-        "Vulnerability Assessment",
-        "Security Architecture",
-        "Network Security",
-        "Application Security",
-        "Cloud Security"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Greece"
-      }
-    }
-    </script>
-    
-    <!-- Enhanced Security Script - Externalized to avoid CSP issues -->
+    <!-- External Scripts for CSP Compliance -->
+    <script src="/src/utils/structured-data.js" nonce="REPLACE_WITH_NONCE" defer></script>
     <script src="/src/utils/security.js" nonce="REPLACE_WITH_NONCE" defer></script>
   </head>
   <body>

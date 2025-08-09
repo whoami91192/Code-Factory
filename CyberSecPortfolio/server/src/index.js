@@ -45,6 +45,18 @@ app.use(helmet({
         "https://www.google-analytics.com",
         "https://va.vercel-scripts.com"
       ],
+      scriptSrcElem: [
+        "'self'",
+        "'strict-dynamic'",
+        "'nonce-REPLACE_WITH_NONCE'",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "https://www.google.com",
+        "https://www.gstatic.com",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
+        "https://va.vercel-scripts.com"
+      ],
       styleSrc: [
         "'self'",
         "'unsafe-inline'",
@@ -66,14 +78,24 @@ app.use(helmet({
         "https://www.google-analytics.com",
         "https://www.googletagmanager.com",
         "https://va.vercel-scripts.com",
-        "https://vitals.vercel-insights.com"
+        "https://vitals.vercel-insights.com",
+        "https://www.gstatic.com"
+      ],
+      frameSrc: [
+        "'self'",
+        "https://www.google.com",
+        "https://www.googletagmanager.com",
+        "https://www.gstatic.com"
       ],
       formAction: ["'self'"],
       frameAncestors: ["'none'"],
       baseUri: ["'self'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
-      requireTrustedTypesFor: ["'script'"]
+      requireTrustedTypesFor: ["'script'"],
+      workerSrc: ["'self'"],
+      manifestSrc: ["'self'"],
+      mediaSrc: ["'self'"]
     }
   },
   crossOriginEmbedderPolicy: false,
