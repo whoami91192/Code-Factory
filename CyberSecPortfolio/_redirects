@@ -1,1 +1,15 @@
+# Static files - serve directly (higher priority)
+/robots.txt /robots.txt 200
+/sitemap.xml /sitemap.xml 200
+/manifest.json /manifest.json 200
+/favicon.ico /favicon.ico 200
+/favicon-* /favicon-* 200
+/apple-touch-icon* /apple-touch-icon* 200
+/sw.js /sw.js 200
+/offline.html /offline.html 200
+
+# API routes
+/api/* /api/* 200
+
+# All other routes - serve index.html for SPA routing (lower priority)
 /*    /index.html   200 
