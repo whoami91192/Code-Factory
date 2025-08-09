@@ -202,7 +202,7 @@ class MobileOptimizer {
     
     try {
       const criticalCSS = `
-/* Critical CSS for mobile performance */
+/* Critical CSS for mobile performance - optimized for LCP */
 :root {
   --background: #0F1419;
   --foreground: #E6EDF3;
@@ -227,18 +227,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
   * {
     -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    font-size: 16px;
+    line-height: 1.5;
   }
   
   img {
@@ -271,6 +280,7 @@ body {
   border-top: 3px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  z-index: 9999;
 }
 
 @keyframes spin {
@@ -285,6 +295,31 @@ body {
 
 .content-loaded.loaded {
   opacity: 1;
+}
+
+/* Font loading optimizations */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  font-named-instance: 'Regular';
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal;
+  font-named-instance: 'Medium';
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 600;
+  font-style: normal;
+  font-named-instance: 'SemiBold';
 }
       `;
       

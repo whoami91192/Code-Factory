@@ -88,46 +88,9 @@
     <link rel="dns-prefetch" href="https://vitals.vercel-insights.com">
     <link rel="dns-prefetch" href="https://www.gstatic.com">
     
-    <!-- 3. Preload critical resources -->
-    <link rel="preload" href="/src/main.tsx" as="script" type="module" crossorigin>
-    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
-    
-    <!-- 4. Optimized Google Fonts loading with font-display=swap and preload -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
-    
-    <!-- 5. Preload critical fonts -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- 6. Defer non-critical CSS -->
-    <link rel="preload" href="/src/mobile-optimizations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/src/mobile-optimizations.css"></noscript>
-    
-    <!-- 7. PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- 8. Apple Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-    
-    <!-- 9. Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    
-    <!-- 10. Critical CSS Inline (for above-the-fold content) -->
+    <!-- 3. Critical CSS Inline (optimized for LCP) -->
     <style id="critical-css">
-      /* Critical CSS for above-the-fold content */
+      /* Critical CSS for above-the-fold content - optimized for LCP */
       :root {
         --background: #0F1419;
         --foreground: #E6EDF3;
@@ -161,15 +124,19 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
+        margin: 0;
+        padding: 0;
       }
       
       #root {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        background-color: var(--background);
+        color: var(--foreground);
       }
       
-      /* Loading spinner for better perceived performance */
+      /* Optimized loading spinner */
       .loading-spinner {
         position: fixed;
         top: 50%;
@@ -181,6 +148,7 @@
         border-top: 3px solid var(--primary);
         border-radius: 50%;
         animation: spin 1s linear infinite;
+        z-index: 9999;
       }
       
       @keyframes spin {
@@ -188,7 +156,7 @@
         100% { transform: translate(-50%, -50%) rotate(360deg); }
       }
       
-      /* Hide content until loaded */
+      /* Content loading states */
       .content-loaded {
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
@@ -197,16 +165,107 @@
       .content-loaded.loaded {
         opacity: 1;
       }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        * {
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        
+        img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+        }
+        
+        button, [role="button"], input, label, select, textarea, a {
+          min-height: 44px;
+          min-width: 44px;
+        }
+        
+        input, textarea, select {
+          font-size: 16px;
+          -webkit-appearance: none;
+          border-radius: var(--radius);
+        }
+      }
+      
+      /* Font loading optimizations */
+      @font-face {
+        font-family: 'Inter';
+        font-display: swap;
+        font-weight: 400;
+        font-style: normal;
+        font-named-instance: 'Regular';
+      }
+      
+      @font-face {
+        font-family: 'Inter';
+        font-display: swap;
+        font-weight: 500;
+        font-style: normal;
+        font-named-instance: 'Medium';
+      }
+      
+      @font-face {
+        font-family: 'Inter';
+        font-display: swap;
+        font-weight: 600;
+        font-style: normal;
+        font-named-instance: 'SemiBold';
+      }
     </style>
     
-    <!-- 11. Deferred Scripts for CSP Compliance -->
+    <!-- 4. Preload critical resources (optimized for LCP) -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" crossorigin>
+    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
+    
+    <!-- 5. Optimized Google Fonts loading with font-display=swap -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+    
+    <!-- 6. Preload critical fonts -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- 7. Defer non-critical CSS -->
+    <link rel="preload" href="/src/mobile-optimizations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/mobile-optimizations.css"></noscript>
+    
+    <!-- 8. PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- 9. Apple Touch Icons (optimized) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    
+    <!-- 10. Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    
+    <!-- 11. Deferred Scripts for CSP Compliance (optimized loading) -->
     <script src="/src/utils/gtm.js" nonce="REPLACE_WITH_NONCE" defer></script>
     <script src="/src/utils/structured-data.js" nonce="REPLACE_WITH_NONCE" defer></script>
     <script src="/src/utils/security.js" nonce="REPLACE_WITH_NONCE" defer></script>
     
-    <!-- 12. Deferred reCAPTCHA (load only when needed) -->
+    <!-- 12. Optimized reCAPTCHA (load only when needed) -->
     <script>
-      // Load reCAPTCHA only when needed
+      // Load reCAPTCHA only when needed - optimized for performance
       function loadRecaptcha() {
         if (!window.grecaptcha) {
           const script = document.createElement('script');
@@ -243,7 +302,7 @@
     
     <!-- Performance optimization script -->
     <script>
-      // Remove loading spinner when content is loaded
+      // Remove loading spinner when content is loaded - optimized for LCP
       document.addEventListener('DOMContentLoaded', function() {
         const loadingSpinner = document.getElementById('loading-spinner');
         const root = document.getElementById('root');
@@ -264,6 +323,14 @@
             console.log('ServiceWorker registration failed: ', err);
           });
         });
+      }
+      
+      // Optimize for mobile performance
+      if ('connection' in navigator) {
+        if (navigator.connection.effectiveType === 'slow-2g' || navigator.connection.effectiveType === '2g') {
+          // Disable non-critical features on slow connections
+          document.documentElement.classList.add('slow-connection');
+        }
       }
     </script>
   </body>

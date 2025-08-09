@@ -15,12 +15,12 @@ export default defineConfig(({ mode }) => {
       react(),
       // Gzip compression for better performance
       compression({
-        algorithm: 'gzip',
+        algorithms: ['gzip'],
         exclude: [/\.(br)$ /, /\.(gz)$/],
       }),
       // Brotli compression for even better compression
       compression({
-        algorithm: 'brotliCompress',
+        algorithms: ['brotliCompress'],
         exclude: [/\.(br)$ /, /\.(gz)$/],
       }),
       // Bundle analyzer for optimization insights
@@ -117,9 +117,19 @@ export default defineConfig(({ mode }) => {
           drop_debugger: mode === 'production',
           pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug', 'console.warn'] : [],
           passes: 2,
+          // Remove unused code
+          unused: true,
+          // Remove dead code
+          dead_code: true,
+          // Remove unused variables
+          drop_vars: true,
         },
         mangle: {
           toplevel: true,
+          // Mangle property names for better compression
+          properties: {
+            regex: /^_/,
+          },
         },
         format: {
           comments: false,
@@ -129,6 +139,10 @@ export default defineConfig(({ mode }) => {
       target: 'es2015', // Better compatibility for mobile browsers
       // Reduce chunk size warnings threshold for mobile
       chunkSizeWarningLimit: 1000,
+      // Enable CSS code splitting
+      cssCodeSplit: true,
+      // Optimize assets
+      assetsInlineLimit: 4096, // 4kb
     },
     // Optimize CSS for mobile
     css: {
@@ -154,6 +168,12 @@ export default defineConfig(({ mode }) => {
               colormin: true,
               minifyFontValues: true,
               minifySelectors: true,
+              // Remove unused CSS
+              discardUnused: true,
+              // Remove duplicate rules
+              discardDuplicates: true,
+              // Remove empty rules
+              discardEmpty: true,
             }]
           })
         ]
@@ -169,12 +189,23 @@ export default defineConfig(({ mode }) => {
       exclude: [
         'three',
         'd3'
-      ]
+      ],
+      // Force pre-bundling for better performance
+      force: true
     },
     // Mobile-specific optimizations
     define: {
       __DEV__: mode === 'development',
       __PROD__: mode === 'production'
+    },
+    // Optimize for mobile performance
+    esbuild: {
+      // Remove console.logs in production
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+      // Optimize for mobile
+      target: 'es2015',
+      // Remove unused code
+      treeShaking: true,
     }
   }
 }) 

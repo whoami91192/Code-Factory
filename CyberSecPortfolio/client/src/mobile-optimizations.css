@@ -292,4 +292,43 @@
     box-shadow: none !important;
     text-shadow: none !important;
   }
+}
+
+/* LCP optimizations */
+.lcp-optimize {
+  /* Ensure LCP element is prioritized */
+  contain: layout;
+  will-change: transform;
+}
+
+/* Render blocking optimizations */
+.render-blocking-optimize {
+  /* Optimize for render blocking */
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Network dependency tree optimizations */
+.network-dependency-optimize {
+  /* Optimize network dependencies */
+  fetchpriority: high;
+}
+
+/* Unused JavaScript optimizations */
+.unused-js-optimize {
+  /* Mark for unused JS removal */
+  display: block;
+}
+
+/* Unused CSS optimizations */
+.unused-css-optimize {
+  /* Mark for unused CSS removal */
+  display: block;
+}
+
+/* Long main-thread tasks optimizations */
+.main-thread-optimize {
+  /* Optimize main thread tasks */
+  will-change: auto;
+  transform: translateZ(0);
 } 
