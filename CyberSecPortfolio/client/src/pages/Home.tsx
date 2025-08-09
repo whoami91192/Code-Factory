@@ -1,9 +1,21 @@
 import { Link } from 'react-router-dom'
 import { Shield, Zap, Code, Target, ArrowRight, Users, Award } from 'lucide-react'
-import { useEffect } from 'react'
-import SecurityDashboard from '../components/SecurityDashboard'
-import InteractiveTerminal from '../components/InteractiveTerminal'
-import NewsTable from '../components/NewsTable'
+import { useEffect, Suspense, lazy } from 'react'
+
+// Lazy load heavy components
+const SecurityDashboard = lazy(() => import('../components/SecurityDashboard'))
+const InteractiveTerminal = lazy(() => import('../components/InteractiveTerminal'))
+const NewsTable = lazy(() => import('../components/NewsTable'))
+
+// Loading component for lazy-loaded components
+const ComponentLoader = () => (
+  <div className="flex items-center justify-center h-32">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-cyber-green mx-auto mb-2"></div>
+      <p className="text-muted-foreground text-sm">Loading...</p>
+    </div>
+  </div>
+)
 
 const Home = () => {
   // Ensure page starts at the top when component mounts
@@ -98,15 +110,12 @@ const Home = () => {
                   </div>
                   <span className="text-cyber-green font-mono text-sm">cyber-sec@terminal:~$</span>
                 </div>
-                <div className="space-y-2 font-mono text-sm">
-                  <div className="text-cyber-green">$ whoami</div>
-                  <div className="text-white">cyber-security-engineer</div>
-                  <div className="text-cyber-green">$ ./security_scan.sh</div>
-                  <div className="text-white">[+] Scanning network...</div>
-                  <div className="text-cyber-yellow">[!] Found 3 potential vulnerabilities</div>
-                  <div className="text-cyber-green">$ ./exploit_framework.py</div>
-                  <div className="text-white">[*] Loading modules...</div>
-                  <div className="text-cyber-blue">[+] Framework ready</div>
+                <div className="space-y-2 text-cyber-green font-mono text-sm">
+                  <div>Welcome to CyberSec Portfolio v2.0</div>
+                  <div>Loading security modules...</div>
+                  <div className="text-cyber-yellow">✓ Threat detection active</div>
+                  <div className="text-cyber-yellow">✓ Firewall configured</div>
+                  <div className="text-cyber-yellow">✓ Encryption enabled</div>
                 </div>
               </div>
             </div>
@@ -114,123 +123,77 @@ const Home = () => {
         </div>
       </section>
 
-      {/* News Section */}
-      <section className="py-20">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-cyber font-bold mb-4">
-              Latest <span className="text-cyber-green">Security</span> News
-            </h2>
-            <p className="text-xl text-white/90 drop-shadow max-w-2xl mx-auto">
-              Stay updated with the latest cybersecurity threats and vulnerabilities
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <NewsTable />
-          </div>
-        </div>
-      </section>
-
       {/* Features Section */}
-      <section className="py-20 bg-muted/50">
+      <section className="py-20 bg-cyber-card/50">
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-cyber font-bold mb-4">
-              Security <span className="text-cyber-green">Expertise</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+              Security Services
             </h2>
-            <p className="text-xl text-white/90 drop-shadow max-w-2xl mx-auto">
-              Comprehensive cybersecurity services with cutting-edge tools and methodologies
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive cybersecurity solutions tailored to protect your digital assets
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="cyber-card-magnetic text-center target-lock"
-              >
-                <feature.icon className={`h-12 w-12 mx-auto mb-4 ${feature.color} glow-text`} />
-                <h3 className="text-xl font-bold mb-2 text-white drop-shadow-lg">{feature.title}</h3>
-                <p className="text-white/90 font-medium drop-shadow">{feature.description}</p>
+            {features.map((feature, index) => (
+              <div key={index} className="cyber-card p-6 text-center hover:scale-105 transition-transform duration-300">
+                <feature.icon className={`h-12 w-12 mx-auto mb-4 ${feature.color}`} />
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Security Dashboard Section */}
+      {/* Interactive Tools Section */}
       <section className="py-20">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-cyber font-bold mb-4">
-              Live <span className="text-cyber-green">Security</span> Dashboard
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+              Interactive Security Tools
             </h2>
-            <p className="text-xl text-white/90 drop-shadow max-w-2xl mx-auto">
-              Real-time monitoring and security metrics from my infrastructure
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Experience our cutting-edge security tools and dashboards
             </p>
           </div>
-          <SecurityDashboard />
-        </div>
-      </section>
 
-      {/* Interactive Terminal Section */}
-      <section className="py-20 bg-muted/50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-cyber font-bold mb-4">
-              Interactive <span className="text-cyber-green">Terminal</span>
-            </h2>
-            <p className="text-xl text-white/90 drop-shadow max-w-2xl mx-auto">
-              Experience a real cybersecurity terminal with professional commands and tools
-            </p>
-          </div>
-          <InteractiveTerminal />
-        </div>
-      </section>
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Security Dashboard */}
+            <div className="cyber-card p-6">
+              <h3 className="text-2xl font-bold text-cyber-green mb-4">Security Dashboard</h3>
+              <Suspense fallback={<ComponentLoader />}>
+                <SecurityDashboard />
+              </Suspense>
+            </div>
 
-      {/* Quick Stats */}
-      <section className="py-20">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="cyber-card-magnetic text-center target-lock">
-              <Shield className="h-12 w-12 mx-auto mb-4 text-cyber-green glow-text" />
-              <div className="text-3xl font-bold mb-2 text-white drop-shadow">100+</div>
-              <div className="text-sm text-white/90 drop-shadow">Security Audits</div>
-            </div>
-            <div className="cyber-card-magnetic text-center target-lock">
-              <Code className="h-12 w-12 mx-auto mb-4 text-cyber-blue glow-text" />
-              <div className="text-3xl font-bold mb-2 text-white drop-shadow">50+</div>
-              <div className="text-sm text-white/90 drop-shadow">Projects Completed</div>
-            </div>
-            <div className="cyber-card-magnetic text-center target-lock">
-              <Users className="h-12 w-12 mx-auto mb-4 text-cyber-yellow glow-text" />
-              <div className="text-3xl font-bold mb-2 text-white drop-shadow">100+</div>
-              <div className="text-sm text-white/90 drop-shadow">Clients Protected</div>
-            </div>
-            <div className="cyber-card-magnetic text-center target-lock">
-              <Award className="h-12 w-12 mx-auto mb-4 text-cyber-red glow-text" />
-              <div className="text-3xl font-bold mb-2 text-white drop-shadow">+30</div>
-              <div className="text-sm text-white/90 drop-shadow">Certifications</div>
+            {/* Interactive Terminal */}
+            <div className="cyber-card p-6">
+              <h3 className="text-2xl font-bold text-cyber-green mb-4">Interactive Terminal</h3>
+              <Suspense fallback={<ComponentLoader />}>
+                <InteractiveTerminal />
+              </Suspense>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-muted/50">
+      {/* News Section */}
+      <section className="py-20 bg-cyber-card/50">
         <div className="container">
-          <div className="text-center">
-            <h2 className="text-3xl lg:text-4xl font-cyber font-bold mb-4">
-              Ready to <span className="text-cyber-green">Secure</span> Your Systems?
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+              Latest Security News
             </h2>
-            <p className="text-xl text-white/90 drop-shadow mb-8 max-w-2xl mx-auto">
-              Let's discuss how I can help protect your digital assets and infrastructure
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Stay updated with the latest cybersecurity threats and trends
             </p>
-            <Link to="/contact" className="cyber-button-magnetic target-lock">
-              Get In Touch
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
           </div>
+
+          <Suspense fallback={<ComponentLoader />}>
+            <NewsTable />
+          </Suspense>
         </div>
       </section>
     </div>

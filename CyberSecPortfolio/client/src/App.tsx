@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense, lazy } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { ThemeProvider } from './contexts/ThemeContext'
@@ -10,18 +10,28 @@ import GoogleAnalytics from './components/GoogleAnalytics'
 import ServiceWorkerRegistration from './components/ServiceWorkerRegistration'
 import CSPInitializer from './components/CSPInitializer'
 import { runSecurityTests } from './utils/csp-test'
-
-
 import CookieConsent from './components/CookieConsent'
 import DeveloperToolsProtection from './components/DeveloperToolsProtection'
-import Home from './pages/Home'
-import About from './pages/About'
-import Projects from './pages/Projects'
-import Tools from './pages/Tools'
-import Contact from './pages/Contact'
-import RansomwareCalculator from './pages/RansomwareCalculator'
-import Terms from './pages/Terms'
-import Login from './pages/Login'
+
+// Lazy load all page components
+const Home = lazy(() => import('./pages/Home'))
+const About = lazy(() => import('./pages/About'))
+const Projects = lazy(() => import('./pages/Projects'))
+const Tools = lazy(() => import('./pages/Tools'))
+const Contact = lazy(() => import('./pages/Contact'))
+const RansomwareCalculator = lazy(() => import('./pages/RansomwareCalculator'))
+const Terms = lazy(() => import('./pages/Terms'))
+const Login = lazy(() => import('./pages/Login'))
+
+// Loading component for lazy-loaded pages
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyber-green mx-auto mb-4"></div>
+      <p className="text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+)
 
 function App() {
   const [cookiesAccepted, setCookiesAccepted] = useState(false);
@@ -66,8 +76,6 @@ function App() {
     setCookiesAccepted(true);
   };
 
-
-
   return (
     <ThemeProvider>
       <DeveloperToolsProtection>
@@ -77,14 +85,46 @@ function App() {
             <>
               <Routes>
                 <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path="about" element={<About />} />
-                  <Route path="projects" element={<Projects />} />
-                  <Route path="tools" element={<Tools />} />
-                  <Route path="contact" element={<Contact />} />
-                  <Route path="ransomware-calculator" element={<RansomwareCalculator />} />
-                  <Route path="terms" element={<Terms />} />
-                  <Route path="login" element={<Login />} />
+                  <Route index element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Home />
+                    </Suspense>
+                  } />
+                  <Route path="about" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <About />
+                    </Suspense>
+                  } />
+                  <Route path="projects" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Projects />
+                    </Suspense>
+                  } />
+                  <Route path="tools" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Tools />
+                    </Suspense>
+                  } />
+                  <Route path="contact" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Contact />
+                    </Suspense>
+                  } />
+                  <Route path="ransomware-calculator" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <RansomwareCalculator />
+                    </Suspense>
+                  } />
+                  <Route path="terms" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Terms />
+                    </Suspense>
+                  } />
+                  <Route path="login" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Login />
+                    </Suspense>
+                  } />
                 </Route>
               </Routes>
               <Toaster />

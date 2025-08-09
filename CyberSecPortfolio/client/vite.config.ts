@@ -65,6 +65,14 @@ export default defineConfig(({ mode }) => {
             'utils': ['clsx', 'class-variance-authority', 'tailwind-merge'],
             // Icons
             'icons': ['lucide-react'],
+            // Heavy components - separate chunks
+            'heavy-components': [
+              './src/components/NetworkTopology3D',
+              './src/components/LiveThreatMap',
+              './src/components/MalwareAnalysisChart',
+              './src/components/SecurityDashboard',
+              './src/components/InteractiveTerminal'
+            ],
           },
           // Optimize file names for better caching
           chunkFileNames: (chunkInfo) => {
@@ -91,12 +99,18 @@ export default defineConfig(({ mode }) => {
         compress: {
           drop_console: mode === 'production',
           drop_debugger: mode === 'production',
+          pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+        },
+        mangle: {
+          safari10: true,
         },
       },
       // Enable CSS code splitting
       cssCodeSplit: true,
       // Optimize assets
       assetsInlineLimit: 4096, // 4kb
+      // Enable tree shaking
+      target: 'esnext',
     },
     preview: {
       port: 3000,
@@ -122,6 +136,16 @@ export default defineConfig(({ mode }) => {
         'tailwind-merge',
         'lucide-react',
       ],
+      exclude: [
+        // Exclude heavy components from pre-bundling
+        './src/components/NetworkTopology3D',
+        './src/components/LiveThreatMap',
+        './src/components/MalwareAnalysisChart',
+      ],
+    },
+    // Performance optimizations
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
     },
   }
 }) 

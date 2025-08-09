@@ -4,54 +4,78 @@ import FloatingNavigation from './FloatingNavigation'
 import ScrollToTop from './ScrollToTop'
 import PageScrollToTop from './PageScrollToTop'
 import { Shield, Zap } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 const Layout = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isReducedMotion, setIsReducedMotion] = useState(false)
 
   useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setIsReducedMotion(mediaQuery.matches)
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
+      // Only track mouse position if reduced motion is not preferred
+      if (!isReducedMotion) {
+        setMousePosition({ x: e.clientX, y: e.clientY })
+      }
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+    if (!isReducedMotion) {
+      window.addEventListener('mousemove', handleMouseMove)
+      return () => window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [isReducedMotion])
+
+  // Memoize heavy visual effects
+  const visualEffects = useMemo(() => {
+    if (isReducedMotion) return null
+
+    return (
+      <>
+        {/* Liquid Metal Global Background - Only on desktop */}
+        <div className="liquid-metal-bg hidden md:block" />
+        <svg className="liquid-metal-svg hidden md:block" width="100%" height="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="liquid" x="0" y="0">
+              <feTurbulence id="turb" baseFrequency="0.008 0.012" numOctaves="2" seed="2" type="fractalNoise" result="turb"/>
+              <feDisplacementMap in2="turb" in="SourceGraphic" scale="60" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+          <ellipse cx="960" cy="540" rx="900" ry="400" fill="url(#paint0_radial)" filter="url(#liquid)" opacity="0.18" />
+          <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(960 540) scale(900 400)" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#0080FF" stopOpacity="0.25" />
+            <stop offset="0.5" stopColor="#9C27B0" stopOpacity="0.12" />
+            <stop offset="1" stopColor="#0F1419" stopOpacity="0.01" />
+          </radialGradient>
+        </svg>
+        <div className="liquid-metal-overlay hidden md:block" />
+        
+        {/* Global Holographic Glitch Effect - Only on desktop */}
+        <div className="global-glitch hidden md:block" />
+        
+        {/* Matrix Background Effect - Reduced opacity */}
+        <div className="fixed inset-0 matrix-bg opacity-2 pointer-events-none" />
+        
+        {/* Magnetic Cursor - Only if not reduced motion */}
+        {!isReducedMotion && (
+          <div 
+            className="magnetic-cursor hidden md:block"
+            style={{
+              left: mousePosition.x - 10,
+              top: mousePosition.y - 10,
+            }}
+          />
+        )}
+      </>
+    )
+  }, [isReducedMotion, mousePosition])
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
-      {/* Liquid Metal Global Background */}
-      <div className="liquid-metal-bg" />
-      <svg className="liquid-metal-svg" width="100%" height="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="liquid" x="0" y="0">
-            <feTurbulence id="turb" baseFrequency="0.008 0.012" numOctaves="2" seed="2" type="fractalNoise" result="turb"/>
-            <feDisplacementMap in2="turb" in="SourceGraphic" scale="60" xChannelSelector="R" yChannelSelector="G"/>
-          </filter>
-        </defs>
-        <ellipse cx="960" cy="540" rx="900" ry="400" fill="url(#paint0_radial)" filter="url(#liquid)" opacity="0.18" />
-        <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(960 540) scale(900 400)" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0080FF" stopOpacity="0.25" />
-          <stop offset="0.5" stopColor="#9C27B0" stopOpacity="0.12" />
-          <stop offset="1" stopColor="#0F1419" stopOpacity="0.01" />
-        </radialGradient>
-      </svg>
-      <div className="liquid-metal-overlay" />
-      
-      {/* Global Holographic Glitch Effect */}
-      <div className="global-glitch" />
-      
-      {/* Matrix Background Effect */}
-      <div className="fixed inset-0 matrix-bg opacity-5 pointer-events-none" />
-      
-      {/* Magnetic Cursor */}
-      <div 
-        className="magnetic-cursor"
-        style={{
-          left: mousePosition.x - 10,
-          top: mousePosition.y - 10,
-        }}
-      />
+      {/* Conditional Visual Effects */}
+      {visualEffects}
       
       {/* Header with Navigation */}
       <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 liquid-metal-glow">
@@ -115,12 +139,6 @@ const Layout = () => {
                 className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
               >
                 Contact
-              </a>
-              <a
-                href="/terms"
-                className="text-xs sm:text-sm text-muted-foreground hover:text-cyber-green transition-colors magnetic-attraction"
-              >
-                Terms
               </a>
             </div>
           </div>
