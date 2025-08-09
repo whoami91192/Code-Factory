@@ -228,3 +228,4 @@ For performance-related issues or questions:
 - Check the [Vite Performance Guide](https://vitejs.dev/guide/performance.html)
 - Review [React Performance Best Practices](https://react.dev/learn/render-and-commit)
 - Monitor [Web Vitals](https://web.dev/vitals/) regularly
+

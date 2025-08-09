@@ -180,3 +180,4 @@ npx lighthouse https://your-site.com --only-categories=performance
 - Check [Web Vitals Documentation](https://web.dev/vitals/)
 - Review [Performance Best Practices](https://web.dev/performance/)
 - Monitor [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools)
+

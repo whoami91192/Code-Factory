@@ -84,7 +84,16 @@ const Home = () => {
                 </h1>
                 <p className="text-xl text-white/90 drop-shadow max-w-lg">
                   Building fortress-like cloud environments and deploying intelligent security systems 
-                  to protect organizations from evolving cyber threats.
+                  to protect organizations from evolving cyber threats. With over a decade of experience 
+                  in cybersecurity, I specialize in penetration testing, incident response, and security 
+                  architecture design.
+                </p>
+                <p className="text-lg text-white/80 drop-shadow max-w-lg">
+                  My expertise spans across cloud security, network defense, application security, and 
+                  threat intelligence. I help organizations build resilient security postures through 
+                  comprehensive assessments, automated security tools, and strategic security consulting.
+                  Explore my <Link to="/projects" className="text-cyber-green hover:text-cyber-blue transition-colors">security projects</Link> and 
+                  <Link to="/tools" className="text-cyber-green hover:text-cyber-blue transition-colors"> interactive tools</Link> to see my work in action.
                 </p>
               </div>
 
@@ -95,6 +104,9 @@ const Home = () => {
                 </Link>
                 <Link to="/projects" className="cyber-button-magnetic target-lock">
                   View Projects
+                </Link>
+                <Link to="/about" className="cyber-button-magnetic target-lock">
+                  About Me
                 </Link>
               </div>
             </div>
@@ -116,6 +128,73 @@ const Home = () => {
                   <div className="text-cyber-yellow">✓ Threat detection active</div>
                   <div className="text-cyber-yellow">✓ Firewall configured</div>
                   <div className="text-cyber-yellow">✓ Encryption enabled</div>
+                  <div className="text-cyber-blue">✓ Security tools loaded</div>
+                  <div className="text-cyber-blue">✓ Monitoring systems online</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-20 bg-cyber-card/30">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-4">
+                About My Security Expertise
+              </h2>
+              <p className="text-lg text-white/90 leading-relaxed">
+                As a dedicated cybersecurity professional, I focus on protecting digital assets through 
+                comprehensive security assessments, threat modeling, and incident response strategies. 
+                My approach combines technical expertise with strategic thinking to deliver robust 
+                security solutions that align with industry best practices and compliance standards.
+              </p>
+              <p className="text-lg text-white/90 leading-relaxed">
+                I specialize in cloud security architecture, penetration testing, and security automation. 
+                My experience includes working with AWS, Azure, and Google Cloud platforms, implementing 
+                zero-trust security models, and developing custom security tools for threat detection 
+                and response. I've helped organizations of all sizes strengthen their security posture 
+                and protect against evolving cyber threats.
+              </p>
+              <p className="text-lg text-white/90 leading-relaxed">
+                My expertise covers a wide range of security domains including network security, 
+                application security, cloud security, and incident response. I stay current with 
+                the latest security trends, tools, and methodologies to provide cutting-edge 
+                solutions for modern security challenges.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/about" className="text-cyber-green hover:text-cyber-blue transition-colors">
+                  Learn More About Me →
+                </Link>
+                <Link to="/contact" className="text-cyber-green hover:text-cyber-blue transition-colors">
+                  Get In Touch →
+                </Link>
+              </div>
+            </div>
+            <div className="cyber-card p-8">
+              <h3 className="text-2xl font-bold text-cyber-green mb-6">Core Competencies</h3>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-cyber-green rounded-full"></div>
+                  <span className="text-white/90">Penetration Testing & Vulnerability Assessment</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-cyber-green rounded-full"></div>
+                  <span className="text-white/90">Cloud Security Architecture</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-cyber-green rounded-full"></div>
+                  <span className="text-white/90">Incident Response & Threat Hunting</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-cyber-green rounded-full"></div>
+                  <span className="text-white/90">Security Automation & Tool Development</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-cyber-green rounded-full"></div>
+                  <span className="text-white/90">Compliance & Risk Management</span>
                 </div>
               </div>
             </div>
@@ -131,7 +210,10 @@ const Home = () => {
               Security Services
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive cybersecurity solutions tailored to protect your digital assets
+              Comprehensive cybersecurity solutions tailored to protect your digital assets and 
+              strengthen your organization's security posture against evolving threats. Our services 
+              are designed to identify vulnerabilities, mitigate risks, and build resilient security 
+              frameworks for modern organizations.
             </p>
           </div>
 
@@ -155,7 +237,8 @@ const Home = () => {
               Interactive Security Tools
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Experience our cutting-edge security tools and dashboards
+              Experience our cutting-edge security tools and dashboards designed to provide 
+              real-time insights into security threats and system vulnerabilities.
             </p>
           </div>
 
@@ -187,13 +270,39 @@ const Home = () => {
               Latest Security News
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Stay updated with the latest cybersecurity threats and trends
+              Stay updated with the latest cybersecurity threats, vulnerabilities, and industry trends 
+              to keep your organization informed and prepared.
             </p>
           </div>
 
           <Suspense fallback={<ComponentLoader />}>
             <NewsTable />
           </Suspense>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-20">
+        <div className="container">
+          <div className="text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold text-cyber-green mb-6">
+              Ready to Secure Your Digital Assets?
+            </h2>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+              Let's work together to build a robust security framework that protects your organization 
+              from cyber threats. Contact me to discuss your security needs and explore how we can 
+              strengthen your cybersecurity posture.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/contact" className="cyber-button-magnetic target-lock">
+                Get Started Today
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link to="/tools" className="cyber-button-magnetic target-lock">
+                Explore Security Tools
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>
