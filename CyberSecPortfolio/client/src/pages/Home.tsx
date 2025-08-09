@@ -71,7 +71,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-12 md:py-20 lg:py-32 hero-section">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="text-center max-w-4xl mx-auto">
             {/* Hero Content */}
             <div className="space-y-6 md:space-y-8">
               <div className="space-y-4">
@@ -82,13 +82,13 @@ const Home = () => {
                   <br />
                   <span className="text-cyber-yellow text-xl md:text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>
-                <p className="text-base md:text-xl text-white/90 drop-shadow max-w-lg">
+                <p className="text-base md:text-xl text-white/90 drop-shadow max-w-lg mx-auto">
                   Building fortress-like cloud environments and deploying intelligent security systems 
                   to protect organizations from evolving cyber threats.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/tools" className="cyber-button-magnetic target-lock touch-target">
                   Explore Tools
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -99,8 +99,8 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Hero Visual */}
-            <div className="relative order-first lg:order-last">
+            {/* Terminal Element - Moved below buttons */}
+            <div className="mt-12 md:mt-16 max-w-2xl mx-auto">
               <div className="terminal-bg rounded-lg p-4 md:p-8 border border-cyber-green/30">
                 <div className="flex items-center space-x-2 mb-4">
                   <div className="flex space-x-2">
