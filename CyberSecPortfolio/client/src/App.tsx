@@ -6,6 +6,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import SpeedInsightsDebug from './components/SpeedInsightsDebug'
 import { Toaster } from './components/ui/toaster'
 import Layout from './components/Layout'
+import MobileOptimizedLayout from './components/MobileOptimizedLayout'
 import GoogleAnalytics from './components/GoogleAnalytics'
 import ServiceWorkerRegistration from './components/ServiceWorkerRegistration'
 import CSPInitializer from './components/CSPInitializer'
@@ -84,7 +85,7 @@ function App() {
           {cookiesAccepted ? (
             <>
               <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route path="/" element={<MobileOptimizedLayout />}>
                   <Route index element={
                     <Suspense fallback={<PageLoader />}>
                       <Home />

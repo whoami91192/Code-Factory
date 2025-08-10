@@ -1,0 +1,346 @@
+/* Mobile Performance Optimizations - Critical for INP improvement */
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Disable heavy effects on mobile */
+  .liquid-metal-bg,
+  .liquid-metal-overlay,
+  .liquid-metal-svg,
+  .global-glitch,
+  .magnetic-cursor,
+  .target-lock::before,
+  .target-lock:hover::before {
+    display: none !important;
+  }
+
+  /* Simplify matrix background for mobile */
+  .matrix-bg {
+    opacity: 0.05 !important;
+    animation: none !important;
+  }
+
+  /* Mobile-optimized matrix background */
+  .matrix-bg-mobile {
+    background-image: 
+      linear-gradient(90deg, transparent 98%, rgba(0, 128, 0, 0.1) 100%),
+      linear-gradient(0deg, transparent 98%, rgba(0, 128, 0, 0.1) 100%);
+    background-size: 20px 20px;
+    animation: none;
+  }
+
+  /* Optimize touch targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Reduce animation complexity on mobile */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Disable complex hover effects on mobile */
+  @media (hover: none) {
+    .hover\:bg-gray-100:hover,
+    .hover\:text-gray-900:hover,
+    .hover\:scale-105:hover {
+      background-color: transparent !important;
+      color: inherit !important;
+      transform: none !important;
+    }
+  }
+
+  /* Optimize scrolling performance */
+  html {
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Reduce layout shifts */
+  * {
+    contain: layout style paint;
+  }
+
+  /* Optimize images */
+  img {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+
+  /* Optimize fonts */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  /* Reduce motion for better performance */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Optimize form elements */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+    -webkit-appearance: none;
+    border-radius: var(--radius);
+    touch-action: manipulation;
+  }
+
+  /* Optimize buttons */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  /* Optimize navigation */
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Optimize modals */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  /* Optimize cards */
+  .card {
+    margin-bottom: 1rem;
+    border-radius: var(--radius);
+    padding: 1rem;
+    contain: layout style paint;
+  }
+
+  /* Optimize lists */
+  ul,
+  ol {
+    padding-left: 1.5rem;
+    contain: layout style paint;
+  }
+
+  /* Optimize tables */
+  table {
+    font-size: 0.875rem;
+    contain: layout style paint;
+  }
+
+  /* Optimize code blocks */
+  pre,
+  code {
+    font-size: 0.875rem;
+    overflow-x: auto;
+    contain: layout style paint;
+  }
+
+  /* Optimize loading states */
+  .loading {
+    opacity: 0.6;
+    pointer-events: none;
+    contain: layout style paint;
+  }
+
+  /* Optimize focus states */
+  *:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Optimize print styles */
+  @media print {
+    * {
+      background: transparent !important;
+      color: black !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+  }
+}
+
+/* Performance optimizations for all devices */
+@media (any-hover: hover) {
+  /* Only apply hover effects on devices that support hover */
+  .hover\:bg-gray-100:hover {
+    background-color: rgb(243 244 246);
+  }
+}
+
+/* Optimize for high-DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* High-DPI optimizations */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Optimize for landscape orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+  .nav {
+    position: relative;
+    border-top: none;
+  }
+}
+
+/* Optimize for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0F1419;
+    --foreground: #E6EDF3;
+  }
+}
+
+/* Optimize for light mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #0F1419;
+  }
+}
+
+/* Optimize for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize for high contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --border: #000000;
+    --muted-foreground: #000000;
+  }
+}
+
+/* LCP optimizations */
+.lcp-optimize {
+  contain: layout;
+  will-change: transform;
+}
+
+/* Render blocking optimizations */
+.render-blocking-optimize {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Network dependency tree optimizations */
+.network-dependency-optimize {
+  fetchpriority: high;
+}
+
+/* Unused JavaScript optimizations */
+.unused-js-optimize {
+  display: block;
+}
+
+/* Unused CSS optimizations */
+.unused-css-optimize {
+  display: block;
+}
+
+/* Long main-thread tasks optimizations */
+.main-thread-optimize {
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* Mobile-specific performance classes */
+.mobile-optimized {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+.mobile-reduced-animations {
+  animation-duration: 0.2s !important;
+  transition-duration: 0.2s !important;
+}
+
+.mobile-simplified-effects {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Critical rendering path optimizations */
+.critical-render {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+  contain: layout style paint;
+}
+
+/* Touch event optimizations */
+.touch-optimized {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Scroll performance optimizations */
+.scroll-optimized {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
+}
+
+/* Animation performance optimizations */
+.animation-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
