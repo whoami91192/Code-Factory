@@ -121,8 +121,6 @@ export default defineConfig(({ mode }) => {
           unused: true,
           // Remove dead code
           dead_code: true,
-          // Remove unused variables
-          drop_vars: true,
         },
         mangle: {
           toplevel: true,
@@ -146,38 +144,7 @@ export default defineConfig(({ mode }) => {
     },
     // Optimize CSS for mobile
     css: {
-      devSourcemap: mode === 'development',
-      postcss: {
-        plugins: [
-          // Add mobile-specific optimizations
-          require('autoprefixer')({
-            overrideBrowserslist: [
-              '> 1%',
-              'last 2 versions',
-              'not dead',
-              'not ie 11'
-            ]
-          }),
-          // Optimize for mobile performance
-          require('cssnano')({
-            preset: ['default', {
-              discardComments: {
-                removeAll: true,
-              },
-              normalizeWhitespace: true,
-              colormin: true,
-              minifyFontValues: true,
-              minifySelectors: true,
-              // Remove unused CSS
-              discardUnused: true,
-              // Remove duplicate rules
-              discardDuplicates: true,
-              // Remove empty rules
-              discardEmpty: true,
-            }]
-          })
-        ]
-      }
+      devSourcemap: mode === 'development'
     },
     // Optimize for mobile performance
     optimizeDeps: {
