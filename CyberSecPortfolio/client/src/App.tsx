@@ -15,7 +15,7 @@ import CookieConsent from './components/CookieConsent'
 import DeveloperToolsProtection from './components/DeveloperToolsProtection'
 
 // Lazy load all page components
-const Home = lazy(() => import('./pages/Home'))
+const Home = lazy(() => import('./pages/MobileOptimizedHome'))
 const About = lazy(() => import('./pages/About'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Tools = lazy(() => import('./pages/Tools'))
