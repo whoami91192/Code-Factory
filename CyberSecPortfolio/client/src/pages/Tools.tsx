@@ -11,6 +11,7 @@ import VirtualSOC from '../components/VirtualSOC'
 import SecurityEscapeRoom from '../components/SecurityEscapeRoom'
 import AISecurityAssistant from '../components/AISecurityAssistant'
 import PWAFeatures from '../components/PWAFeatures'
+import N8nWorkflows from '../components/N8nWorkflows'
 
 
 const Tools = () => {
@@ -29,7 +30,7 @@ const Tools = () => {
     { id: 'escaperoom', name: 'Escape Room', icon: '🚪' },
     { id: 'aiassistant', name: 'AI Assistant', icon: '🤖' },
     { id: 'pwa', name: 'PWA Features', icon: '📱' },
-
+    { id: 'n8n', name: 'n8n Workflows', icon: '⚡' },
   ]
 
   const renderContent = () => {
@@ -58,6 +59,8 @@ const Tools = () => {
         return <AISecurityAssistant />
       case 'pwa':
         return <PWAFeatures />
+      case 'n8n':
+        return <N8nWorkflows />
 
       default:
         return <SecurityDashboard />

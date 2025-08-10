@@ -15,6 +15,7 @@
     --cyber-warning: 45 100% 50%;       /* #FFB300 - Warning Yellow */
     --cyber-danger: 0 100% 50%;         /* #FF1744 - Danger Red */
     --cyber-success: 120 100% 40%;      /* #00C853 - Success Green */
+    --cyber-orange: 25 100% 50%;        /* #FF6F00 - Orange */
     
     /* Background Colors - 2025 Style */
     --cyber-dark: 220 25% 8%;           /* #0F1419 - Deep Navy Black */
@@ -338,6 +339,7 @@
   .text-cyber-warning { color: hsl(45 100% 50%); }
   .text-cyber-danger { color: hsl(0 100% 50%); }
   .text-cyber-success { color: hsl(120 100% 40%); }
+  .text-cyber-orange { color: hsl(25 100% 50%); }
   
   .bg-cyber-primary { background-color: hsl(200 100% 50%); }
   .bg-cyber-secondary { background-color: hsl(160 100% 45%); }
@@ -345,6 +347,7 @@
   .bg-cyber-warning { background-color: hsl(45 100% 50%); }
   .bg-cyber-danger { background-color: hsl(0 100% 50%); }
   .bg-cyber-success { background-color: hsl(120 100% 40%); }
+  .bg-cyber-orange { background-color: hsl(25 100% 50%); }
   .bg-cyber-dark { background-color: hsl(220 25% 8%); }
   .bg-cyber-darker { background-color: hsl(220 25% 4%); }
   .bg-cyber-light { background-color: hsl(220 25% 12%); }
@@ -357,6 +360,7 @@
   .border-cyber-warning { border-color: hsl(45 100% 50%); }
   .border-cyber-danger { border-color: hsl(0 100% 50%); }
   .border-cyber-success { border-color: hsl(120 100% 40%); }
+  .border-cyber-orange { border-color: hsl(25 100% 50%); }
   
   /* Glass Morphism */
   .glass {
