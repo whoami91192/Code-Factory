@@ -65,11 +65,15 @@ const About = () => {
                     <h3 className="text-xl font-bold mb-2 text-white drop-shadow">Senior Cyber Security Engineer</h3>
                     <p className="text-cyber-primary font-mono text-sm mb-2">09/2025 - Current</p>
                     <ul className="text-white/90 drop-shadow text-sm space-y-1">
-                      <li>• Leading advanced threat detection and incident response operations</li>
-                      <li>• Architecting enterprise security solutions and security frameworks</li>
-                      <li>• Managing security operations center (SOC) activities and team coordination</li>
-                      <li>• Implementing zero-trust security models and advanced security controls</li>
-                      <li>• Conducting security assessments and penetration testing</li>
+                      <li>• Design Cyber Security Solutions taking into consideration existing IT infrastructure, industry best practices and state-of-the-art Technology</li>
+                      <li>• Install, configure and support Cyber Security systems for corporate Information Security policies of large European, Public and Private organizations</li>
+                      <li>• Liaise with IT and Network departments to efficiently integrate Cyber Security systems to existing IT and network infrastructure</li>
+                      <li>• Set Information Security Requirements in IT projects and infrastructure</li>
+                      <li>• Identify security gaps and proactively propose remedies to mitigate them</li>
+                      <li>• Assist in maintaining the security level of networks, IT systems and SW Applications</li>
+                      <li>• Administrate IT and network infrastructure (OSs, Virtualization, Cloud, DBs, network devices) that support innovative Cyber Security solutions</li>
+                      <li>• Document Cyber Security solutions in both high-level blueprints and low level designs</li>
+                      <li>• Stay updated with industry trends and emerging technologies relevant to Cyber Security</li>
                     </ul>
                   </div>
                 </div>
