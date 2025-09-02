@@ -76,9 +76,9 @@ const Home = () => {
             <div className="space-y-6 md:space-y-8">
               <div className="space-y-4">
                 <h1 className="text-2xl md:text-4xl lg:text-6xl font-cyber font-bold">
-                  <span className="text-cyber-green">Systems</span> and
+                  <span className="text-cyber-green">Cyber</span>
                   <br />
-                  <span className="text-cyber-blue">Cloud Engineer</span>
+                  <span className="text-cyber-blue">Security Engineer</span>
                   <br />
                   <span className="text-cyber-yellow text-xl md:text-2xl lg:text-4xl">John Katsimpris</span>
                 </h1>

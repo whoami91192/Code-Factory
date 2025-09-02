@@ -34,7 +34,7 @@ const About = () => {
             JOHN <span className="text-cyber-secondary">KATSIMPRIS</span>
           </h1>
           <p className="text-2xl text-cyber-primary font-cyber mb-4">
-            SYSTEMS AND CLOUD ENGINEER
+            CYBER SECURITY ENGINEER
           </p>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Seasoned cybersecurity specialist and cloud infrastructure expert with over a decade of experience 
@@ -60,10 +60,27 @@ const About = () => {
             <div className="space-y-6">
               <div className="cyber-card-magnetic target-lock">
                 <div className="flex items-start space-x-4">
+                  <Shield className="h-8 w-8 text-cyber-primary mt-1 glow-text" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-white drop-shadow">Senior Cyber Security Engineer</h3>
+                    <p className="text-cyber-primary font-mono text-sm mb-2">09/2025 - Current</p>
+                    <ul className="text-white/90 drop-shadow text-sm space-y-1">
+                      <li>• Leading advanced threat detection and incident response operations</li>
+                      <li>• Architecting enterprise security solutions and security frameworks</li>
+                      <li>• Managing security operations center (SOC) activities and team coordination</li>
+                      <li>• Implementing zero-trust security models and advanced security controls</li>
+                      <li>• Conducting security assessments and penetration testing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="cyber-card-magnetic target-lock">
+                <div className="flex items-start space-x-4">
                   <Cloud className="h-8 w-8 text-cyber-secondary mt-1 glow-text" />
                   <div>
                     <h3 className="text-xl font-bold mb-2 text-white drop-shadow">Senior Systems and Cloud Engineer</h3>
-                    <p className="text-cyber-secondary font-mono text-sm mb-2">05/2024 - Current</p>
+                    <p className="text-cyber-secondary font-mono text-sm mb-2">05/2024 - 08/2025</p>
                     <ul className="text-white/90 drop-shadow text-sm space-y-1">
                       <li>• Monitor system and cloud infrastructure health using Azure Monitor, AWS CloudWatch</li>
                       <li>• Optimized secure data storage with scalable cloud storage solutions</li>
@@ -348,13 +365,31 @@ const About = () => {
                 </div>
               </div>
 
-              {/* 2024 - Current Certifications & Senior Systems Engineer */}
+              {/* 2025 - Current Senior Cyber Security Engineer */}
+              <div className="relative flex items-center timeline-item">
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-primary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
+                <div className="w-5/12 pr-8 text-right timeline-left">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
+                    <h3 className="text-lg font-bold text-cyber-primary mb-2">Senior Cyber Security Engineer</h3>
+                    <p className="text-sm text-white/90 mb-1 drop-shadow">09/2025 - Current</p>
+                    <p className="text-xs text-cyber-primary font-mono">Advanced Threat Detection & SOC Leadership</p>
+                  </div>
+                </div>
+                <div className="w-5/12 pl-8 timeline-right">
+                  <div className="cyber-card-magnetic target-lock timeline-card">
+                    <h3 className="text-lg font-bold text-cyber-secondary mb-2">Zero-Trust Security Models</h3>
+                    <p className="text-sm text-white/90 mb-1 drop-shadow">Enterprise Security Architecture & Penetration Testing</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2024-2025 - Senior Systems and Cloud Engineer */}
               <div className="relative flex items-center timeline-item">
                 <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-cyber-secondary rounded-full border-4 border-background shadow-lg glow-text timeline-node"></div>
                 <div className="w-5/12 pr-8 text-right timeline-left">
                   <div className="cyber-card-magnetic target-lock timeline-card">
                     <h3 className="text-lg font-bold text-cyber-secondary mb-2">Senior Systems and Cloud Engineer</h3>
-                    <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - Current</p>
+                    <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - 08/2025</p>
                     <p className="text-xs text-cyber-secondary font-mono">Azure/AWS Infrastructure & AI Workloads</p>
                   </div>
                 </div>
@@ -479,13 +514,27 @@ const About = () => {
               </div>
             </div>
 
-            {/* 2024 - Current Certifications & Senior Systems Engineer */}
+            {/* 2025 - Current Senior Cyber Security Engineer */}
+            <div className="cyber-card-magnetic target-lock mobile-timeline-card">
+              <div className="flex items-center mb-3">
+                <div className="w-4 h-4 bg-cyber-primary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
+                <h3 className="text-lg font-bold text-cyber-primary">Senior Cyber Security Engineer</h3>
+              </div>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">09/2025 - Current</p>
+              <p className="text-xs text-cyber-primary font-mono mb-3">Advanced Threat Detection & SOC Leadership</p>
+              <div className="border-t border-cyber-primary/20 pt-3">
+                <h4 className="text-sm font-bold text-cyber-secondary mb-1">Zero-Trust Security Models</h4>
+                <p className="text-xs text-white/90 mb-1 drop-shadow">Enterprise Security Architecture & Penetration Testing</p>
+              </div>
+            </div>
+
+            {/* 2024-2025 - Senior Systems and Cloud Engineer */}
             <div className="cyber-card-magnetic target-lock mobile-timeline-card">
               <div className="flex items-center mb-3">
                 <div className="w-4 h-4 bg-cyber-secondary rounded-full border-2 border-background shadow-lg glow-text mr-3"></div>
                 <h3 className="text-lg font-bold text-cyber-secondary">Senior Systems and Cloud Engineer</h3>
               </div>
-              <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - Current</p>
+              <p className="text-sm text-white/90 mb-1 drop-shadow">05/2024 - 08/2025</p>
               <p className="text-xs text-cyber-secondary font-mono mb-3">Azure/AWS Infrastructure & AI Workloads</p>
               <div className="border-t border-cyber-primary/20 pt-3">
                 <h4 className="text-sm font-bold text-cyber-primary mb-1">Microsoft Azure Certifications</h4>
